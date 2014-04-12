@@ -1,29 +1,26 @@
 /***************************************************************************/
 /*                                                                         */
-/*  main.m                                                                 */
+/*  JMFCameraIOS_MainViewController.h                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Main App File                                             */
+/*               Main View Controller Class definition file                */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFAppDelegate.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  main()                                                                 */
+/*                                                                         */
+/*  JMFCameraIOS_MainViewController Class Interface                        */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-int main( int Argc, char* Argv[] )
-{
-    @autoreleasepool
-    {
-        return UIApplicationMain( Argc, Argv, nil, NSStringFromClass( [JMFAppDelegate class] ) );
-    }
-}
+@interface JMFCameraIOS_MainViewController : UIViewController
+
+@end

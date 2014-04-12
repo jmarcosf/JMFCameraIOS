@@ -1,110 +1,92 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFAppDelegate.m                                                       */
+/*  JMFCameraIOS_MainViewController.m                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               App Delegate Class implementation File                    */
+/*               Main View Controller Class implementation file            */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFAppDelegate.h"
+#import "JMFCameraIOS_MainViewController.h"
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  JMFCameraIOS_MainViewController Class Interface                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@interface JMFCameraIOS_MainViewController ()
+
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFAppDelegate Class Implementation                                    */
+/*                                                                         */
+/*  JMFCameraIOS_MainViewController Class Implemantation                   */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFAppDelegate
+@implementation JMFCameraIOS_MainViewController
 
-#pragma mark - UIApplicationDelegate
+#pragma mark - UIViewController Override Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIApplicationDelegate Methods                                          */
+/*                                                                         */
+/*  UIViewController Override Methods                                      */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  application:didFinishLaunchingWithOptions:                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+/*                                                                         */
+/*                                                                         */
+/*  initWithNibName:bundle:                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    
-
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if( self )
+    {
+    }
+    return self;
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  applicationWillResignActive:                                           */
+/*  viewDidLoad                                                            */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)viewDidLoad
 {
+    [super viewDidLoad];
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  applicationDidEnterBackground:                                         */
+/*  didReceiveMemoryWarning                                                */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (void)didReceiveMemoryWarning
 {
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillEnterForeground:                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidBecomeActive:                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillTerminate:                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillTerminate:(UIApplication *)application
-{
+    [super didReceiveMemoryWarning];
 }
 
 @end

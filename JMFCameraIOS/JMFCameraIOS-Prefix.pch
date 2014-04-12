@@ -1,9 +1,15 @@
-//
-//  Prefix header
-//
-//  The contents of this file are implicitly included at the beginning of every source file.
-//
-
+/***************************************************************************/
+/*                                                                         */
+/*  JMFCameraIOS-Prefix.pch                                                */
+/*  Copyright (c) 2014 Simarks. All rights reserved.                       */
+/*                                                                         */
+/*  Description: JMFCameraIOS                                              */
+/*               U-Tad - Práctica iOS Avanzado                             */
+/*               Precompiled Header Files                                  */
+/*                                                                         */
+/*       Author: Jorge Marcos Fernandez                                    */
+/*                                                                         */
+/***************************************************************************/
 #import <Availability.h>
 
 #ifndef __IPHONE_3_0

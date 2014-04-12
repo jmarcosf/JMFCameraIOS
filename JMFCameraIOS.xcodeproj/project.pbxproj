@@ -19,6 +19,8 @@
 		906E722318F9D4CF00D1CC63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720B18F9D4CF00D1CC63 /* UIKit.framework */; };
 		906E722B18F9D4CF00D1CC63 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906E722918F9D4CF00D1CC63 /* InfoPlist.strings */; };
 		906E722D18F9D4CF00D1CC63 /* JMFCameraIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E722C18F9D4CF00D1CC63 /* JMFCameraIOSTests.m */; };
+		906E723D18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */; };
+		906E723E18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,9 @@
 		906E722818F9D4CF00D1CC63 /* JMFCameraIOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "JMFCameraIOSTests-Info.plist"; sourceTree = "<group>"; };
 		906E722A18F9D4CF00D1CC63 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		906E722C18F9D4CF00D1CC63 /* JMFCameraIOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOSTests.m; sourceTree = "<group>"; };
+		906E723A18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainViewController.h; sourceTree = "<group>"; };
+		906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainViewController.m; sourceTree = "<group>"; };
+		906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +82,10 @@
 		906E71FB18F9D4CF00D1CC63 = {
 			isa = PBXGroup;
 			children = (
+				906E723918F9D6C400D1CC63 /* Views */,
+				906E723818F9D6B800D1CC63 /* Controllers */,
+				906E723718F9D6B200D1CC63 /* Model */,
+				906E723618F9D6AB00D1CC63 /* Resources */,
 				906E720D18F9D4CF00D1CC63 /* JMFCameraIOS */,
 				906E722618F9D4CF00D1CC63 /* JMFCameraIOSTests */,
 				906E720618F9D4CF00D1CC63 /* Frameworks */,
@@ -142,6 +151,37 @@
 				906E722918F9D4CF00D1CC63 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		906E723618F9D6AB00D1CC63 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		906E723718F9D6B200D1CC63 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		906E723818F9D6B800D1CC63 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				906E723A18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.h */,
+				906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */,
+				906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		906E723918F9D6C400D1CC63 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
+				906E723E18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				906E723D18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
 				906E721418F9D4CF00D1CC63 /* main.m in Sources */,
 			);
@@ -360,6 +402,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JMFCameraIOS/JMFCameraIOS-Prefix.pch";
 				INFOPLIST_FILE = "JMFCameraIOS/JMFCameraIOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -373,6 +416,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JMFCameraIOS/JMFCameraIOS-Prefix.pch";
 				INFOPLIST_FILE = "JMFCameraIOS/JMFCameraIOS-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

@@ -1,24 +1,35 @@
-//
-//  JMFAppDelegate.h
-//  JMFCameraIOS
-//
-//  Created by Jorge Marcos Fernandez on 12/04/14.
-//
-//
-
+/***************************************************************************/
+/*                                                                         */
+/*  JMFAppDelegate.h                                                       */
+/*  Copyright (c) 2014 Simarks. All rights reserved.                       */
+/*                                                                         */
+/*  Description: JMFCameraIOS                                              */
+/*               U-Tad - Práctica iOS Avanzado                             */
+/*               App Delegate Class definition File                        */
+/*                                                                         */
+/*       Author: Jorge Marcos Fernandez                                    */
+/*                                                                         */
+/***************************************************************************/
 #import <UIKit/UIKit.h>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFAppDelegate Interface Definition                                    */
+/*  JMFAppDelegate Class Interface                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 @interface JMFAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* Properties                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@property (strong, nonatomic) UIWindow*     window;
 
 @end
