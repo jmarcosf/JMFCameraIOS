@@ -13,7 +13,32 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="VV5-iP-eek">
+                    <rect key="frame" x="0.0" y="303" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <items>
+                        <barButtonItem systemItem="camera" id="Aei-fn-AES"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="7Mp-9K-IAS"/>
+                        <barButtonItem title="Item" id="HOy-Wd-peR"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="zTl-pE-APL"/>
+                        <barButtonItem systemItem="edit" id="bZl-qN-Qvp"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="DCT-1w-B79"/>
+                        <barButtonItem title="Borrar" systemItem="trash" id="QzT-eR-5Wx"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Aqv-rn-Gbj"/>
+                        <barButtonItem title="Flickr" id="dnG-Eu-P1T"/>
+                    </items>
+                </toolbar>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Etiqueta" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yh5-LF-54o">
+                    <rect key="frame" x="139" y="167" width="64" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

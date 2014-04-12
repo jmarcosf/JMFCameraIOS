@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFAppDelegate.h"
+#import "JMFCameraIOS_MainViewController.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -44,9 +45,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
     
-
+    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]init];
+    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

@@ -23,4 +23,35 @@
 /***************************************************************************/
 @interface JMFCameraIOS_MainViewController : UIViewController
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* Properties                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* IBOutlets                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@property (weak, nonatomic) IBOutlet UILabel*       iboEmptyAlbumLabel;
+@property (weak, nonatomic) IBOutlet UIToolbar*     iboToolbar;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* IBActions                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onCameraClicked:(id)sender;
+- (IBAction)onModeClicked:(id)sender;
+- (IBAction)onEditClicked:(id)sender;
+- (IBAction)onDeleteClicked:(id)sender;
+- (IBAction)onFlickrClicked:(id)sender;
+
 @end
