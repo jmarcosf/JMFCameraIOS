@@ -20,7 +20,8 @@
 		906E722B18F9D4CF00D1CC63 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906E722918F9D4CF00D1CC63 /* InfoPlist.strings */; };
 		906E722D18F9D4CF00D1CC63 /* JMFCameraIOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E722C18F9D4CF00D1CC63 /* JMFCameraIOSTests.m */; };
 		906E723D18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */; };
-		906E723E18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
+		906E724118F9E62000D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E724318F9E62000D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
+		906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906E724918F9E6FD00D1CC63 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +53,12 @@
 		906E722C18F9D4CF00D1CC63 /* JMFCameraIOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOSTests.m; sourceTree = "<group>"; };
 		906E723A18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainViewController.h; sourceTree = "<group>"; };
 		906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainViewController.m; sourceTree = "<group>"; };
-		906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
+		906E723F18F9E58700D1CC63 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		906E724018F9E58700D1CC63 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		906E724218F9E62000D1CC63 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
+		906E724418F9E62900D1CC63 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
+		906E724818F9E6FD00D1CC63 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		906E724A18F9E6FE00D1CC63 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +162,7 @@
 		906E723618F9D6AB00D1CC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				906E724918F9E6FD00D1CC63 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -172,7 +179,7 @@
 			children = (
 				906E723A18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.h */,
 				906E723B18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.m */,
-				906E723C18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib */,
+				906E724318F9E62000D1CC63 /* JMFCameraIOS_MainViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -242,6 +249,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
 			);
 			mainGroup = 906E71FB18F9D4CF00D1CC63;
 			productRefGroup = 906E720518F9D4CF00D1CC63 /* Products */;
@@ -260,7 +268,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
-				906E723E18F9DB5200D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
+				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
+				906E724118F9E62000D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +318,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				906E721118F9D4CF00D1CC63 /* en */,
+				906E723F18F9E58700D1CC63 /* es */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -317,8 +327,27 @@
 			isa = PBXVariantGroup;
 			children = (
 				906E722A18F9D4CF00D1CC63 /* en */,
+				906E724018F9E58700D1CC63 /* es */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		906E724318F9E62000D1CC63 /* JMFCameraIOS_MainViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906E724218F9E62000D1CC63 /* en */,
+				906E724418F9E62900D1CC63 /* es */,
+			);
+			name = JMFCameraIOS_MainViewController.xib;
+			sourceTree = "<group>";
+		};
+		906E724918F9E6FD00D1CC63 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				906E724818F9E6FD00D1CC63 /* en */,
+				906E724A18F9E6FE00D1CC63 /* es */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -404,6 +433,7 @@
 				INFOPLIST_FILE = "JMFCameraIOS/JMFCameraIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -418,6 +448,7 @@
 				INFOPLIST_FILE = "JMFCameraIOS/JMFCameraIOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
