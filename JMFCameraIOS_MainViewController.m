@@ -207,7 +207,9 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
+/*                                                                         */
 /*  UIImagePickerControllerDelegate Methods                                */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Image" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="photo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="image" inverseEntity="Photo" syncable="YES"/>
+    </entity>
+    <entity name="Photo" syncable="YES">
+        <attribute name="photoName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="photo" inverseEntity="Image" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Photo" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Image" positionX="-54" positionY="0" width="128" height="73"/>
+    </elements>
+</model>
