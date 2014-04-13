@@ -1,13 +1,14 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController.h                                      */
+/*  UIAlertView+CompletionBlock.h                                          */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Main View Controller Class definition file                */
+/*               UIAlertView Category Class definition file                */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
+/*         NOTE: Adapted from www.nscookbook.com recipe #22                */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
@@ -16,42 +17,28 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController Class Interface                        */
+/*  UIAlertView+CompletionBlock.h Class Interface                          */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface UIAlertView (CompletionBlock)
+
+- (void)showWithCompletion:(void(^)(UIAlertView *alertView, NSInteger buttonIndex))completion;
+
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*                                                                         */
+/*  NSCBAlertWrapper Class Interface                                       */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+@interface NSCBAlertWrapper : NSObject
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboEmptyAlbumLabel;
-@property (weak, nonatomic) IBOutlet UIToolbar*     iboToolbar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onCameraClicked:(id)sender;
-- (IBAction)onModeClicked:(id)sender;
-- (IBAction)onEditClicked:(id)sender;
-- (IBAction)onDeleteClicked:(id)sender;
-- (IBAction)onFlickrClicked:(id)sender;
+@property (copy) void(^completionBlock)(UIAlertView *alertView, NSInteger buttonIndex);
 
 @end

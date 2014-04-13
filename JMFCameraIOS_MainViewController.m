@@ -61,6 +61,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if( self )
     {
+        self.title = @"JMFCameraIOS";
     }
     return self;
 }
@@ -76,6 +77,18 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", @"Comment String" );
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UIBarButtonItem* button = [self.iboToolbar.items objectAtIndex:0];
+//    button.image = [UIImage imageNamed:@"Camera.png"];// forState:UIControlStateNormal];
+    
+    button.title = @"Camera";
+    
 }
 
 /***************************************************************************/
@@ -110,6 +123,23 @@
 /***************************************************************************/
 - (IBAction)onCameraClicked:(id)sender
 {
+    if( [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] )
+    {
+        UIImagePickerController* imagePicker = [[UIImagePickerController alloc]init];
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.showsCameraControls = YES;
+        imagePicker.allowsEditing = YES;
+        imagePicker.delegate = self;
+        
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+    else
+    {
+        NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", @"" );
+        NSString* IDS_OK = NSLocalizedString( @"IDS_OK", @"" );
+        NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", @"" );
+        [[[UIAlertView alloc]initWithTitle:IDS_ERROR message:IDS_NO_CAMERA_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
+    }
 }
 
 /***************************************************************************/
@@ -154,6 +184,48 @@
 /***************************************************************************/
 - (IBAction)onFlickrClicked:(id)sender
 {
+    NSString* IDS_OK = NSLocalizedString( @"IDS_OK", @"" );
+    NSString* IDS_CANCEL = NSLocalizedString( @"IDS_CANCEL", @"" );
+    NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", @"" );
+    
+    UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:IDS_CANCEL, nil];
+    [alertView showWithCompletion:^( UIAlertView *alertView, NSInteger buttonIndex )
+                                  {
+                                      if( buttonIndex == 0 )
+                                      {
+//                                          [[[UIAlertView alloc]initWithTitle:@"Flickr"
+//                                                                     message:@"Downloading pictures..."
+//                                                                    delegate:nil
+//                                                           cancelButtonTitle:nil
+//                                                           otherButtonTitles:nil] show];
+                                      }
+                                  }];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIImagePickerControllerDelegate Methods                                */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  imagePickerController:didFinishPickingMediaWithInfo:                   */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
+{
+    UIImage *originalPhoto = [info objectForKey:UIImagePickerControllerOriginalImage];
+//    self.photoView.image = originalPhoto;
+    
+//    UIImageWriteToSavedPhotosAlbum( originalPhoto, nil, NULL, NULL );
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

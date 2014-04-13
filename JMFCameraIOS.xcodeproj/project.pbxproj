@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		901A0B6918FAE82D0059A3B7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 901A0B6718FAE82D0059A3B7 /* Camera.png */; };
+		901A0B6A18FAE82D0059A3B7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901A0B6818FAE82D0059A3B7 /* Camera@2x.png */; };
+		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
 		906E720818F9D4CF00D1CC63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720718F9D4CF00D1CC63 /* Foundation.framework */; };
 		906E720A18F9D4CF00D1CC63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720918F9D4CF00D1CC63 /* CoreGraphics.framework */; };
 		906E720C18F9D4CF00D1CC63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720B18F9D4CF00D1CC63 /* UIKit.framework */; };
@@ -35,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		901A0B6718FAE82D0059A3B7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
+		901A0B6818FAE82D0059A3B7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
+		901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+CompletionBlock.h"; sourceTree = "<group>"; };
+		901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+CompletionBlock.m"; sourceTree = "<group>"; };
 		906E720418F9D4CF00D1CC63 /* JMFCameraIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JMFCameraIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		906E720718F9D4CF00D1CC63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		906E720918F9D4CF00D1CC63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -84,9 +91,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		901A0B6B18FAF6ED0059A3B7 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */,
+				901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		906E71FB18F9D4CF00D1CC63 = {
 			isa = PBXGroup;
 			children = (
+				901A0B6B18FAF6ED0059A3B7 /* Categories */,
 				906E723918F9D6C400D1CC63 /* Views */,
 				906E723818F9D6B800D1CC63 /* Controllers */,
 				906E723718F9D6B200D1CC63 /* Model */,
@@ -161,6 +178,8 @@
 		906E723618F9D6AB00D1CC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				901A0B6718FAE82D0059A3B7 /* Camera.png */,
+				901A0B6818FAE82D0059A3B7 /* Camera@2x.png */,
 				906E724918F9E6FD00D1CC63 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -267,7 +286,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
+				901A0B6A18FAE82D0059A3B7 /* Camera@2x.png in Resources */,
 				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
+				901A0B6918FAE82D0059A3B7 /* Camera.png in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 			);
@@ -289,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
+				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
 				906E721418F9D4CF00D1CC63 /* main.m in Sources */,
 			);

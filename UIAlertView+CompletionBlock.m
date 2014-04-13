@@ -1,113 +1,124 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFAppDelegate.m                                                       */
+/*  UIAlertView+CompletionBlock.h                                          */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               App Delegate Class implementation File                    */
+/*               UIAlertView Category Class implementation file            */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
+/*         NOTE: Adapted from www.nscookbook.com recipe #22                */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFAppDelegate.h"
-#import "JMFCameraIOS_MainViewController.h"
+#import <objc/runtime.h>
+#import "UIAlertView+CompletionBlock.h"
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  defines                                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+static const char kNSCBAlertWrapper;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFAppDelegate Class Implementation                                    */
+/*                                                                         */
+/*  NSCBAlertWrapper Class Implemantation                                  */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFAppDelegate
+@implementation NSCBAlertWrapper
 
-#pragma mark - UIApplicationDelegate
+#pragma mark - UIAlertViewDelegate
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIApplicationDelegate Methods                                          */
+/*                                                                         */
+/*  UIAlertViewDelegate Methods                                            */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  application:didFinishLaunchingWithOptions:                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+/*                                                                         */
+/*                                                                         */
+/*  alertView:clickedButtonAtIndex:                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    
-    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]init];
-    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
-    
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
+    if( self.completionBlock )
+    {
+        self.completionBlock(alertView, buttonIndex);
+    }
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  applicationWillResignActive:                                           */
+/*  alertViewCancel:                                                       */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)alertViewCancel:(UIAlertView *)alertView
 {
-}
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidEnterBackground:                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillEnterForeground:                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidBecomeActive:                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillTerminate:                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillTerminate:(UIApplication *)application
-{
+    if( self.completionBlock )
+    {
+        self.completionBlock(alertView, alertView.cancelButtonIndex);
+    }
 }
 
 @end
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIAlertView+CompletionBlock Class Implemantation                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@implementation UIAlertView (CompletionBlock)
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Instance Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showWithCompletion:                                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showWithCompletion:(void(^)(UIAlertView *alertView, NSInteger buttonIndex))completion
+{
+    NSCBAlertWrapper *alertWrapper = [[NSCBAlertWrapper alloc] init];
+    alertWrapper.completionBlock = completion;
+    self.delegate = alertWrapper;
+    objc_setAssociatedObject(self, &kNSCBAlertWrapper, alertWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    [self show];
+}
+@end
+
