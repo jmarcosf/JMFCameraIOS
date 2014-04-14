@@ -21,7 +21,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */

@@ -23,12 +23,16 @@
 /***************************************************************************/
 #define IDS_MAINCV_PHOTO_CELL_XIBNAME       @"JMFCameraIOS_MainCVPhotoCell"
 #define IDS_MAINCV_PHOTO_CELL_IDENTIFIER    @"MainCVPhotoCellIdentifier"
+#define IDS_MAINTV_PHOTO_CELL_IDENTIFIER    @"MainTVPhotoCellIdentifier"
 
 #define IDC_UITOOLBAR_BUTTON_CAMERA_INDEX   0
 #define IDC_UITOOLBAR_BUTTON_MODE_INDEX     1
 #define IDC_UITOOLBAR_BUTTON_EDIT_INDEX     2
 #define IDC_UITOOLBAR_BUTTON_DELETE_INDEX   3
 #define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX   4
+
+#define VIEW_MODE_MOSAIC                    0
+#define VIEW_MODE_LIST                      1
 
 /***************************************************************************/
 /*                                                                         */
@@ -40,7 +44,9 @@
 @interface JMFCameraIOS_MainViewController ()
 {
     UICollectionView*       photoCollectionView;
+    UITableView*            photoTableView;
     NSMutableArray*         album;
+    int                     iViewMode;
     int                     iSelectedCount;
 }
 
@@ -109,21 +115,8 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX]   setTitle:NSLocalizedString( @"IDS_EDIT",   nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:NSLocalizedString( @"IDS_FLICKR", nil )];
-
-//    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setImage:[UIImage imageNamed:@"Camera.png"] forState:UIControlStateNormal];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  viewVillAppear:                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
+    // Collection View
     UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
     layout.minimumInteritemSpacing = 10;
     layout.minimumLineSpacing = 10;
@@ -137,14 +130,51 @@
     photoCollectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
     photoCollectionView.dataSource = self;
     photoCollectionView.delegate = self;
-    photoCollectionView.backgroundColor = [UIColor orangeColor];// groupTableViewBackgroundColor];
+    photoCollectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     photoCollectionView.allowsMultipleSelection = YES;
     
     [photoCollectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
-    
     [self.view addSubview:photoCollectionView];
+    
+    //Table View
+    navBarHeight += 20;
+    CGRect tvRect = CGRectMake( 0, navBarHeight, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight );
+    photoTableView = [[UITableView alloc]initWithFrame:tvRect style:UITableViewStylePlain];
+    photoTableView.dataSource = self;
+    photoTableView.delegate = self;
+    photoTableView.allowsMultipleSelection = YES;
+    [photoTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
+    [self.view addSubview:photoTableView];
+    
+    //UILabel
     [self.iboEmptyAlbumLabel setFrame:Rect];
     
+    iViewMode = VIEW_MODE_MOSAIC;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  viewVillAppear:                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
+    
+    CGRect Rect = CGRectMake( 0, navBarHeight, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight );
+    [photoCollectionView setFrame:Rect];
+    
+    navBarHeight += 20;
+    CGRect tvRect = CGRectMake( 0, navBarHeight, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight );
+    [photoTableView setFrame:tvRect];
+
+    [self.iboEmptyAlbumLabel setFrame:Rect];
+
     iSelectedCount = 0;
     [self redrawControls:NO];
 }
@@ -189,6 +219,32 @@
         case IDC_UITOOLBAR_BUTTON_DELETE_INDEX: [self onDeleteClicked];     break;
         case IDC_UITOOLBAR_BUTTON_FLICKR_INDEX: [self onFlickrClicked];     break;
     }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIImagePickerControllerDelegate Methods                                */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  imagePickerController:didFinishPickingMediaWithInfo:                   */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
+{
+    UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [album addObject:photo];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [self redrawControls:NO];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -249,6 +305,7 @@
     return 1;
 }
 
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -271,10 +328,8 @@
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     JMFCameraIOS_MainCVPhotoCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
-
     cell.backgroundColor = [UIColor whiteColor];
     cell.iboPhotoImage.image = [album objectAtIndex:indexPath.item];
-    
     return cell;
 }
 
@@ -298,7 +353,7 @@
 /***************************************************************************/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog( @"Cell selected: item: %ld in section: %ld", (long)indexPath.item, (long)indexPath.section );
+    NSLog( @"Cell selected: item %d in section %d", indexPath.item, indexPath.section );
     iSelectedCount++;
     [self redrawControls:YES];
 }
@@ -312,18 +367,18 @@
 /***************************************************************************/
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog( @"Cell deselected: item: %ld in section: %ld", (long)indexPath.item, (long)indexPath.section );
+    NSLog( @"Cell deselected: item %d in section %d", indexPath.item, indexPath.section );
     iSelectedCount--;
     [self redrawControls:YES];
 }
 
-#pragma mark - UIImagePickerControllerDelegate
+#pragma mark - UITableViewDataSource
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIImagePickerControllerDelegate Methods                                */
+/*  UITableViewDataSource Methods                                          */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -331,17 +386,92 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  imagePickerController:didFinishPickingMediaWithInfo:                   */
+/*  numberOfSectionsInTableView:                                           */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
+-(NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [album addObject:photo];
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    [self redrawControls:NO];
-    [photoCollectionView reloadData];
+    return 1;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  titleForHeaderInSection:                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return NSLocalizedString( @"IDS_PICTURES", nil );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:numberOfRowsInSection:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return album.count;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:cellForRowAtIndexPath:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell* cell = nil;
+    cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"Photo for row #%d", indexPath.row];
+    cell.imageView.image = [album objectAtIndex:indexPath.row];
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UITableViewDelegate Methods                                            */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:didSelectRowAtIndexPath:                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSLog( @"Cell selected: row %d in section %d", indexPath.item, indexPath.section );
+    iSelectedCount++;
+    [self redrawControls:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:didSelectRowAtIndexPath:                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog( @"Cell deselected: row %d in section %d", indexPath.row, indexPath.section );
+    iSelectedCount--;
+    [self redrawControls:YES];
 }
 
 #pragma mark - Class Instance Methods
@@ -366,13 +496,10 @@
 {
     if( bOnlyButtons == NO )
     {
-        photoCollectionView.hidden = !( album. count );
+        if( !album.count ) iViewMode = VIEW_MODE_MOSAIC;
+        photoCollectionView.hidden = ( !album.count || iViewMode != VIEW_MODE_MOSAIC );
+        photoTableView.hidden = ( !album.count || iViewMode != VIEW_MODE_LIST );
         self.iboEmptyAlbumLabel.hidden = ( album.count );
-    }
-    
-    for( int i = 0; i < self.iboTabBar.items.count; i++ )
-    {
-        [[self.iboTabBar.items objectAtIndex:i] setEnabled:YES];
     }
     
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count )];
@@ -396,7 +523,6 @@
         imagePicker.showsCameraControls = YES;
         imagePicker.allowsEditing = YES;
         imagePicker.delegate = self;
-        
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
     else
@@ -417,6 +543,16 @@
 /***************************************************************************/
 - (void)onModeClicked
 {
+    iSelectedCount = 0;
+    iViewMode = ( iViewMode == VIEW_MODE_MOSAIC ) ? VIEW_MODE_LIST : VIEW_MODE_MOSAIC;
+    NSLog(@"View Mode: %d", iViewMode);
+    [self redrawControls:NO];
+
+//    UIImage* icon = [UIImage imageNamed:( iViewMode == VIEW_MODE_MOSAIC ) ? @"MosaicMode.png" : @"ListMode.png" ];
+//    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setImage:icon forState:UIControlStateSelected];
+
+    if( iViewMode == VIEW_MODE_MOSAIC ) [photoCollectionView reloadData];
+    else [photoTableView reloadData];
 }
 
 /***************************************************************************/

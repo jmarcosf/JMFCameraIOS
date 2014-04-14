@@ -19,6 +19,7 @@
 "IDS_EDIT" = "Edit";
 "IDS_DELETE" = "Delete";
 "IDS_FLICKR" = "Flickr";
+"IDS_PICTURES" = "Pictures";
 "IDS_NO_CAMERA_MESSAGE" = "No camera found!\nAre you using simulator?";
 "IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "You are about to download 10 pictures from Flickr\nType your term search:";
 "IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Type the search term";
