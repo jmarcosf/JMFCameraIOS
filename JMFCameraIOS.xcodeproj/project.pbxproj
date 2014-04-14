@@ -14,6 +14,8 @@
 		9051D3E718FB38A20066AB35 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9051D3E618FB38A20066AB35 /* CoreData.framework */; };
 		9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3EA18FB3A280066AB35 /* JMFCoreDataStack.m */; };
 		9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3EC18FB3A280066AB35 /* JMFCoreDataTableViewController.m */; };
+		9051D3F418FB55D60066AB35 /* JMFFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3F118FB55D60066AB35 /* JMFFlickr.m */; };
+		9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */; };
 		906E720818F9D4CF00D1CC63 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720718F9D4CF00D1CC63 /* Foundation.framework */; };
 		906E720A18F9D4CF00D1CC63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720918F9D4CF00D1CC63 /* CoreGraphics.framework */; };
 		906E720C18F9D4CF00D1CC63 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906E720B18F9D4CF00D1CC63 /* UIKit.framework */; };
@@ -52,6 +54,10 @@
 		9051D3EA18FB3A280066AB35 /* JMFCoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCoreDataStack.m; sourceTree = "<group>"; };
 		9051D3EB18FB3A280066AB35 /* JMFCoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCoreDataTableViewController.h; sourceTree = "<group>"; };
 		9051D3EC18FB3A280066AB35 /* JMFCoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCoreDataTableViewController.m; sourceTree = "<group>"; };
+		9051D3F018FB55D60066AB35 /* JMFFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickr.h; sourceTree = "<group>"; };
+		9051D3F118FB55D60066AB35 /* JMFFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickr.m; sourceTree = "<group>"; };
+		9051D3F218FB55D60066AB35 /* JMFFlickrPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrPhoto.h; sourceTree = "<group>"; };
+		9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrPhoto.m; sourceTree = "<group>"; };
 		906E720418F9D4CF00D1CC63 /* JMFCameraIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JMFCameraIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		906E720718F9D4CF00D1CC63 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		906E720918F9D4CF00D1CC63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -122,9 +128,21 @@
 			name = CoreData;
 			sourceTree = "<group>";
 		};
+		9051D3EF18FB55BA0066AB35 /* Flickr */ = {
+			isa = PBXGroup;
+			children = (
+				9051D3F018FB55D60066AB35 /* JMFFlickr.h */,
+				9051D3F118FB55D60066AB35 /* JMFFlickr.m */,
+				9051D3F218FB55D60066AB35 /* JMFFlickrPhoto.h */,
+				9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */,
+			);
+			name = Flickr;
+			sourceTree = "<group>";
+		};
 		906E71FB18F9D4CF00D1CC63 = {
 			isa = PBXGroup;
 			children = (
+				9051D3EF18FB55BA0066AB35 /* Flickr */,
 				9051D3E818FB3A0E0066AB35 /* CoreData */,
 				901A0B6B18FAF6ED0059A3B7 /* Categories */,
 				906E723918F9D6C400D1CC63 /* Views */,
@@ -340,6 +358,8 @@
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,
 				9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
+				9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */,
+				9051D3F418FB55D60066AB35 /* JMFFlickr.m in Sources */,
 				906E721418F9D4CF00D1CC63 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,14 +1,14 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCoreDataStack.h                                                     */
+/*  JMFFlickr.h                                                            */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Core Data Stack Class definition file                     */
+/*               Flickr Search Class definition file                       */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: Modified from AGTCoreDataStack.h                          */
+/*         NOTE: Modified from Brandon Trebitowski file                    */
 /*                                                                         */
 /***************************************************************************/
 #import <Foundation/Foundation.h>
@@ -20,20 +20,30 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@class NSManagedObjectContext;
+@class JMFFlickrPhoto;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Typedefs                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+typedef void (^FlickrPhotoCompletionBlock)(UIImage* photoImage, NSError* error);
+typedef void (^FlickrSearchCompletionBlock)(NSString* searchTerm, NSArray* results, NSError* error);
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCoreDataStack Class Interface                                       */
+/*  JMFFlickr Class Interface                                              */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCoreDataStack : NSObject
+@interface JMFFlickr : NSObject
 
 /***************************************************************************/
 /*                                                                         */
@@ -42,7 +52,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (strong, nonatomic, readonly) NSManagedObjectContext* context;
+@property(strong) NSString*     apiKey;
 
 /***************************************************************************/
 /*                                                                         */
@@ -51,10 +61,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSString*)persistentStoreCoordinatorErrorNotificationName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName databaseFileName:(NSString*)databaseFileName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName databaseUrl:(NSURL*)databseUrl;
++ (NSString*)flickrSearchUrlForSearchTerm:(NSString*)searchTerm;
++ (NSString*)flickrPhotoUrlForFlickrPhoto:(JMFFlickrPhoto*)flickrPhoto size:(NSString*)size;
++ (void)loadImageForPhoto:(JMFFlickrPhoto*)flickrPhoto thumbnail:(BOOL)thumbnail completionBlock:(FlickrPhotoCompletionBlock)completionBlock;
 
 /***************************************************************************/
 /*                                                                         */
@@ -63,8 +72,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModelName:(NSString*)modelName databaseUrl:(NSURL*)databaseUrl;
-- (void)dropDatabaseData;
-- (void)saveWithErrorBlock:(void(^)(NSError* error))errorBlock;
+- (void)searchFlickrForTerm:(NSString*)term completionBlock:(FlickrSearchCompletionBlock)completionBlock;
 
 @end

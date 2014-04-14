@@ -8,7 +8,7 @@
 /*               Core Data Stack Class implementation file                 */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: Modified from  AGTCoreDataStack.h                         */
+/*         NOTE: Modified from AGTCoreDataStack.h                          */
 /*                                                                         */
 /***************************************************************************/
 #import <CoreData/CoreData.h>
