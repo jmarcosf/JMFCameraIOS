@@ -20,4 +20,7 @@
 "IDS_DELETE" = "Borrar";
 "IDS_FLICKR" = "Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";
-"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Has seleccionado bajar 10 fotos de Flickr\n\n¿Quieres continuar?";
+"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Ha seleccionado bajar 10 fotos de Flickr\nTeclee el término de búsqueda:";
+"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Teclee el término de búsqueda";
+"IDS_DOWNLOADING_PICTURES" = "Descargando imágenes\nPor favor espere...";
+"IDS_DOWNLOADING_PICTURES_ERROR" = "Se ha producido un error al descargar las imágenes.";

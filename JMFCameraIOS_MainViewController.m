@@ -12,6 +12,7 @@
 /***************************************************************************/
 #import "JMFCameraIOS_MainViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
+#import "JMFFlickr.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -137,6 +138,7 @@
     photoCollectionView.dataSource = self;
     photoCollectionView.delegate = self;
     photoCollectionView.backgroundColor = [UIColor orangeColor];// groupTableViewBackgroundColor];
+    photoCollectionView.allowsMultipleSelection = YES;
     
     [photoCollectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
     
@@ -290,7 +292,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  numberOfSectionsInCollectionView:                                      */
+/*  collectionView:didSelectItemAtIndexPath:                               */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -301,8 +303,16 @@
     [self redrawControls:YES];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:didDeselectItemAtIndexPath:                             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog( @"Cell deselected: item: %ld in section: %ld", (long)indexPath.item, (long)indexPath.section );
     iSelectedCount--;
     [self redrawControls:YES];
 }
@@ -440,22 +450,49 @@
 /***************************************************************************/
 - (void)onFlickrClicked
 {
-    NSString* IDS_OK = NSLocalizedString( @"IDS_OK", @"" );
-    NSString* IDS_CANCEL = NSLocalizedString( @"IDS_CANCEL", @"" );
-    NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", @"" );
+    NSString* IDS_OK                = NSLocalizedString( @"IDS_OK", @"" );
+    NSString* IDS_CANCEL            = NSLocalizedString( @"IDS_CANCEL", @"" );
+    NSString* IDS_MESSAGE           = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", @"" );
+    NSString* IDS_PLACEHOLDER       = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER", @"" );
+    NSString* IDS_DOWNLOADING       = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES", @"" );
+    NSString* IDS_DOWNLOADING_ERROR = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES_ERROR", @"" );
     
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:IDS_CANCEL, nil];
-    [alertView showWithCompletion:^( UIAlertView *alertView, NSInteger buttonIndex )
-     {
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alertView textFieldAtIndex:0].placeholder = IDS_PLACEHOLDER;
+    [alertView showWithCompletion:^( UIAlertView* alertView, NSInteger buttonIndex )
+    {
          if( buttonIndex == 0 )
          {
-             //                                          [[[UIAlertView alloc]initWithTitle:@"Flickr"
-             //                                                                     message:@"Downloading pictures..."
-             //                                                                    delegate:nil
-             //                                                           cancelButtonTitle:nil
-             //                                                           otherButtonTitles:nil] show];
+             UIAlertView* busyAlertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_DOWNLOADING delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
+             [busyAlertView showWithActivityIndicatorWithColor:[UIColor darkTextColor]];
+
+             JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
+             [flickrEngine searchFlickrForTerm:[alertView textFieldAtIndex:0].text
+                               completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
+              {
+                  [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                  if( !error )
+                  {
+                      for( JMFFlickrPhoto* photo in results )
+                      {
+                          if( photo.largeImage != nil ) [album addObject:photo.largeImage];
+                          else if( photo.thumbnail != nil ) [album addObject:photo.thumbnail];
+                      }
+                      dispatch_async(dispatch_get_main_queue(), ^
+                      {
+                          [self redrawControls:NO];
+                          [self->photoCollectionView reloadData];
+                      });
+                  }
+                  else
+                  {
+                      NSLog( @"Error receiving Flickr photos: %@", error );
+                      [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
+                  }
+              }];
          }
-     }];
+    }];
 }
 
 @end

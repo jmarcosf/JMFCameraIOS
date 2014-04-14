@@ -25,6 +25,7 @@
 @interface UIAlertView (CompletionBlock)
 
 - (void)showWithCompletion:(void(^)(UIAlertView *alertView, NSInteger buttonIndex))completion;
+- (void)showWithActivityIndicatorWithColor:(UIColor*)color;
 
 @end
 

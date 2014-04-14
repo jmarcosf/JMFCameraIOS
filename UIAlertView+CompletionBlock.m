@@ -120,5 +120,23 @@ static const char kNSCBAlertWrapper;
     objc_setAssociatedObject(self, &kNSCBAlertWrapper, alertWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self show];
 }
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showWithActivityIndicator                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showWithActivityIndicatorWithColor:(UIColor*)color
+{
+    UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activityIndicator.frame = CGRectMake( 0, 0, 36, 36 );
+    activityIndicator.color = color;
+    [activityIndicator startAnimating];
+    [self setValue:activityIndicator forKey:@"accessoryView"];
+    [self show];
+}
+
 @end
 

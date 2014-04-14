@@ -10,6 +10,18 @@
 		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
 		900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */; };
 		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
+		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
+		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
+		9028F60A18FC6DD6000956E7 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60018FC6DD6000956E7 /* Delete.png */; };
+		9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60118FC6DD6000956E7 /* Delete@2x.png */; };
+		9028F60C18FC6DD6000956E7 /* Edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60218FC6DD6000956E7 /* Edit.png */; };
+		9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60318FC6DD6000956E7 /* Edit@2x.png */; };
+		9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60418FC6DD6000956E7 /* Flickr.png */; };
+		9028F60F18FC6DD6000956E7 /* Flickr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60518FC6DD6000956E7 /* Flickr@2x.png */; };
+		9028F61018FC6DD6000956E7 /* ListMode.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60618FC6DD6000956E7 /* ListMode.png */; };
+		9028F61118FC6DD6000956E7 /* ListMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60718FC6DD6000956E7 /* ListMode@2x.png */; };
+		9028F61518FC6EB7000956E7 /* MosaicMode.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F61318FC6EB7000956E7 /* MosaicMode.png */; };
+		9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */; };
 		9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3A218FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld */; };
 		9051D3E718FB38A20066AB35 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9051D3E618FB38A20066AB35 /* CoreData.framework */; };
 		9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3EA18FB3A280066AB35 /* JMFCoreDataStack.m */; };
@@ -49,6 +61,18 @@
 		900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainCVPhotoCell.xib; sourceTree = "<group>"; };
 		901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+CompletionBlock.h"; sourceTree = "<group>"; };
 		901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+CompletionBlock.m"; sourceTree = "<group>"; };
+		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
+		9028F5FF18FC6DD6000956E7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
+		9028F60018FC6DD6000956E7 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
+		9028F60118FC6DD6000956E7 /* Delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delete@2x.png"; sourceTree = "<group>"; };
+		9028F60218FC6DD6000956E7 /* Edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit.png; sourceTree = "<group>"; };
+		9028F60318FC6DD6000956E7 /* Edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Edit@2x.png"; sourceTree = "<group>"; };
+		9028F60418FC6DD6000956E7 /* Flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Flickr.png; sourceTree = "<group>"; };
+		9028F60518FC6DD6000956E7 /* Flickr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Flickr@2x.png"; sourceTree = "<group>"; };
+		9028F60618FC6DD6000956E7 /* ListMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ListMode.png; sourceTree = "<group>"; };
+		9028F60718FC6DD6000956E7 /* ListMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ListMode@2x.png"; sourceTree = "<group>"; };
+		9028F61318FC6EB7000956E7 /* MosaicMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MosaicMode.png; sourceTree = "<group>"; };
+		9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MosaicMode@2x.png"; sourceTree = "<group>"; };
 		9051D3A318FB37AF0066AB35 /* JMFCameraIOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JMFCameraIOS.xcdatamodel; sourceTree = "<group>"; };
 		9051D3E618FB38A20066AB35 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9051D3E918FB3A280066AB35 /* JMFCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCoreDataStack.h; sourceTree = "<group>"; };
@@ -116,6 +140,25 @@
 				901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		9028F61218FC6DE4000956E7 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				9028F61318FC6EB7000956E7 /* MosaicMode.png */,
+				9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */,
+				9028F5FE18FC6DD6000956E7 /* Camera.png */,
+				9028F5FF18FC6DD6000956E7 /* Camera@2x.png */,
+				9028F60018FC6DD6000956E7 /* Delete.png */,
+				9028F60118FC6DD6000956E7 /* Delete@2x.png */,
+				9028F60218FC6DD6000956E7 /* Edit.png */,
+				9028F60318FC6DD6000956E7 /* Edit@2x.png */,
+				9028F60418FC6DD6000956E7 /* Flickr.png */,
+				9028F60518FC6DD6000956E7 /* Flickr@2x.png */,
+				9028F60618FC6DD6000956E7 /* ListMode.png */,
+				9028F60718FC6DD6000956E7 /* ListMode@2x.png */,
+			);
+			name = Icons;
 			sourceTree = "<group>";
 		};
 		9051D3E818FB3A0E0066AB35 /* CoreData */ = {
@@ -221,6 +264,7 @@
 		906E723618F9D6AB00D1CC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9028F61218FC6DE4000956E7 /* Icons */,
 				906E724918F9E6FD00D1CC63 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -330,11 +374,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9028F60A18FC6DD6000956E7 /* Delete.png in Resources */,
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
+				9028F61518FC6EB7000956E7 /* MosaicMode.png in Resources */,
 				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
+				9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */,
 				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
+				9028F60818FC6DD6000956E7 /* Camera.png in Resources */,
+				9028F60F18FC6DD6000956E7 /* Flickr@2x.png in Resources */,
+				9028F61118FC6DD6000956E7 /* ListMode@2x.png in Resources */,
+				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
+				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
+				9028F61018FC6DD6000956E7 /* ListMode.png in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
+				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
+				9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */,
+				9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
