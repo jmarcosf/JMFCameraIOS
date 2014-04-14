@@ -1,58 +1,71 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController.h                                      */
+/*  JMFCameraIOS_MainCVPhotoCell.m                                         */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Main View Controller Class definition file                */
+/*               Main CollectionView Photo Cell Class implementation file  */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
+#import "JMFCameraIOS_MainCVPhotoCell.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController Class Interface                        */
+/*                                                                         */
+/*  JMFCameraIOS_MainCVPhotoCell Class Implementation                      */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@implementation JMFCameraIOS_MainCVPhotoCell
+
+#pragma mark - UIView Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIView Override Methods                                                */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithFrame:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if( self )
+    {
+        // Initialization code
+    }
+    return self;
+}
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*  drawRect:                                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboEmptyAlbumLabel;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)redrawControls:(BOOL)bOnlyButtons;
-- (void)onCameraClicked;
-- (void)onModeClicked;
-- (void)onEditClicked;
-- (void)onDeleteClicked;
-- (void)onFlickrClicked;
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    // Drawing code
+}
+*/
 
 @end
+

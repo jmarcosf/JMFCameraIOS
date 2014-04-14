@@ -7,7 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_MainViewController">
             <connections>
                 <outlet property="iboEmptyAlbumLabel" destination="wwf-qs-SxS" id="nW2-dA-jBH"/>
-                <outlet property="iboToolbar" destination="7Re-mq-RYh" id="BmP-oN-MGe"/>
+                <outlet property="iboTabBar" destination="RoP-z2-vLb" id="z2N-EK-s7g"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,48 +16,24 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="7Re-mq-RYh">
-                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <items>
-                        <barButtonItem title="Camera" style="plain" id="d3m-Mh-7uS">
-                            <connections>
-                                <action selector="onCameraClicked:" destination="-1" id="zfu-h5-lNf"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Usj-r5-YlL"/>
-                        <barButtonItem title="Mode" style="plain" id="esR-5X-W1d">
-                            <connections>
-                                <action selector="onModeClicked:" destination="-1" id="Ssk-Z4-S9S"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="FaK-Dg-aiI"/>
-                        <barButtonItem style="plain" systemItem="edit" id="SBK-UT-S1D">
-                            <connections>
-                                <action selector="onEditClicked:" destination="-1" id="Hus-M9-Dlk"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Mqt-BK-ZNT"/>
-                        <barButtonItem title="Delete" style="plain" id="cwU-QR-omk">
-                            <connections>
-                                <action selector="onDeleteClicked:" destination="-1" id="40a-ym-3Oy"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="ZZz-5w-z79"/>
-                        <barButtonItem title="Flickr" style="plain" id="zJl-Os-CAx">
-                            <connections>
-                                <action selector="onFlickrClicked:" destination="-1" id="qDz-O2-xH8"/>
-                            </connections>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="characterWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wwf-qs-SxS">
                     <rect key="frame" x="20" y="175" width="280" height="116"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <tabBar contentMode="scaleToFill" id="RoP-z2-vLb">
+                    <rect key="frame" x="0.0" y="519" width="320" height="49"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <items>
+                        <tabBarItem title="Camera" id="Xgl-4n-k2a"/>
+                        <tabBarItem tag="1" title="Mode" id="bDn-nA-59w"/>
+                        <tabBarItem tag="2" title="Edit" id="A8h-jm-3k3"/>
+                        <tabBarItem tag="3" title="Delete" id="bY6-el-rJk"/>
+                        <tabBarItem tag="4" title="Item" id="E8c-yl-6F3"/>
+                    </items>
+                </tabBar>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

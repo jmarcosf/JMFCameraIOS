@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		901A0B6918FAE82D0059A3B7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 901A0B6718FAE82D0059A3B7 /* Camera.png */; };
-		901A0B6A18FAE82D0059A3B7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901A0B6818FAE82D0059A3B7 /* Camera@2x.png */; };
+		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
+		900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */; };
 		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
 		9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3A218FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld */; };
 		9051D3E718FB38A20066AB35 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9051D3E618FB38A20066AB35 /* CoreData.framework */; };
@@ -44,8 +44,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		901A0B6718FAE82D0059A3B7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
-		901A0B6818FAE82D0059A3B7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
+		900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainCVPhotoCell.h; sourceTree = "<group>"; };
+		900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainCVPhotoCell.m; sourceTree = "<group>"; };
+		900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainCVPhotoCell.xib; sourceTree = "<group>"; };
 		901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+CompletionBlock.h"; sourceTree = "<group>"; };
 		901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+CompletionBlock.m"; sourceTree = "<group>"; };
 		9051D3A318FB37AF0066AB35 /* JMFCameraIOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JMFCameraIOS.xcdatamodel; sourceTree = "<group>"; };
@@ -220,8 +221,6 @@
 		906E723618F9D6AB00D1CC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				901A0B6718FAE82D0059A3B7 /* Camera.png */,
-				901A0B6818FAE82D0059A3B7 /* Camera@2x.png */,
 				906E724918F9E6FD00D1CC63 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -248,6 +247,9 @@
 		906E723918F9D6C400D1CC63 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */,
+				900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */,
+				900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -329,10 +331,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
-				901A0B6A18FAE82D0059A3B7 /* Camera@2x.png in Resources */,
 				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
-				901A0B6918FAE82D0059A3B7 /* Camera.png in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
+				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */,
+				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
 				9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */,
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,

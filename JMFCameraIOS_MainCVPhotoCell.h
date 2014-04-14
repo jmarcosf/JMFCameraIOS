@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController.h                                      */
+/*  JMFCameraIOS_MainCVPhotoCell.h                                         */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Main View Controller Class definition file                */
+/*               Main CollectionView Photo Cell Class definition file      */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
@@ -16,12 +16,12 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_MainViewController Class Interface                        */
+/*  JMFCameraIOS_MainCVPhotoCell Class Interface                           */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface JMFCameraIOS_MainCVPhotoCell : UICollectionViewCell
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,29 +30,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboEmptyAlbumLabel;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)redrawControls:(BOOL)bOnlyButtons;
-- (void)onCameraClicked;
-- (void)onModeClicked;
-- (void)onEditClicked;
-- (void)onDeleteClicked;
-- (void)onFlickrClicked;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboPhotoImage;
 
 @end
