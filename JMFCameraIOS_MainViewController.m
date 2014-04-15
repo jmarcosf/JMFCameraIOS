@@ -598,7 +598,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onCameraClicked                                                        */
+/*  onEditClicked                                                          */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -615,6 +615,41 @@
 /***************************************************************************/
 - (void)onDeleteClicked
 {
+    if( iSelectedCount > 0 )
+    {
+        if( iViewMode == VIEW_MODE_MOSAIC )
+        {
+            NSArray* selectedArray = [iboCollectionView indexPathsForSelectedItems];
+            if( selectedArray.count )
+            {
+                NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
+                for( NSIndexPath* indexPath in selectedArray )
+                {
+                    [indexSet addIndex:indexPath.item];
+                }
+                [album removeObjectsAtIndexes:indexSet];
+                iSelectedCount = 0;
+                [self redrawControls:YES];
+                [iboCollectionView reloadData];
+            }
+        }
+        else if( iViewMode == VIEW_MODE_LIST )
+        {
+            NSArray* selectedArray = [iboTableView indexPathsForSelectedRows];
+            if( selectedArray.count )
+            {
+                NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
+                for( NSIndexPath* indexPath in selectedArray )
+                {
+                    [indexSet addIndex:indexPath.row];
+                }
+                [album removeObjectsAtIndexes:indexSet];
+                iSelectedCount = 0;
+                [self redrawControls:YES];
+                [iboTableView reloadData];
+            }
+        }
+    }
 }
 
 /***************************************************************************/
