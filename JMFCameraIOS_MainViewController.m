@@ -100,6 +100,7 @@
     {
         self.title = @"JMFCameraIOS";
         album = [[NSMutableArray alloc]init];
+        [album addObject:[UIImage imageNamed:@"connie.jpg"]];
         iSelectedCount = 0;
     }
     return self;
@@ -125,6 +126,7 @@
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
     self.iboTabBar.delegate = self;
+    self.iboTabBar.layer.zPosition = -10;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_MODE",   nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX]   setTitle:NSLocalizedString( @"IDS_EDIT",   nil )];
@@ -133,7 +135,7 @@
 
     //UILabel
     iboEmptyAlbumLabel = [[UILabel alloc]initWithFrame:Rect];
-    iboEmptyAlbumLabel.backgroundColor = [UIColor redColor];
+    iboEmptyAlbumLabel.backgroundColor = [UIColor groupTableViewBackgroundColor];
     iboEmptyAlbumLabel.textAlignment = NSTextAlignmentCenter;
     iboEmptyAlbumLabel.lineBreakMode = NSLineBreakByWordWrapping;
     iboEmptyAlbumLabel.numberOfLines = 10;
@@ -143,15 +145,12 @@
     
     // Collection View
     UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
-//    layout.minimumInteritemSpacing = 10;
-//    layout.minimumLineSpacing = 10;
-//    layout.sectionInset = UIEdgeInsetsMake( 20, 0, 20, 0 );
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     
     iboCollectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
     iboCollectionView.dataSource = self;
     iboCollectionView.delegate = self;
-    iboCollectionView.backgroundColor = [UIColor orangeColor];//   groupTableViewBackgroundColor];
+    iboCollectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     iboCollectionView.allowsMultipleSelection = YES;
     
     [iboCollectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
@@ -161,7 +160,7 @@
     iboTableView = [[UITableView alloc]initWithFrame:Rect style:UITableViewStylePlain];
     iboTableView.dataSource = self;
     iboTableView.delegate = self;
-    iboTableView.backgroundColor = [UIColor yellowColor]; // groupTableViewBackgroundColor];
+    iboTableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     iboTableView.allowsMultipleSelection = YES;
     [iboTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
     [self.view addSubview:iboTableView];
@@ -182,7 +181,7 @@
     CGRect Rect = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height );
     Rect.size.height -= tabBarHeight;
     [iboEmptyAlbumLabel setFrame:Rect];
-    Rect.size.height -= statusBarHeight;
+//    Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC
     [iboCollectionView setFrame:Rect];
     [iboTableView setFrame:Rect];
     

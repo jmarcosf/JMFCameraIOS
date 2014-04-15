@@ -45,6 +45,7 @@
 		906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
 		90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.m */; };
 		90AE9BF618FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.xib */; };
+		90AE9BF918FDE18400AEF2DB /* connie.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90AE9BF818FDE18400AEF2DB /* connie.jpg */; };
 		90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4918FD80BE00CEA576 /* Checked.png */; };
 		90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */; };
 /* End PBXBuildFile section */
@@ -113,6 +114,7 @@
 		90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_EditViewController.h; sourceTree = "<group>"; };
 		90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_EditViewController.m; sourceTree = "<group>"; };
 		90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_EditViewController.xib; sourceTree = "<group>"; };
+		90AE9BF818FDE18400AEF2DB /* connie.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = connie.jpg; sourceTree = "<group>"; };
 		90DFEF4918FD80BE00CEA576 /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
 		90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checked@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -275,6 +277,7 @@
 		906E723618F9D6AB00D1CC63 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				90AE9BF718FDE16D00AEF2DB /* Pictures */,
 				9028F61218FC6DE4000956E7 /* Icons */,
 				906E724918F9E6FD00D1CC63 /* Localizable.strings */,
 			);
@@ -310,6 +313,14 @@
 				900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		90AE9BF718FDE16D00AEF2DB /* Pictures */ = {
+			isa = PBXGroup;
+			children = (
+				90AE9BF818FDE18400AEF2DB /* connie.jpg */,
+			);
+			name = Pictures;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -397,6 +408,7 @@
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
 				9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */,
 				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
+				90AE9BF918FDE18400AEF2DB /* connie.jpg in Resources */,
 				9028F60818FC6DD6000956E7 /* Camera.png in Resources */,
 				9028F60F18FC6DD6000956E7 /* Flickr@2x.png in Resources */,
 				9028F61118FC6DD6000956E7 /* ListMode@2x.png in Resources */,
