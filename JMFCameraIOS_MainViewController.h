@@ -49,6 +49,7 @@
 /*                                                                         */
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons;
+- (void)reloadData;
 - (void)onCameraClicked;
 - (void)onModeClicked;
 - (void)onEditClicked;

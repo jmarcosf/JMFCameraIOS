@@ -31,8 +31,9 @@
 #define IDC_UITOOLBAR_BUTTON_DELETE_INDEX   3
 #define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX   4
 
-#define VIEW_MODE_MOSAIC                    0
-#define VIEW_MODE_LIST                      1
+#define VIEW_MODE_WELCOME                   0
+#define VIEW_MODE_MOSAIC                    1
+#define VIEW_MODE_LIST                      2
 
 /***************************************************************************/
 /*                                                                         */
@@ -110,6 +111,7 @@
     self.iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", nil );
     
     self.iboTabBar.delegate = self;
+
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_MODE",   nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX]   setTitle:NSLocalizedString( @"IDS_EDIT",   nil )];
@@ -130,7 +132,7 @@
     photoCollectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
     photoCollectionView.dataSource = self;
     photoCollectionView.delegate = self;
-    photoCollectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    photoCollectionView.backgroundColor = [UIColor orangeColor];//   groupTableViewBackgroundColor];
     photoCollectionView.allowsMultipleSelection = YES;
     
     [photoCollectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
@@ -142,6 +144,7 @@
     photoTableView = [[UITableView alloc]initWithFrame:tvRect style:UITableViewStylePlain];
     photoTableView.dataSource = self;
     photoTableView.delegate = self;
+    photoTableView.backgroundColor = [UIColor yellowColor]; // groupTableViewBackgroundColor];
     photoTableView.allowsMultipleSelection = YES;
     [photoTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
     [self.view addSubview:photoTableView];
@@ -149,7 +152,7 @@
     //UILabel
     [self.iboEmptyAlbumLabel setFrame:Rect];
     
-    iViewMode = VIEW_MODE_MOSAIC;
+    iSelectedCount = 0;
 }
 
 /***************************************************************************/
@@ -162,6 +165,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog( @"viewWillAppear()" );
     
     CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
     CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
@@ -172,10 +176,9 @@
     navBarHeight += 20;
     CGRect tvRect = CGRectMake( 0, navBarHeight, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight );
     [photoTableView setFrame:tvRect];
-
+    
     [self.iboEmptyAlbumLabel setFrame:Rect];
-
-    iSelectedCount = 0;
+    
     [self redrawControls:NO];
 }
 
@@ -188,6 +191,7 @@
 /***************************************************************************/
 - (void)didReceiveMemoryWarning
 {
+    NSLog( @"didReceiveMemoryWarning()" );
     [super didReceiveMemoryWarning];
 }
 
@@ -241,10 +245,13 @@
 /***************************************************************************/
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
+    NSLog( @"imagePickerController:didFinishPickingMediaWithInfo()" );
+    
     UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
     [album addObject:photo];
     [picker dismissViewControllerAnimated:YES completion:nil];
-    [self redrawControls:NO];
+    
+    [self reloadData];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -494,17 +501,40 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons
 {
+    NSLog( @"redrawControls()" );
+
     if( bOnlyButtons == NO )
     {
-        if( !album.count ) iViewMode = VIEW_MODE_MOSAIC;
-        photoCollectionView.hidden = ( !album.count || iViewMode != VIEW_MODE_MOSAIC );
-        photoTableView.hidden = ( !album.count || iViewMode != VIEW_MODE_LIST );
-        self.iboEmptyAlbumLabel.hidden = ( album.count );
+        self.iboEmptyAlbumLabel.hidden = photoCollectionView.hidden = photoTableView.hidden = YES;
+        if( album.count <= 0 ) iViewMode = VIEW_MODE_WELCOME;
+        else if( iViewMode == VIEW_MODE_WELCOME ) iViewMode = VIEW_MODE_MOSAIC;
+        
+        NSLog( @"View Mode: %d", iViewMode );
+        switch( iViewMode )
+        {
+            case VIEW_MODE_WELCOME:     self.iboEmptyAlbumLabel.hidden = NO;    break;
+            case VIEW_MODE_MOSAIC:      photoCollectionView.hidden = NO;        break;
+            case VIEW_MODE_LIST:        photoTableView.hidden = NO;             break;
+        }
     }
     
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX] setEnabled:( album.count && iSelectedCount == 1 )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( album.count && iSelectedCount != 0 )];
+    NSLog( @"album count: %d", album.count );
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX] setEnabled:( album.count > 0 && iSelectedCount == 1 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( album.count > 0 && iSelectedCount != 0 )];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  reloadData                                                             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)reloadData
+{
+    if( iViewMode == VIEW_MODE_MOSAIC ) [photoCollectionView reloadData];
+    else if( iViewMode == VIEW_MODE_LIST ) [photoTableView reloadData];
 }
 
 /***************************************************************************/
@@ -543,16 +573,16 @@
 /***************************************************************************/
 - (void)onModeClicked
 {
+    NSLog( @"onModeClicked()" );
+    
     iSelectedCount = 0;
     iViewMode = ( iViewMode == VIEW_MODE_MOSAIC ) ? VIEW_MODE_LIST : VIEW_MODE_MOSAIC;
-    NSLog(@"View Mode: %d", iViewMode);
     [self redrawControls:NO];
 
 //    UIImage* icon = [UIImage imageNamed:( iViewMode == VIEW_MODE_MOSAIC ) ? @"MosaicMode.png" : @"ListMode.png" ];
 //    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setImage:icon forState:UIControlStateSelected];
 
-    if( iViewMode == VIEW_MODE_MOSAIC ) [photoCollectionView reloadData];
-    else [photoTableView reloadData];
+    [self reloadData];
 }
 
 /***************************************************************************/
@@ -607,7 +637,6 @@
              [flickrEngine searchFlickrForTerm:[alertView textFieldAtIndex:0].text
                                completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
               {
-                  [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
                   if( !error )
                   {
                       for( JMFFlickrPhoto* photo in results )
@@ -615,17 +644,21 @@
                           if( photo.largeImage != nil ) [album addObject:photo.largeImage];
                           else if( photo.thumbnail != nil ) [album addObject:photo.thumbnail];
                       }
-                      dispatch_async(dispatch_get_main_queue(), ^
+                  }
+                  dispatch_async(dispatch_get_main_queue(), ^
+                  {
+                      [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
+                      if( !error )
                       {
                           [self redrawControls:NO];
-                          [self->photoCollectionView reloadData];
-                      });
-                  }
-                  else
-                  {
-                      NSLog( @"Error receiving Flickr photos: %@", error );
-                      [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
-                  }
+                          [self reloadData];
+                      }
+                      else
+                      {
+                          NSLog( @"Error receiving Flickr photos: %@", error );
+                          [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
+                      }
+                  });
               }];
          }
     }];
