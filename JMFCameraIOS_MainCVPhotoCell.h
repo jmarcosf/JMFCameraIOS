@@ -31,5 +31,15 @@
 /*                                                                         */
 /***************************************************************************/
 @property (weak, nonatomic) IBOutlet UIImageView*   iboPhotoImage;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboSelectedIcon;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* Instance Methods                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setSelected:(BOOL)selected;
 
 @end

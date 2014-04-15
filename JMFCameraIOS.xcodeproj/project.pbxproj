@@ -43,6 +43,8 @@
 		906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906E724918F9E6FD00D1CC63 /* Localizable.strings */; };
 		906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E729918F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m */; };
 		906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
+		90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4918FD80BE00CEA576 /* Checked.png */; };
+		90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +108,8 @@
 		906E729818F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainViewController.h; sourceTree = "<group>"; };
 		906E729918F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainViewController.m; sourceTree = "<group>"; };
 		906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
+		90DFEF4918FD80BE00CEA576 /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
+		90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checked@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,8 @@
 		9028F61218FC6DE4000956E7 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				90DFEF4918FD80BE00CEA576 /* Checked.png */,
+				90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */,
 				9028F61318FC6EB7000956E7 /* MosaicMode.png */,
 				9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */,
 				9028F5FE18FC6DD6000956E7 /* Camera.png */,
@@ -376,6 +382,7 @@
 			files = (
 				9028F60A18FC6DD6000956E7 /* Delete.png in Resources */,
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
+				90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */,
 				9028F61518FC6EB7000956E7 /* MosaicMode.png in Resources */,
 				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
@@ -391,6 +398,7 @@
 				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
 				9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */,
 				9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */,
+				90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

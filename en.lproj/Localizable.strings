@@ -10,7 +10,7 @@
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-"IDS_EMPTY_ALBUM_MESSAGE" = "Welcome to JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture\nor click \"Flickr\" button to download 10 pictures from Flickr";
+"IDS_EMPTY_ALBUM_MESSAGE" = "Welcome to JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture with the device or click \"Flickr\" button to download 10 pictures from Flickr";
 "IDS_ERROR" = "Error";
 "IDS_OK" = "OK";
 "IDS_CANCEL" = "Cancel";

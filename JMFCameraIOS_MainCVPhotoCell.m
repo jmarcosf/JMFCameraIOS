@@ -46,7 +46,6 @@
     self = [super initWithFrame:frame];
     if( self )
     {
-        // Initialization code
     }
     return self;
 }
@@ -66,6 +65,19 @@
     // Drawing code
 }
 */
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setSelected:                                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+    self.iboSelectedIcon.hidden = !selected;
+}
 
 @end
 

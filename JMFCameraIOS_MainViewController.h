@@ -38,7 +38,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboEmptyAlbumLabel;
 @property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
 
 /***************************************************************************/
