@@ -12,6 +12,7 @@
 /***************************************************************************/
 #import "JMFCameraIOS_MainViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
+#import "JMFCameraIOS_EditViewController.h"
 #import "JMFFlickr.h"
 
 /***************************************************************************/
@@ -122,8 +123,8 @@
     
     CGRect Rect = CGRectMake( 0, 0, 0, 0 );
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.iboTabBar.delegate = self;
 
+    self.iboTabBar.delegate = self;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_MODE",   nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX]   setTitle:NSLocalizedString( @"IDS_EDIT",   nil )];
@@ -198,7 +199,6 @@
 /***************************************************************************/
 - (void)didReceiveMemoryWarning
 {
-    NSLog( @"didReceiveMemoryWarning()" );
     [super didReceiveMemoryWarning];
 }
 
@@ -291,10 +291,22 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-//- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-//{
-//    return UIEdgeInsetsMake( 50, 20, 50, 20 );
-//}
+- (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake( 10, 10, 10, 10 );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:layout:referenceSizeForHeaderInSection:                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    return CGSizeMake( 10, 10 );
+}
 
 #pragma mark - UICollectionViewDataSource
 /***************************************************************************/
@@ -567,9 +579,9 @@
     }
     else
     {
-        NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", @"" );
-        NSString* IDS_OK = NSLocalizedString( @"IDS_OK", @"" );
-        NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", @"" );
+        NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", nil );
+        NSString* IDS_OK = NSLocalizedString( @"IDS_OK", nil );
+        NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", nil );
         [[[UIAlertView alloc]initWithTitle:IDS_ERROR message:IDS_NO_CAMERA_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
     }
 }
@@ -604,6 +616,17 @@
 /***************************************************************************/
 - (void)onEditClicked
 {
+    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
+    
+    if( selectedArray.count == 1 )
+    {
+        NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
+        NSUInteger index = ( iViewMode == VIEW_MODE_MOSAIC ) ? indexPath.item : indexPath.row;
+        UIImage* image = [album objectAtIndex:index];
+        
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]initWithImage:image];
+        [self.navigationController pushViewController:editVC animated:YES];
+    }
 }
 
 /***************************************************************************/
@@ -615,40 +638,33 @@
 /***************************************************************************/
 - (void)onDeleteClicked
 {
-    if( iSelectedCount > 0 )
+    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
+    
+    NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
+    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DELETE", nil );
+    NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_SINGLE_DELETION_MESSAGE", nil );
+    
+    if( selectedArray.count )
     {
-        if( iViewMode == VIEW_MODE_MOSAIC )
+        if( selectedArray.count > 1 ) IDS_MESSAGE = [NSString stringWithFormat:NSLocalizedString( @"IDS_CONFIRM_MULTI_DELETION_MESSAGE", nil ), selectedArray.count ];
+        
+        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:IDS_TITLE message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_CANCEL otherButtonTitles:IDS_OK, nil];
+        [alertView showWithCompletion:^( UIAlertView* alertView, NSInteger buttonIndex )
         {
-            NSArray* selectedArray = [iboCollectionView indexPathsForSelectedItems];
-            if( selectedArray.count )
-            {
-                NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
-                for( NSIndexPath* indexPath in selectedArray )
-                {
-                    [indexSet addIndex:indexPath.item];
-                }
-                [album removeObjectsAtIndexes:indexSet];
-                iSelectedCount = 0;
-                [self redrawControls:YES];
-                [iboCollectionView reloadData];
-            }
-        }
-        else if( iViewMode == VIEW_MODE_LIST )
-        {
-            NSArray* selectedArray = [iboTableView indexPathsForSelectedRows];
-            if( selectedArray.count )
-            {
-                NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
-                for( NSIndexPath* indexPath in selectedArray )
-                {
-                    [indexSet addIndex:indexPath.row];
-                }
-                [album removeObjectsAtIndexes:indexSet];
-                iSelectedCount = 0;
-                [self redrawControls:YES];
-                [iboTableView reloadData];
-            }
-        }
+             if( buttonIndex == 1 )
+             {
+                 NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
+                 for( NSIndexPath* indexPath in selectedArray )
+                 {
+                     [indexSet addIndex:indexPath.item];
+                 }
+                 [album removeObjectsAtIndexes:indexSet];
+                 iSelectedCount = 0;
+                 [self redrawControls:YES];
+                 [self reloadData];
+             }
+        }];
     }
 }
 
@@ -661,12 +677,12 @@
 /***************************************************************************/
 - (void)onFlickrClicked
 {
-    NSString* IDS_OK                = NSLocalizedString( @"IDS_OK", @"" );
-    NSString* IDS_CANCEL            = NSLocalizedString( @"IDS_CANCEL", @"" );
-    NSString* IDS_MESSAGE           = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", @"" );
-    NSString* IDS_PLACEHOLDER       = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER", @"" );
-    NSString* IDS_DOWNLOADING       = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES", @"" );
-    NSString* IDS_DOWNLOADING_ERROR = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES_ERROR", @"" );
+    NSString* IDS_OK                = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_CANCEL            = NSLocalizedString( @"IDS_CANCEL", nil );
+    NSString* IDS_MESSAGE           = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", nil );
+    NSString* IDS_PLACEHOLDER       = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER", nil );
+    NSString* IDS_DOWNLOADING       = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES", nil );
+    NSString* IDS_DOWNLOADING_ERROR = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES_ERROR", nil );
     
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_CANCEL otherButtonTitles:IDS_OK, nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
