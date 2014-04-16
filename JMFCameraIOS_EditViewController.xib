@@ -32,10 +32,10 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
-                        <tabBarItem title="Compartir" id="0YJ-4G-HnC"/>
-                        <tabBarItem title="Mostrar" id="AFn-Oi-1II"/>
-                        <tabBarItem title="Filtros" id="m5u-I7-1eO"/>
-                        <tabBarItem title="Datos" id="35I-S2-JXC"/>
+                        <tabBarItem title="Compartir" image="Share.png" id="0YJ-4G-HnC"/>
+                        <tabBarItem tag="1" title="Mostrar" image="Show.png" id="AFn-Oi-1II"/>
+                        <tabBarItem tag="2" title="Filtros" image="Filters.png" id="m5u-I7-1eO"/>
+                        <tabBarItem tag="3" title="Datos" image="Data.png" id="35I-S2-JXC"/>
                     </items>
                 </tabBar>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="j69-0q-k5I">
@@ -118,4 +118,10 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="Data.png" width="25" height="25"/>
+        <image name="Filters.png" width="8" height="23"/>
+        <image name="Share.png" width="19" height="27"/>
+        <image name="Show.png" width="30" height="18"/>
+    </resources>
 </document>
