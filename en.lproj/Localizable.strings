@@ -14,6 +14,7 @@
 "IDS_ERROR" = "Error";
 "IDS_OK" = "OK";
 "IDS_CANCEL" = "Cancel";
+"IDS_APPLY" = "Apply";
 "IDS_CAMERA" = "Camera";
 "IDS_MODE" = "Mode";
 "IDS_EDIT" = "Edit";
@@ -21,7 +22,7 @@
 "IDS_FLICKR" = "Flickr";
 "IDS_PICTURES" = "Pictures";
 "IDS_SHARE" = "Share";
-"IDS_VIEW" = "View";
+"IDS_SHOW" = "Face Detection";
 "IDS_FILTERS" = "Filters";
 "IDS_DATA" = "Data";
 "IDS_FILTER" = "Filter";

@@ -40,19 +40,19 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UITabBar *iboTabBar;
-@property (weak, nonatomic) IBOutlet UIImageView *iboSourceImage;
-@property (weak, nonatomic) IBOutlet UIImageView *iboTargetImage;
-@property (weak, nonatomic) IBOutlet UILabel *iboFilter1Label;
-@property (weak, nonatomic) IBOutlet UILabel *iboFilter2Label;
-@property (weak, nonatomic) IBOutlet UILabel *iboFilter3Label;
-@property (weak, nonatomic) IBOutlet UILabel *iboFilter4Label;
-@property (weak, nonatomic) IBOutlet UILabel *iboFilter5Label;
-@property (weak, nonatomic) IBOutlet UISwitch *iboFilter1Switch;
-@property (weak, nonatomic) IBOutlet UISwitch *iboFilter2Switch;
-@property (weak, nonatomic) IBOutlet UISwitch *iboFilter3Switch;
-@property (weak, nonatomic) IBOutlet UISwitch *iboFilter4Switch;
-@property (weak, nonatomic) IBOutlet UISwitch *iboFilter5Switch;
+@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImage;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboTargetImage;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFilter1Label;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFilter2Label;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFilter3Label;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFilter4Label;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFilter5Label;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter1Switch;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter2Switch;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter3Switch;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter4Switch;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter5Switch;
 
 /***************************************************************************/
 /*                                                                         */
@@ -63,7 +63,7 @@
 /***************************************************************************/
 - (id)initWithImage:(UIImage*)image;
 - (void)onShareClicked;
-- (void)onViewClicked;
+- (void)onShowClicked;
 - (void)onFiltersClicked;
 - (void)onDataClicked;
 

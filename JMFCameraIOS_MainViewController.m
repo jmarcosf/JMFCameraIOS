@@ -101,6 +101,11 @@
         self.title = @"JMFCameraIOS";
         album = [[NSMutableArray alloc]init];
         [album addObject:[UIImage imageNamed:@"connie.jpg"]];
+        [album addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+        [album addObject:[UIImage imageNamed:@"rachel.jpg"]];
+        [album addObject:[UIImage imageNamed:@"rachel.jpg"]];
+        [album addObject:[UIImage imageNamed:@"connie.jpg"]];
+        [album addObject:[UIImage imageNamed:@"jennifer.jpg"]];
         iSelectedCount = 0;
     }
     return self;
@@ -125,6 +130,7 @@
     CGRect Rect = CGRectMake( 0, 0, 0, 0 );
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 
+    //TabBar
     self.iboTabBar.delegate = self;
     self.iboTabBar.layer.zPosition = -10;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
@@ -280,7 +286,7 @@
 /***************************************************************************/
 - (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    return CGSizeMake( 100, 100 );
+    return CGSizeMake( 96, 96 );
 }
 
 /***************************************************************************/
@@ -292,7 +298,7 @@
 /***************************************************************************/
 - (UIEdgeInsets)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake( 10, 10, 10, 10 );
+    return UIEdgeInsetsMake( 1, 6, 1, 6 );
 }
 
 /***************************************************************************/
@@ -304,7 +310,7 @@
 /***************************************************************************/
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    return CGSizeMake( 10, 10 );
+    return CGSizeMake( 1, 1 );
 }
 
 #pragma mark - UICollectionViewDataSource

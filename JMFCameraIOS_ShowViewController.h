@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_ShowViewController.h                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Show View Controller Class definition file                */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
@@ -16,12 +16,12 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*  JMFCameraIOS_ShowViewController Class Interface                        */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface JMFCameraIOS_ShowViewController : UIViewController
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,6 +30,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+@property (nonatomic,strong) UIImage*   image;
 
 /***************************************************************************/
 /*                                                                         */
@@ -38,8 +39,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
+
 
 /***************************************************************************/
 /*                                                                         */
@@ -48,6 +48,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+- (id)initWithImage:(UIImage*)image;
+
 
 /***************************************************************************/
 /*                                                                         */
@@ -56,5 +58,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+
 
 @end

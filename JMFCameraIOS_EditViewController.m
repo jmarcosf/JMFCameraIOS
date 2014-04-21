@@ -21,7 +21,7 @@
 /*                                                                         */
 /***************************************************************************/
 #define IDC_UITOOLBAR_BUTTON_SHARE_INDEX    0
-#define IDC_UITOOLBAR_BUTTON_VIEW_INDEX     1
+#define IDC_UITOOLBAR_BUTTON_SHOW_INDEX     1
 #define IDC_UITOOLBAR_BUTTON_FILTERS_INDEX  2
 #define IDC_UITOOLBAR_BUTTON_DATA_INDEX     3
 
@@ -120,7 +120,7 @@
     
     self.iboTabBar.delegate = self;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHARE_INDEX]      setTitle:NSLocalizedString( @"IDS_SHARE",   nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_VIEW_INDEX]       setTitle:NSLocalizedString( @"IDS_VIEW",    nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHOW_INDEX]       setTitle:NSLocalizedString( @"IDS_SHOW",    nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FILTERS_INDEX]    setTitle:NSLocalizedString( @"IDS_FILTERS", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DATA_INDEX]       setTitle:NSLocalizedString( @"IDS_DATA",    nil )];
     
@@ -188,7 +188,7 @@
     switch( item.tag )
     {
         case IDC_UITOOLBAR_BUTTON_SHARE_INDEX:      [self onShareClicked];      break;
-        case IDC_UITOOLBAR_BUTTON_VIEW_INDEX:       [self onViewClicked];       break;
+        case IDC_UITOOLBAR_BUTTON_SHOW_INDEX:       [self onShowClicked];       break;
         case IDC_UITOOLBAR_BUTTON_FILTERS_INDEX:    [self onFiltersClicked];    break;
         case IDC_UITOOLBAR_BUTTON_DATA_INDEX:       [self onDataClicked];       break;
     }
@@ -219,11 +219,11 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onViewClicked                                                          */
+/*  onShowClicked                                                          */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)onViewClicked
+- (void)onShowClicked
 {
 }
 

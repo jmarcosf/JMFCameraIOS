@@ -1,60 +1,70 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_FilterTVPickerCell.m                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Filter Table View Picker Cell Class implementation file   */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
+#import "JMFCameraIOS_FilterTVPickerCell.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*                                                                         */
+/*  JMFCameraIOS_FilterTVPickerCell Class Implementation                   */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@implementation JMFCameraIOS_FilterTVPickerCell
+
+#pragma mark - UITableViewCell Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UITableViewCell Override Methods                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithStyle:reuseIdentifier:                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if( self )
+    {
+        self.cellContainer = [[UIView alloc]initWithFrame:CGRectMake( 0, 0, self.contentView.frame.size.width, 150 )];
+        self.pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake( 2, 2, self.contentView.frame.size.width - 2, 148 )];
+        [self.cellContainer addSubview:self.pickerView];
+        [self.contentView addSubview:self.cellContainer];
+    }
+   
+    return self;
+}
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*  setSelected:                                                           */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+}
 
 @end
