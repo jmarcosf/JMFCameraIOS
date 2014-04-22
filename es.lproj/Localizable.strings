@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 
+"IDS_APP_NAME" = "JMFCameraIOS";
 "IDS_ERROR" = "Error";
 "IDS_OK" = "Aceptar";
 "IDS_CANCEL" = "Cancelar";
@@ -31,6 +32,9 @@
 "IDS_LEFT_EYE" = "Ojo Izquierdo";
 "IDS_RIGHT_EYE" = "Ojo Derecho";
 "IDS_MOUTH" = "Boca";
+"IDS_DETECTING" = "detectando";
+"IDS_SELECT" = "Seleccionar";
+"IDS_SELECT_ITEMS" = "Seleccionar elementos";
 
 "IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener 10 fotos de Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";

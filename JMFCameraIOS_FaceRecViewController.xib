@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_FaceRecViewController">
             <connections>
+                <outlet property="iboActivityIndicator" destination="BeT-sO-is2" id="1V4-TB-WhD"/>
                 <outlet property="iboApplyButton" destination="UbT-Rv-qxw" id="6JS-WQ-Wv5"/>
                 <outlet property="iboCancelButton" destination="Be2-OO-dMr" id="fP1-x8-aTT"/>
                 <outlet property="iboClearButton" destination="UIG-cW-czq" id="5EL-05-0gM"/>
@@ -31,37 +32,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Yze-HY-iT3">
-                    <rect key="frame" x="0.0" y="460" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <items>
-                        <barButtonItem title="Detect" id="wzl-8V-uCT">
-                            <connections>
-                                <action selector="onDetect:" destination="-1" id="mnQ-3b-VYQ"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WOW-Mm-U0Z"/>
-                        <barButtonItem title="Clear" id="UIG-cW-czq">
-                            <connections>
-                                <action selector="onClear:" destination="-1" id="83i-lH-T0f"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="fDs-JD-HNV"/>
-                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="3Uv-r7-XeI"/>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="QV6-6j-ptQ"/>
-                        <barButtonItem title="Cancel" id="Be2-OO-dMr">
-                            <connections>
-                                <action selector="onCancel:" destination="-1" id="eEH-9n-9gT"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WnH-dT-ssJ"/>
-                        <barButtonItem title="Apply" id="UbT-Rv-qxw">
-                            <connections>
-                                <action selector="onApply:" destination="-1" id="6yY-93-8XY"/>
-                            </connections>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="BeT-sO-is2">
+                    <rect key="frame" x="142" y="141" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Face:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rGx-pf-hVo">
                     <rect key="frame" x="6" y="248" width="119" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -118,6 +93,37 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Yze-HY-iT3">
+                    <rect key="frame" x="0.0" y="460" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <items>
+                        <barButtonItem title="Detect" id="wzl-8V-uCT">
+                            <connections>
+                                <action selector="onDetect:" destination="-1" id="mnQ-3b-VYQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WOW-Mm-U0Z"/>
+                        <barButtonItem title="Clear" id="UIG-cW-czq">
+                            <connections>
+                                <action selector="onClear:" destination="-1" id="83i-lH-T0f"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="fDs-JD-HNV"/>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="3Uv-r7-XeI"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="QV6-6j-ptQ"/>
+                        <barButtonItem title="Cancel" id="Be2-OO-dMr">
+                            <connections>
+                                <action selector="onCancel:" destination="-1" id="eEH-9n-9gT"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="WnH-dT-ssJ"/>
+                        <barButtonItem title="Apply" id="UbT-Rv-qxw">
+                            <connections>
+                                <action selector="onApply:" destination="-1" id="6yY-93-8XY"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
