@@ -1,6 +1,6 @@
 /***************************************************************************/
 /*                                                                         */
-/*  UIAlertView+CompletionBlock.h                                          */
+/*  UIImageView+GeometryConversion.h                                       */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
@@ -8,38 +8,26 @@
 /*               UIAlertView Category Class definition file                */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: Adapted from www.nscookbook.com recipe #22                */
+/*         NOTE: From Dominique d'Argent & Thomas Sarlandie GitHub project */
 /*                                                                         */
 /***************************************************************************/
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIAlertView+CompletionBlock Class Interface                            */
+/*  UIImageView+GeometryConversion Class Interface                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface UIAlertView (CompletionBlock)
+@interface UIImageView( GeometryConversion )
 
-- (void)showWithCompletion:(void(^)(UIAlertView* alertView, NSInteger buttonIndex))completion;
-- (void)showWithActivityIndicatorWithColor:(UIColor*)color;
-
-@end
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  NSCBAlertWrapper Class Interface                                       */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@interface NSCBAlertWrapper : NSObject
-
-@property (copy) void(^completionBlock)(UIAlertView* alertView, NSInteger buttonIndex);
+- (CGPoint)convertPointFromImage:(CGPoint)imagePoint;
+- (CGRect)convertRectFromImage:(CGRect)imageRect;
+- (CGPoint)convertPointFromView:(CGPoint)viewPoint;
+- (CGRect)convertRectFromView:(CGRect)viewRect;
 
 @end

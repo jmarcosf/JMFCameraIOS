@@ -26,6 +26,11 @@
 "IDS_FILTERS" = "Filtros";
 "IDS_DATA" = "Datos";
 "IDS_FILTER" = "Filtro";
+"IDS_FACE_DETECTION" = "Rec. Facial";
+"IDS_FACE" = "Rostro";
+"IDS_LEFT_EYE" = "Ojo Izquierdo";
+"IDS_RIGHT_EYE" = "Ojo Derecho";
+"IDS_MOUTH" = "Boca";
 
 "IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener 10 fotos de Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";

@@ -1,18 +1,17 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.m                                      */
+/*  JMFCameraIOS_FaceRecViewController.m                                   */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class implementation file            */
+/*               Face Recognition View Controller Class implementation file*/
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFCameraIOS_EditViewController.h"
-#import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_FaceRecViewController.h"
+#import "UIImageView+GeometryConversion.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -21,19 +20,23 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define IDC_UITOOLBAR_BUTTON_SHARE_INDEX    0
-#define IDC_UITOOLBAR_BUTTON_SHOW_INDEX     1
-#define IDC_UITOOLBAR_BUTTON_FILTERS_INDEX  2
-#define IDC_UITOOLBAR_BUTTON_DATA_INDEX     3
+#define EYE_SIZE_RATE                       0.3f
+#define MOUTH_SIZE_RATE                     0.4f
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*  JMFCameraIOS_FaceRecViewController Class Interface                     */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController ()
+@interface JMFCameraIOS_FaceRecViewController ()
+{
+    UIView*     faceView;
+    UIView*     leftEyeView;
+    UIView*     rightEyeView;
+    UIView*     mouthView;
+}
 
 @end
 
@@ -43,14 +46,14 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Implemantation                   */
+/*  JMFCameraIOS_FaceRecViewController Class Implemantation                */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFCameraIOS_EditViewController
+@implementation JMFCameraIOS_FaceRecViewController
 
 #pragma mark - Initialization Methods
 /***************************************************************************/
@@ -118,29 +121,13 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_EDIT", nil );
+    self.title = NSLocalizedString( @"IDS_FACE_DETECTION", nil );
+    self.iboImageView.image = self.image;
     
-    self.iboTabBar.delegate = self;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHARE_INDEX]      setTitle:NSLocalizedString( @"IDS_SHARE",   nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHOW_INDEX]       setTitle:NSLocalizedString( @"IDS_SHOW",    nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FILTERS_INDEX]    setTitle:NSLocalizedString( @"IDS_FILTERS", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DATA_INDEX]       setTitle:NSLocalizedString( @"IDS_DATA",    nil )];
-    
-    self.iboSourceImage.image = self.image;
-    self.iboTargetImage.image = self.image;
-    
-    NSString* filterString = NSLocalizedString( @"IDS_FILTER", nil );
-    self.iboFilter1Label.text = [NSString stringWithFormat:@"%@ 1", filterString, nil];
-    self.iboFilter2Label.text = [NSString stringWithFormat:@"%@ 2", filterString, nil];
-    self.iboFilter3Label.text = [NSString stringWithFormat:@"%@ 3", filterString, nil];
-    self.iboFilter4Label.text = [NSString stringWithFormat:@"%@ 4", filterString, nil];
-    self.iboFilter5Label.text = [NSString stringWithFormat:@"%@ 5", filterString, nil];
-    
-    [self.iboFilter1Switch setOn:NO];
-    [self.iboFilter2Switch setOn:NO];
-    [self.iboFilter3Switch setOn:NO];
-    [self.iboFilter4Switch setOn:NO];
-    [self.iboFilter5Switch setOn:NO];
+    self.iboFaceLabelTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_FACE", nil )];
+    self.iboLeftEyeLabelTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_LEFT_EYE", nil )];
+    self.iboRightEyeLabelTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_RIGHT_EYE", nil )];
+    self.iboMouthLabelTitle.text    = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MOUTH", nil )];
 }
 
 /***************************************************************************/
@@ -153,6 +140,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self onClear:self];
 }
 
 /***************************************************************************/
@@ -165,94 +153,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-#pragma mark - UITabBarDelegate
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  UITabBarDelegate Methods                                               */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  tabBar:didSelectItem:                                                  */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)tabBar:(UITabBar*)tabBar didSelectItem:(UITabBarItem*)item
-{
-    switch( item.tag )
-    {
-        case IDC_UITOOLBAR_BUTTON_SHARE_INDEX:      [self onShareClicked];      break;
-        case IDC_UITOOLBAR_BUTTON_SHOW_INDEX:       [self onShowClicked];       break;
-        case IDC_UITOOLBAR_BUTTON_FILTERS_INDEX:    [self onFiltersClicked];    break;
-        case IDC_UITOOLBAR_BUTTON_DATA_INDEX:       [self onDataClicked];       break;
-    }
-}
-
-#pragma mark - Class Instance Methods
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  Class Instance Methods                                                 */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onShareClicked                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onShareClicked
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onShowClicked                                                          */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onShowClicked
-{
-    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithImage:self.image];
-    [self.navigationController pushViewController:faceRecVC animated:YES];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onFiltersClicked                                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onFiltersClicked
-{
-    JMFCameraIOS_FiltersViewController* filtersVC = [[JMFCameraIOS_FiltersViewController alloc]init];
-    [self.navigationController pushViewController:filtersVC animated:YES];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onDataClicked                                                          */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onDataClicked
-{
 }
 
 #pragma mark - IBAction Methods
@@ -269,12 +169,122 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onFilterSwitchChanged:                                                 */
+/*  onDetect:                                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onFilterSwitchChanged:(id)sender
+- (IBAction)onDetect:(id)sender
 {
+ 	CIImage*        image    = [CIImage imageWithCGImage:self.iboImageView.image.CGImage];
+    NSDictionary*   options  = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
+ 	CIDetector*     detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
+	NSArray*        features = [detector featuresInImage:image];
+    
+	// For convert CoreImage coordinates to UIKit coordinates
+	CGAffineTransform transform = CGAffineTransformMakeScale( 1, -1 );
+	transform = CGAffineTransformTranslate( transform, 0, - self.iboImageView.bounds.size.height );
+	
+    if( features.count != 0 )
+    {
+        //Only first face is supported for this practice. Interchange next 2 lines to support every recognized face
+        CIFaceFeature* faceFeature = [features objectAtIndex:0];
+        //for( CIFaceFeature* faceFeature in features )
+        {
+            // Draw Face Rect
+            const CGRect faceRect = CGRectApplyAffineTransform( [self.iboImageView convertRectFromImage:faceFeature.bounds], transform );
+            faceView = [[UIView alloc] initWithFrame:faceRect];
+            faceView.layer.borderWidth = 1.5f;
+            faceView.layer.borderColor = [[UIColor greenColor] CGColor];
+            CGFloat faceWidth = faceRect.size.width;
+            [self.iboImageView addSubview:faceView];
+            self.iboFaceLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f),(%.0f,%.0f)",
+                                                                faceFeature.bounds.origin.x, faceFeature.bounds.origin.y,
+                                                                faceFeature.bounds.size.width, faceFeature.bounds.size.height];
+            //Draw Left Eye
+            if( faceFeature.hasLeftEyePosition )
+            {
+                const CGPoint leftEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.leftEyePosition], transform );
+                leftEyeView = [[UIView alloc] initWithFrame:CGRectMake( leftEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, leftEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                        faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+                leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
+                leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
+                [self.iboImageView addSubview:leftEyeView];
+                self.iboLeftEyeLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.leftEyePosition.x, faceFeature.leftEyePosition.y];
+            }
+            
+            //Draw Right Eye
+            if( faceFeature.hasRightEyePosition )
+            {
+                const CGPoint rightEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.rightEyePosition], transform );
+                rightEyeView = [[UIView alloc] initWithFrame:CGRectMake( rightEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, rightEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                         faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+                rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
+                rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
+                [self.iboImageView addSubview:rightEyeView];
+                self.iboRightEyeLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.rightEyePosition.x, faceFeature.rightEyePosition.y];
+            }
+            
+            //Draw Mouth
+            if( faceFeature.hasMouthPosition )
+            {
+                const CGPoint mouthPos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.mouthPosition], transform );
+                mouthView = [[UIView alloc] initWithFrame:CGRectMake( mouthPos.x - faceWidth * MOUTH_SIZE_RATE * 0.5f, mouthPos.y - faceWidth * MOUTH_SIZE_RATE * 0.5f,
+                                                                      faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
+                mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
+                mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
+                [self.iboImageView addSubview:mouthView];
+                self.iboMouthLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.mouthPosition.x, faceFeature.mouthPosition.y];
+            }
+        }
+        
+        self.iboDetectButton.enabled = NO;
+        self.iboClearButton.enabled = YES;
+        self.iboApplyButton.enabled = YES;
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onClear:                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onClear:(id)sender
+{
+    [faceView removeFromSuperview];
+    [leftEyeView removeFromSuperview];
+    [rightEyeView removeFromSuperview];
+    [mouthView removeFromSuperview];
+    faceView = leftEyeView = rightEyeView = mouthView = nil;
+    self.iboDetectButton.enabled = YES;
+    self.iboClearButton.enabled = NO;
+    self.iboApplyButton.enabled = NO;
+    self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = @"";
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onCancel:                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onCancel:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onApply:                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onApply:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

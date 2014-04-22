@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
 		900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */; };
-		9011FC3518FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011FC3318FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.m */; };
-		9011FC3618FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9011FC3418FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.xib */; };
+		9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */; };
+		9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */; };
 		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
 		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
 		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
@@ -58,6 +58,7 @@
 		906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 906E724918F9E6FD00D1CC63 /* Localizable.strings */; };
 		906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 906E729918F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m */; };
 		906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */; };
+		9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 9090557A19064D5800C614DA /* UIImageView+GeometryConversion.m */; };
 		90AD563018FDFB6500C649FA /* Data.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562818FDFB6500C649FA /* Data.png */; };
 		90AD563118FDFB6500C649FA /* Data@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562918FDFB6500C649FA /* Data@2x.png */; };
 		90AD563218FDFB6500C649FA /* Filters.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562A18FDFB6500C649FA /* Filters.png */; };
@@ -89,9 +90,9 @@
 		900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainCVPhotoCell.h; sourceTree = "<group>"; };
 		900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainCVPhotoCell.m; sourceTree = "<group>"; };
 		900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainCVPhotoCell.xib; sourceTree = "<group>"; };
-		9011FC3218FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_ShowViewController.h; sourceTree = "<group>"; };
-		9011FC3318FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_ShowViewController.m; sourceTree = "<group>"; };
-		9011FC3418FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_ShowViewController.xib; sourceTree = "<group>"; };
+		9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FaceRecViewController.h; sourceTree = "<group>"; };
+		9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_FaceRecViewController.m; sourceTree = "<group>"; };
+		9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FaceRecViewController.xib; sourceTree = "<group>"; };
 		901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+CompletionBlock.h"; sourceTree = "<group>"; };
 		901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+CompletionBlock.m"; sourceTree = "<group>"; };
 		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
@@ -153,6 +154,8 @@
 		906E729818F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainViewController.h; sourceTree = "<group>"; };
 		906E729918F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainViewController.m; sourceTree = "<group>"; };
 		906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainViewController.xib; sourceTree = "<group>"; };
+		9090557919064D5800C614DA /* UIImageView+GeometryConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GeometryConversion.h"; sourceTree = "<group>"; };
+		9090557A19064D5800C614DA /* UIImageView+GeometryConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+GeometryConversion.m"; sourceTree = "<group>"; };
 		90AD562818FDFB6500C649FA /* Data.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Data.png; sourceTree = "<group>"; };
 		90AD562918FDFB6500C649FA /* Data@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Data@2x.png"; sourceTree = "<group>"; };
 		90AD562A18FDFB6500C649FA /* Filters.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Filters.png; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 			children = (
 				901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */,
 				901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */,
+				9090557919064D5800C614DA /* UIImageView+GeometryConversion.h */,
+				9090557A19064D5800C614DA /* UIImageView+GeometryConversion.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -375,9 +380,9 @@
 				90AD563818FDFCA600C649FA /* JMFCameraIOS_FiltersViewController.h */,
 				90AD563918FDFCA600C649FA /* JMFCameraIOS_FiltersViewController.m */,
 				90AD563A18FDFCA600C649FA /* JMFCameraIOS_FiltersViewController.xib */,
-				9011FC3218FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.h */,
-				9011FC3318FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.m */,
-				9011FC3418FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.xib */,
+				9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */,
+				9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */,
+				9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -516,7 +521,7 @@
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 				905AB5CF1905D54C009B822F /* ArrowDown@2x.png in Resources */,
-				9011FC3618FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.xib in Resources */,
+				9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */,
 				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
 				9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */,
 				9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */,
@@ -542,11 +547,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */,
-				9011FC3518FE7E3E002FB152 /* JMFCameraIOS_ShowViewController.m in Sources */,
+				9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */,
 				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
 				90AD563B18FDFCA600C649FA /* JMFCameraIOS_FiltersViewController.m in Sources */,
 				90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_EditViewController.m in Sources */,
+				9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */,
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,
 				9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */,
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,
