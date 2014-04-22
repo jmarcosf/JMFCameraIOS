@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="96" height="96"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Checked.png" id="gus-v1-Zmd">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GreenCheck.png" id="gus-v1-Zmd">
                         <rect key="frame" x="73" y="73" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -33,6 +33,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Checked.png" width="23" height="23"/>
+        <image name="GreenCheck.png" width="23" height="23"/>
     </resources>
 </document>

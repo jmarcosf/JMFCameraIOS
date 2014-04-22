@@ -124,10 +124,15 @@
     self.title = NSLocalizedString( @"IDS_FACE_DETECTION", nil );
     self.iboImageView.image = self.image;
     
-    self.iboFaceLabelTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_FACE", nil )];
-    self.iboLeftEyeLabelTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_LEFT_EYE", nil )];
+    self.iboFaceLabelTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_FACE",      nil )];
+    self.iboLeftEyeLabelTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_LEFT_EYE",  nil )];
     self.iboRightEyeLabelTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_RIGHT_EYE", nil )];
-    self.iboMouthLabelTitle.text    = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MOUTH", nil )];
+    self.iboMouthLabelTitle.text    = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MOUTH",     nil )];
+    
+    self.iboDetectButton.title      = NSLocalizedString( @"IDS_DETECT", nil );
+    self.iboClearButton.title       = NSLocalizedString( @"IDS_CLEAR",  nil );
+    self.iboCancelButton.title      = NSLocalizedString( @"IDS_CANCEL", nil );
+    self.iboApplyButton.title       = NSLocalizedString( @"IDS_APPLY",  nil );
 }
 
 /***************************************************************************/

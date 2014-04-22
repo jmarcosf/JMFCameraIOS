@@ -16,8 +16,11 @@
 "IDS_OK" = "OK";
 "IDS_CANCEL" = "Cancel";
 "IDS_APPLY" = "Apply";
+"IDS_CLEAR" = "Clear";
 "IDS_CAMERA" = "Camera";
 "IDS_MODE" = "Mode";
+"IDS_MOSAIC_MODE" = "Mosaic Mode";
+"IDS_LIST_MODE" = "List Mode";
 "IDS_EDIT" = "Edit";
 "IDS_DELETE" = "Delete";
 "IDS_FLICKR" = "Flickr";
@@ -27,6 +30,7 @@
 "IDS_FILTERS" = "Filters";
 "IDS_DATA" = "Data";
 "IDS_FILTER" = "Filter";
+"IDS_DETECT" = "Detect";
 "IDS_FACE_DETECTION" = "Face Detection";
 "IDS_FACE" = "Face";
 "IDS_LEFT_EYE" = "Left Eye";

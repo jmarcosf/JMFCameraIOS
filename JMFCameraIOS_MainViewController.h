@@ -21,7 +21,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate>
+@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+                                                               UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+                                                               UITableViewDataSource, UITableViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -49,9 +51,10 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons;
 - (void)reloadData;
+- (void)editPhoto;
+
 - (void)onCameraClicked;
 - (void)onModeClicked;
-- (void)onEditClicked;
 - (void)onDeleteClicked;
 - (void)onFlickrClicked;
 

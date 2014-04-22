@@ -28,9 +28,8 @@
 
 #define IDC_UITOOLBAR_BUTTON_CAMERA_INDEX           0
 #define IDC_UITOOLBAR_BUTTON_MODE_INDEX             1
-#define IDC_UITOOLBAR_BUTTON_EDIT_INDEX             2
-#define IDC_UITOOLBAR_BUTTON_DELETE_INDEX           3
-#define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX           4
+#define IDC_UITOOLBAR_BUTTON_DELETE_INDEX           2
+#define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX           3
 
 #define VIEW_MODE_WELCOME                           0
 #define VIEW_MODE_MOSAIC                            1
@@ -54,8 +53,12 @@
     UICollectionView*       iboCollectionView;
     UITableView*            iboTableView;
     
+    NSMutableArray*         tbiaMosaicMode;
+    NSMutableArray*         tbiaListMode;
+    
     NSMutableArray*         album;
     BOOL                    bMultiSelectMode;
+    BOOL                    bFromCamera;
     int                     iViewMode;
     int                     iSelectedCount;
 }
@@ -133,23 +136,33 @@
     
     CGRect Rect = CGRectMake( 0, 0, 0, 0 );
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    bFromCamera = NO;
+    
     //Navigation Bar Select Button
     bMultiSelectMode = NO;
     iboSelectButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"IDS_SELECT", nil )
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector( onSelectClicked:)];
+    [iboSelectButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14], NSFontAttributeName,nil]forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:iboSelectButton];
 
     //TabBar
     self.iboTabBar.delegate = self;
     self.iboTabBar.layer.zPosition = -10;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_MODE",   nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX]   setTitle:NSLocalizedString( @"IDS_EDIT",   nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE",   nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:NSLocalizedString( @"IDS_FLICKR", nil )];
-
+    
+    //TabBarItems
+    UIImage* iconMosaicMode = [UIImage imageNamed:@"MosaicMode.png"];
+    UITabBarItem* tbiMosaicMode = [[UITabBarItem alloc]initWithTitle:NSLocalizedString( @"IDS_MOSAIC_MODE", nil ) image:iconMosaicMode selectedImage:iconMosaicMode];
+    tbiMosaicMode.tag = IDC_UITOOLBAR_BUTTON_MODE_INDEX;
+    tbiaMosaicMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
+    tbiaListMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
+    [tbiaListMode replaceObjectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX withObject:tbiMosaicMode];
+    
     //UILabel
     iboEmptyAlbumLabel = [[UILabel alloc]initWithFrame:Rect];
     iboEmptyAlbumLabel.backgroundColor = [UIColor groupTableViewBackgroundColor];
@@ -197,7 +210,8 @@
     CGRect Rect = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height );
     Rect.size.height -= tabBarHeight;
     [iboEmptyAlbumLabel setFrame:Rect];
-//    Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC
+    if( bFromCamera ) Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC
+    bFromCamera = NO;
     [iboCollectionView setFrame:Rect];
     [iboTableView setFrame:Rect];
     
@@ -241,7 +255,6 @@
     {
         case IDC_UITOOLBAR_BUTTON_CAMERA_INDEX: [self onCameraClicked];     break;
         case IDC_UITOOLBAR_BUTTON_MODE_INDEX:   [self onModeClicked];       break;
-        case IDC_UITOOLBAR_BUTTON_EDIT_INDEX:   [self onEditClicked];       break;
         case IDC_UITOOLBAR_BUTTON_DELETE_INDEX: [self onDeleteClicked];     break;
         case IDC_UITOOLBAR_BUTTON_FLICKR_INDEX: [self onFlickrClicked];     break;
     }
@@ -270,7 +283,7 @@
     UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
     [album addObject:photo];
     [picker dismissViewControllerAnimated:YES completion:nil];
-    
+    bFromCamera = YES;
     [self reloadData];
 }
 
@@ -369,7 +382,7 @@
     JMFCameraIOS_MainCVPhotoCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
     cell.iboPhotoImage.image = [album objectAtIndex:indexPath.item];
-    cell.iboSelectedIcon.image = [UIImage imageNamed:@"Checked.png"];
+    cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = YES;
     cell.iboSelectedIcon.layer.zPosition = 100;
     return cell;
@@ -404,7 +417,7 @@
     {
         JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[collectionView cellForItemAtIndexPath:indexPath];
         cell.iboSelectedIcon.hidden = YES;
-        [self onEditClicked];
+        [self editPhoto];
     }
 }
 
@@ -513,7 +526,7 @@
         iSelectedCount++;
         [self redrawControls:YES];
     }
-    else [self onEditClicked];
+    else [self editPhoto];
 }
 
 /***************************************************************************/
@@ -579,7 +592,6 @@
     }
     
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count > 0 )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_EDIT_INDEX] setEnabled:NO];//( album.count > 0 && iSelectedCount == 1 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && album.count > 0 && iSelectedCount != 0 )];
 }
 
@@ -594,6 +606,28 @@
 {
     if( iViewMode == VIEW_MODE_MOSAIC ) [iboCollectionView reloadData];
     else if( iViewMode == VIEW_MODE_LIST ) [iboTableView reloadData];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  editPhoto                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)editPhoto
+{
+    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
+    
+    if( selectedArray.count == 1 )
+    {
+        NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
+        NSUInteger index = ( iViewMode == VIEW_MODE_MOSAIC ) ? indexPath.item : indexPath.row;
+        UIImage* image = [album objectAtIndex:index];
+        
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]initWithImage:image];
+        [self.navigationController pushViewController:editVC animated:YES];
+    }
 }
 
 /***************************************************************************/
@@ -637,9 +671,11 @@
     {
         UIImagePickerController* imagePicker = [[UIImagePickerController alloc]init];
         imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
         imagePicker.showsCameraControls = YES;
         imagePicker.allowsEditing = YES;
         imagePicker.delegate = self;
+        bFromCamera = YES;
         [self presentViewController:imagePicker animated:YES completion:nil];
     }
     else
@@ -663,33 +699,8 @@
     iSelectedCount = 0;
     iViewMode = ( iViewMode == VIEW_MODE_MOSAIC ) ? VIEW_MODE_LIST : VIEW_MODE_MOSAIC;
     [self redrawControls:NO];
-
-//    UIImage* icon = [UIImage imageNamed:( iViewMode == VIEW_MODE_MOSAIC ) ? @"MosaicMode.png" : @"ListMode.png" ];
-//    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setImage:icon forState:UIControlStateSelected];
-
+    self.iboTabBar.items = ( iViewMode == VIEW_MODE_MOSAIC ) ? tbiaMosaicMode : tbiaListMode;
     [self reloadData];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onEditClicked                                                          */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onEditClicked
-{
-    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
-    
-    if( selectedArray.count == 1 )
-    {
-        NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
-        NSUInteger index = ( iViewMode == VIEW_MODE_MOSAIC ) ? indexPath.item : indexPath.row;
-        UIImage* image = [album objectAtIndex:index];
-        
-        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]initWithImage:image];
-        [self.navigationController pushViewController:editVC animated:YES];
-    }
 }
 
 /***************************************************************************/

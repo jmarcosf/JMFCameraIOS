@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -21,10 +21,9 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
                         <tabBarItem title="Camera" image="Camera.png" id="Xgl-4n-k2a"/>
-                        <tabBarItem tag="1" title="Mode" image="MosaicMode.png" id="bDn-nA-59w"/>
-                        <tabBarItem tag="2" title="Edit" image="Edit.png" id="A8h-jm-3k3"/>
-                        <tabBarItem tag="3" title="Delete" image="Delete.png" id="bY6-el-rJk"/>
-                        <tabBarItem tag="4" title="Flickr" image="Flickr.png" id="E8c-yl-6F3"/>
+                        <tabBarItem tag="1" title="List Mode" image="ListMode.png" id="bDn-nA-59w"/>
+                        <tabBarItem tag="2" title="Delete" image="Delete.png" id="bY6-el-rJk"/>
+                        <tabBarItem tag="3" title="Flickr" image="Flickr.png" id="E8c-yl-6F3"/>
                     </items>
                 </tabBar>
             </subviews>
@@ -37,8 +36,7 @@
     <resources>
         <image name="Camera.png" width="26" height="19"/>
         <image name="Delete.png" width="19" height="25"/>
-        <image name="Edit.png" width="23" height="23"/>
         <image name="Flickr.png" width="20" height="24"/>
-        <image name="MosaicMode.png" width="33" height="18"/>
+        <image name="ListMode.png" width="29" height="18"/>
     </resources>
 </document>
