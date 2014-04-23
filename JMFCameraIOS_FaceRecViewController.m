@@ -32,10 +32,6 @@
 /***************************************************************************/
 @interface JMFCameraIOS_FaceRecViewController ()
 {
-    UIView*     faceView;
-    UIView*     leftEyeView;
-    UIView*     rightEyeView;
-    UIView*     mouthView;
 }
 
 @end
@@ -193,13 +189,18 @@
     {
         [self detectFaceWithCompletionBlock:^( bool bDetected )
         {
-            self.iboDetectButton.enabled = !bDetected;
-            self.iboClearButton.enabled = bDetected;
-            self.iboApplyButton.enabled = bDetected;
-            [self.iboActivityIndicator stopAnimating];
-            self.iboActivityIndicator.hidden = YES;
-            self.iboFaceLabel.font = self.iboLeftEyeLabel.font = self.iboRightEyeLabel.font = self.iboMouthLabel.font = [UIFont systemFontOfSize:18.0];
-            if( !bDetected ) self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = @"";
+            dispatch_queue_t mainQueue = dispatch_get_main_queue();
+            dispatch_async( mainQueue, ^
+            {
+                self.iboDetectButton.enabled = !bDetected;
+                self.iboClearButton.enabled = bDetected;
+                self.iboApplyButton.enabled = bDetected;
+                [self.iboActivityIndicator stopAnimating];
+                self.iboActivityIndicator.hidden = YES;
+                self.iboFaceLabel.font = self.iboLeftEyeLabel.font = self.iboRightEyeLabel.font = self.iboMouthLabel.font = [UIFont systemFontOfSize:18.0];
+                if( !bDetected ) self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = @"";
+                
+            });
         }];
     });
 }
@@ -213,11 +214,11 @@
 /***************************************************************************/
 - (IBAction)onClear:(id)sender
 {
-    [faceView removeFromSuperview];
-    [leftEyeView removeFromSuperview];
-    [rightEyeView removeFromSuperview];
-    [mouthView removeFromSuperview];
-    faceView = leftEyeView = rightEyeView = mouthView = nil;
+    NSArray* subViewArray = [self.iboImageView subviews];
+    for( UIView* view in subViewArray )
+    {
+        [view removeFromSuperview];
+    }
     self.iboDetectButton.enabled = YES;
     self.iboClearButton.enabled = NO;
     self.iboApplyButton.enabled = NO;
@@ -279,59 +280,77 @@
 	
     if( features.count != 0 )
     {
-        //Only first face is supported for this practice. Interchange next 2 lines to support every recognized face
-        CIFaceFeature* faceFeature = [features objectAtIndex:0];
-        //for( CIFaceFeature* faceFeature in features )
+        for( CIFaceFeature* faceFeature in features )
         {
             // Draw Face Rect
             const CGRect faceRect = CGRectApplyAffineTransform( [self.iboImageView convertRectFromImage:faceFeature.bounds], transform );
-            faceView = [[UIView alloc] initWithFrame:faceRect];
+            UIView* faceView = [[UIView alloc] initWithFrame:faceRect];
             faceView.layer.borderWidth = 1.5f;
             faceView.layer.borderColor = [[UIColor greenColor] CGColor];
+            [self showFaceFeature:faceView withText:[NSString stringWithFormat:@"(%.0f,%.0f),(%.0f,%.0f)",
+                                                    faceFeature.bounds.origin.x, faceFeature.bounds.origin.y,
+                                                    faceFeature.bounds.size.width, faceFeature.bounds.size.height] forLabel:self.iboFaceLabel];
             CGFloat faceWidth = faceRect.size.width;
-            [self.iboImageView addSubview:faceView];
-            self.iboFaceLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f),(%.0f,%.0f)",
-                                      faceFeature.bounds.origin.x, faceFeature.bounds.origin.y,
-                                      faceFeature.bounds.size.width, faceFeature.bounds.size.height];
+
             //Draw Left Eye
             if( faceFeature.hasLeftEyePosition )
             {
                 const CGPoint leftEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.leftEyePosition], transform );
-                leftEyeView = [[UIView alloc] initWithFrame:CGRectMake( leftEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, leftEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
-                                                                       faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+                UIView* leftEyeView = [[UIView alloc] initWithFrame:CGRectMake( leftEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, leftEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                                faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
                 leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
                 leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
-                [self.iboImageView addSubview:leftEyeView];
-                self.iboLeftEyeLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.leftEyePosition.x, faceFeature.leftEyePosition.y];
+                [self showFaceFeature:leftEyeView
+                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)",faceFeature.leftEyePosition.x, faceFeature.leftEyePosition.y]
+                             forLabel:self.iboLeftEyeLabel];
             }
             
             //Draw Right Eye
             if( faceFeature.hasRightEyePosition )
             {
                 const CGPoint rightEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.rightEyePosition], transform );
-                rightEyeView = [[UIView alloc] initWithFrame:CGRectMake( rightEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, rightEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
-                                                                        faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+                UIView* rightEyeView = [[UIView alloc] initWithFrame:CGRectMake( rightEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, rightEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                                 faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
                 rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
                 rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
-                [self.iboImageView addSubview:rightEyeView];
-                self.iboRightEyeLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.rightEyePosition.x, faceFeature.rightEyePosition.y];
+                [self showFaceFeature:rightEyeView
+                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.rightEyePosition.x, faceFeature.rightEyePosition.y]
+                             forLabel:self.iboRightEyeLabel];
             }
             
             //Draw Mouth
             if( faceFeature.hasMouthPosition )
             {
                 const CGPoint mouthPos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.mouthPosition], transform );
-                mouthView = [[UIView alloc] initWithFrame:CGRectMake( mouthPos.x - faceWidth * MOUTH_SIZE_RATE * 0.5f, mouthPos.y - faceWidth * MOUTH_SIZE_RATE * 0.5f,
-                                                                     faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
+                UIView* mouthView = [[UIView alloc] initWithFrame:CGRectMake( mouthPos.x - faceWidth * MOUTH_SIZE_RATE * 0.5f, mouthPos.y - faceWidth * MOUTH_SIZE_RATE * 0.5f,
+                                                                              faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
                 mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
                 mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
-                [self.iboImageView addSubview:mouthView];
-                self.iboMouthLabel.text = [NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.mouthPosition.x, faceFeature.mouthPosition.y];
+                [self showFaceFeature:mouthView
+                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.mouthPosition.x, faceFeature.mouthPosition.y]
+                             forLabel:self.iboMouthLabel];
             }
         }
     }
     
     if( completionBlock ) completionBlock( features.count != 0 );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showFaceFeature:withText:forLabel:                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showFaceFeature:(UIView*)view withText:(NSString*)text forLabel:(UILabel*)label
+{
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    dispatch_async( mainQueue, ^
+    {
+        [self.iboImageView addSubview:view];
+        label.text = text;
+    });
 }
 
 @end

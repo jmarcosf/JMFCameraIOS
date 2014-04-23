@@ -126,7 +126,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)searchFlickrForTerm:(NSString*)term completionBlock:(FlickrSearchCompletionBlock)completionBlock
+- (void)searchFlickrForTerm:(NSString*)term largeImage:(BOOL)bLargeImage completionBlock:(FlickrSearchCompletionBlock)completionBlock
 {
     NSString*           searchUrl = [JMFFlickr flickrSearchUrlForSearchTerm:term];
     dispatch_queue_t    queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
@@ -137,7 +137,7 @@
         NSString*   searchResultString = [NSString stringWithContentsOfURL:[NSURL URLWithString:searchUrl] encoding:NSUTF8StringEncoding error:&error];
         if( !error )
         {
-            // Parse the JSON Response
+            // Parse JSON Response
             NSData*         jsonData = [searchResultString dataUsingEncoding:NSUTF8StringEncoding];
             NSDictionary*   searchResultsDict = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
             if( !error )
@@ -151,16 +151,17 @@
                     for( NSMutableDictionary* objPhoto in objPhotos )
                     {
                         JMFFlickrPhoto* photo = [[JMFFlickrPhoto alloc] init];
-                        photo.farm = [objPhoto[@"farm"] intValue];
-                        photo.server = [objPhoto[@"server"] intValue];
-                        photo.secret = objPhoto[@"secret"];
+                        photo.farm    = [objPhoto[@"farm"] intValue];
+                        photo.server  = [objPhoto[@"server"] intValue];
+                        photo.secret  = objPhoto[@"secret"];
                         photo.photoID = [objPhoto[@"id"] longLongValue];
                         
-                        NSString*   photoUrl = [JMFFlickr flickrPhotoUrlForFlickrPhoto:photo size:@"m"];
-                        NSData*     imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoUrl] options:0 error:&error];
-                        UIImage*    image = [UIImage imageWithData:imageData];
+                        NSString* photoUrl = [JMFFlickr flickrPhotoUrlForFlickrPhoto:photo size:@"m"];
+                        NSData*   imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoUrl] options:0 error:&error];
+                        UIImage*  thumbnail = [UIImage imageWithData:imageData];
+                        photo.thumbnail = thumbnail;
 
-                        photo.thumbnail = image;
+                        if( bLargeImage ) [[self class] loadImageForPhoto:photo thumbnail:NO completionBlock:nil];
                         [flickrPhotos addObject:photo];
                     }
                     

@@ -77,7 +77,11 @@
 {
     [super setSelected:selected];
     
-    self.iboSelectedIcon.hidden = !selected;
+    UICollectionView* collectionView = (UICollectionView*)[self superview];
+    if( [collectionView isKindOfClass:[UICollectionView class]] && collectionView.allowsMultipleSelection )
+    {
+        self.iboSelectedIcon.hidden = !selected;
+    }
 }
 
 @end

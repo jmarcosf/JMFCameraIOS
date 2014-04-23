@@ -110,6 +110,7 @@
         [album addObject:[UIImage imageNamed:@"rachel.jpg"]];
         [album addObject:[UIImage imageNamed:@"connie.jpg"]];
         [album addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+        [album addObject:[UIImage imageNamed:@"pareja.jpg"]];
         iSelectedCount = 0;
     }
     return self;
@@ -383,7 +384,7 @@
     cell.backgroundColor = [UIColor whiteColor];
     cell.iboPhotoImage.image = [album objectAtIndex:indexPath.item];
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
-    cell.iboSelectedIcon.hidden = YES;
+    cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 100;
     return cell;
 }
@@ -591,8 +592,10 @@
         }
     }
     
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setEnabled:( !bMultiSelectMode )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count > 0  && !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && album.count > 0 && iSelectedCount != 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
 }
 
 /***************************************************************************/
@@ -656,6 +659,7 @@
     self.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_SELECT_ITEMS", nil ) : NSLocalizedString( @"IDS_APP_NAME", nil );
     iboCollectionView.allowsMultipleSelection = bMultiSelectMode;
     iboTableView.allowsMultipleSelection = bMultiSelectMode;
+    [self redrawControls:YES];
 }
 
 /***************************************************************************/
@@ -770,14 +774,14 @@
             [busyAlertView showWithActivityIndicatorWithColor:[UIColor darkTextColor]];
             
             JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
-            [flickrEngine searchFlickrForTerm:searchTerm completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
+            [flickrEngine searchFlickrForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
              {
                  if( !error )
                  {
                      for( JMFFlickrPhoto* photo in results )
                      {
-                         if( photo.largeImage != nil ) [album addObject:photo.largeImage];
-                         else if( photo.thumbnail != nil ) [album addObject:photo.thumbnail];
+                         if( photo.thumbnail != nil ) [album addObject:photo.thumbnail];
+                         else if( photo.largeImage != nil ) [album addObject:photo.largeImage];
                      }
                  }
                  dispatch_async(dispatch_get_main_queue(), ^

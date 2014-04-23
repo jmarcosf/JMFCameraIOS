@@ -32,6 +32,7 @@
 		9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */; };
 		9053C33719071E8300A13EEF /* GreenCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33519071E8300A13EEF /* GreenCheck.png */; };
 		9053C33819071E8300A13EEF /* GreenCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33619071E8300A13EEF /* GreenCheck@2x.png */; };
+		9053C33A19073D4D00A13EEF /* pareja.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33919073D4D00A13EEF /* pareja.jpg */; };
 		905AB5C119053AC7009B822F /* jennifer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5BF19053AC7009B822F /* jennifer.jpg */; };
 		905AB5C219053AC7009B822F /* rachel.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5C019053AC7009B822F /* rachel.jpg */; };
 		905AB5C519054215009B822F /* Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5C319054215009B822F /* Filter.png */; };
@@ -121,6 +122,7 @@
 		9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrPhoto.m; sourceTree = "<group>"; };
 		9053C33519071E8300A13EEF /* GreenCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenCheck.png; sourceTree = "<group>"; };
 		9053C33619071E8300A13EEF /* GreenCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenCheck@2x.png"; sourceTree = "<group>"; };
+		9053C33919073D4D00A13EEF /* pareja.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pareja.jpg; sourceTree = "<group>"; };
 		905AB5BF19053AC7009B822F /* jennifer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jennifer.jpg; sourceTree = "<group>"; };
 		905AB5C019053AC7009B822F /* rachel.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rachel.jpg; sourceTree = "<group>"; };
 		905AB5C319054215009B822F /* Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Filter.png; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				905AB5BF19053AC7009B822F /* jennifer.jpg */,
 				905AB5C019053AC7009B822F /* rachel.jpg */,
 				90AE9BF818FDE18400AEF2DB /* connie.jpg */,
+				9053C33919073D4D00A13EEF /* pareja.jpg */,
 			);
 			name = Pictures;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				90AD563018FDFB6500C649FA /* Data.png in Resources */,
 				90AD563118FDFB6500C649FA /* Data@2x.png in Resources */,
 				905AB5D71905DA68009B822F /* Apply@2x.png in Resources */,
+				9053C33A19073D4D00A13EEF /* pareja.jpg in Resources */,
 				905AB5D11905D54C009B822F /* ArrowUp@2x.png in Resources */,
 				90AD563218FDFB6500C649FA /* Filters.png in Resources */,
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,

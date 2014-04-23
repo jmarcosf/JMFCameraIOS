@@ -64,6 +64,6 @@ typedef void (^FlickrSearchCompletionBlock)(NSString* searchTerm, NSArray* resul
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)searchFlickrForTerm:(NSString*)term completionBlock:(FlickrSearchCompletionBlock)completionBlock;
+- (void)searchFlickrForTerm:(NSString*)term largeImage:(BOOL)bLargeImage completionBlock:(FlickrSearchCompletionBlock)completionBlock;
 
 @end
