@@ -68,7 +68,7 @@
 {
     [self.model saveWithErrorBlock:^( NSError* error )
     {
-        if( DEBUG ) NSLog( @"Error saving data in applicationWillResignActive: %@", error );
+        if( APPDEBUG ) NSLog( @"Error saving data in applicationWillResignActive: %@", error );
     }];
 }
 
@@ -83,7 +83,7 @@
 {
     [self.model saveWithErrorBlock:^( NSError* error )
     {
-         if( DEBUG ) NSLog( @"Error saving data in applicationDidEnterBackground: %@", error );
+         if( APPDEBUG ) NSLog( @"Error saving data in applicationDidEnterBackground: %@", error );
     }];
 }
 
@@ -118,7 +118,7 @@
 /***************************************************************************/
 - (void)applicationWillTerminate:(UIApplication*)application
 {
-    if( DEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
+    if( APPDEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
 }
 
 /***************************************************************************/
@@ -130,7 +130,7 @@
 /***************************************************************************/
 - (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString*)identifier completionHandler:( void (^)() )completionHandler
 {
-    if( DEBUG ) NSLog( @"on application:handleEventsForBackgroundURLSession:completionHandler: here you could save data but you problably did it before" );
+    if( APPDEBUG ) NSLog( @"on application:handleEventsForBackgroundURLSession:completionHandler: here you could save data but you problably did it before" );
 }
 
 #pragma mark - Class Instance Methods
@@ -155,10 +155,10 @@
 {
     if( COREDATA_AUTOSAVE == YES )
     {
-        if( DEBUG ) NSLog( @"in autosave..." );
+        if( APPDEBUG ) NSLog( @"in autosave..." );
         [self.model saveWithErrorBlock:^( NSError* error )
         {
-             if( DEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
+             if( APPDEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
         }];
         [self performSelector:@selector( performCoreDataAutoSave ) withObject:nil afterDelay: COREDATA_AUTOSAVE_DELAY];
     }

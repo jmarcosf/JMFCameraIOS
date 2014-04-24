@@ -94,7 +94,7 @@
                                     object:self
                                     userInfo:@{@"Error" : error}];
             [[NSNotificationCenter defaultCenter] postNotification:note];
-            NSLog( @"Error while adding a Store: %@", error );
+            if( APPDEBUG ) NSLog( @"Error while adding a Store: %@", error );
             return nil;
         }
     }
@@ -233,12 +233,12 @@
     {
         if( ![self.storeCoordinator removePersistentStore:store error:&error] )
         {
-            NSLog(@"Error while removing store %@ from store coordinator %@", store, self.storeCoordinator);
+            if( APPDEBUG ) NSLog(@"Error while removing store %@ from store coordinator %@", store, self.storeCoordinator);
         }
     }
     if( ![[NSFileManager defaultManager] removeItemAtURL:self.databaseUrl error:&error] )
     {
-        NSLog( @"Error removing %@: %@", self.databaseUrl, error );
+        if( APPDEBUG ) NSLog( @"Error removing %@: %@", self.databaseUrl, error );
     }
     
     // The Core Data stack does not like you removing the file under it. If you want to delete the file

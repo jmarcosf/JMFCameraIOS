@@ -297,11 +297,11 @@
     CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex( imageSource, 0, (__bridge CFDictionaryRef)options);
     if( imageProperties )
     {
-        NSNumber* pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
-        NSNumber* pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
-        NSNumber* bitsColorPerPixel = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
-        NSNumber* orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
-        NSString* colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
+//        NSNumber* pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
+//        NSNumber* pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
+//        NSNumber* bitsColorPerPixel = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
+//        NSNumber* orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
+//        NSString* colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
         
         NSLog(@"Image properties: %@", (__bridge NSDictionary*)imageProperties);
         CFRelease( imageProperties );
