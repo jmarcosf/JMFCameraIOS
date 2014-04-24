@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
+#import "JMFArrayViewController.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -21,17 +22,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : UIViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                               UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
-                                                               UITableViewDataSource, UITableViewDelegate>
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Properties                                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
+@interface JMFCameraIOS_MainViewController : JMFArrayViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+                                                                     UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -45,12 +37,20 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithModel:(NSMutableArray*)model;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /* Instance Methods                                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons;
-- (void)reloadData;
 - (void)editPhoto;
 
 - (void)onCameraClicked;

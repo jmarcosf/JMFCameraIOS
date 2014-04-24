@@ -24,9 +24,8 @@
 /***************************************************************************/
 @interface JMFCoreDataViewController()
 {
-    BOOL                    m_bSuspendAutomaticTrackingOfChangesInManagedObjectContext;
-    BOOL                    m_bBeganUpdates;
-    JMFCoreDataViewMode     m_ViewMode;
+    BOOL    m_bSuspendAutomaticTrackingOfChangesInManagedObjectContext;
+    BOOL    m_bBeganUpdates;
 }
 @end
 
@@ -81,7 +80,8 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithFetchedResultsController:style:                                */
+/*  initWithFetchedResultsController:frame:style:                          */
+/*         collectionViewLayout:viewMode:                                  */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -95,8 +95,17 @@
     {
         self.fetchedResultsController   = fetchedResultsController;
         self.tableView                  = [[UITableView alloc] initWithFrame:frame style:style];
+        self.layout                     = layout;
         self.collectionView             = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
-        m_ViewMode                      = viewMode;
+        self.viewMode                   = viewMode;
+        
+        self.tableView.dataSource       = self;
+        self.tableView.delegate         = self;
+        self.collectionView.dataSource  = self;
+        self.collectionView.delegate    = self;
+        
+        [self.view addSubview:self.tableView];
+        [self.view addSubview:self.collectionView];
     }
     return self;
 }
@@ -121,7 +130,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return ( m_ViewMode == JMFCoreDataViewList ) ? [[self.fetchedResultsController sections] count] : 0;
+    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[self.fetchedResultsController sections] count] : 0;
 }
 
 /***************************************************************************/
@@ -133,7 +142,7 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ( m_ViewMode == JMFCoreDataViewList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
 }
 
 /***************************************************************************/
@@ -145,7 +154,7 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return ( m_ViewMode == JMFCoreDataViewList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] name] : nil;
+	return ( self.viewMode == JMFCoreDataViewModeList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] name] : nil;
 }
 
 /***************************************************************************/
@@ -157,7 +166,7 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
 {
-	return ( m_ViewMode == JMFCoreDataViewList ) ? [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index] : 0;
+	return ( self.viewMode == JMFCoreDataViewModeList ) ? [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index] : 0;
 }
 
 /***************************************************************************/
@@ -169,7 +178,7 @@
 /***************************************************************************/
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
 {
-    return ( m_ViewMode == JMFCoreDataViewList ) ? [self.fetchedResultsController sectionIndexTitles] : nil;
+    return ( self.viewMode == JMFCoreDataViewModeList ) ? [self.fetchedResultsController sectionIndexTitles] : nil;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -192,7 +201,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
 {
-    return ( m_ViewMode == JMFCoreDataViewMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
+    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
 }
 
 /***************************************************************************/
@@ -204,7 +213,7 @@
 /***************************************************************************/
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return ( m_ViewMode == JMFCoreDataViewMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -227,7 +236,7 @@
 /***************************************************************************/
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-    if( m_ViewMode == JMFCoreDataViewList )
+    if( self.viewMode == JMFCoreDataViewModeList )
     {
         if( !m_bSuspendAutomaticTrackingOfChangesInManagedObjectContext )
         {
@@ -251,13 +260,13 @@
         switch( type )
         {
             case NSFetchedResultsChangeInsert:
-                if( m_ViewMode == JMFCoreDataViewMosaic )    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-                else if( m_ViewMode == JMFCoreDataViewList ) [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                if( self.viewMode == JMFCoreDataViewModeMosaic )    [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
                 break;
                 
             case NSFetchedResultsChangeDelete:
-                if( m_ViewMode == JMFCoreDataViewMosaic )    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-                else if( m_ViewMode == JMFCoreDataViewList ) [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                if( self.viewMode == JMFCoreDataViewModeMosaic )    [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
+                else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
                 break;
         }
     }
@@ -277,27 +286,27 @@
         switch( type )
         {
             case NSFetchedResultsChangeInsert:
-                if( m_ViewMode == JMFCoreDataViewMosaic )   [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-                else if( m_ViewMode == JMFCoreDataViewList) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                if( self.viewMode == JMFCoreDataViewModeMosaic )   [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
+                else if( self.viewMode == JMFCoreDataViewModeList) [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
                 break;
                 
             case NSFetchedResultsChangeDelete:
-                if( m_ViewMode == JMFCoreDataViewMosaic )    [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                else if( m_ViewMode == JMFCoreDataViewList ) [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                if( self.viewMode == JMFCoreDataViewModeMosaic )    [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 break;
                 
             case NSFetchedResultsChangeUpdate:
-                if( m_ViewMode == JMFCoreDataViewMosaic )    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                else if( m_ViewMode == JMFCoreDataViewList ) [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                if( self.viewMode == JMFCoreDataViewModeMosaic )    [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 break;
                 
             case NSFetchedResultsChangeMove:
-                if( m_ViewMode == JMFCoreDataViewMosaic )
+                if( self.viewMode == JMFCoreDataViewModeMosaic )
                 {
                     [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
                     [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
                 }
-                else if( m_ViewMode == JMFCoreDataViewList )
+                else if( self.viewMode == JMFCoreDataViewModeList )
                 {
                     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -316,7 +325,7 @@
 /***************************************************************************/
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    if( m_ViewMode == JMFCoreDataViewList )
+    if( self.viewMode == JMFCoreDataViewModeList )
     {
         if( m_bBeganUpdates ) [self.tableView endUpdates];
     }
@@ -468,7 +477,7 @@
 /***************************************************************************/
 - (void)setViewMode:(JMFCoreDataViewMode)newViewMode
 {
-    m_ViewMode = newViewMode;
+    self.viewMode = newViewMode;
     [self reloadData];
 }
 
@@ -506,8 +515,8 @@
 /***************************************************************************/
 - (void)refreshControls
 {
-    self.tableView.hidden       = ( m_ViewMode != JMFCoreDataViewList );
-    self.collectionView.hidden  = ( m_ViewMode != JMFCoreDataViewMosaic );
+    self.tableView.hidden       = ( self.viewMode != JMFCoreDataViewModeList );
+    self.collectionView.hidden  = ( self.viewMode != JMFCoreDataViewModeMosaic );
 }
 
 @end

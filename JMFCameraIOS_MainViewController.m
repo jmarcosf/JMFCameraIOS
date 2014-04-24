@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFCameraIOS_MainViewController.h"
+#import "JMFArrayViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFFlickr.h"
@@ -31,10 +32,6 @@
 #define IDC_UITOOLBAR_BUTTON_DELETE_INDEX           2
 #define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX           3
 
-#define VIEW_MODE_WELCOME                           0
-#define VIEW_MODE_MOSAIC                            1
-#define VIEW_MODE_LIST                              2
-
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -50,16 +47,12 @@
     
     UIBarButtonItem*        iboSelectButton;
     UILabel*                iboEmptyAlbumLabel;
-    UICollectionView*       iboCollectionView;
-    UITableView*            iboTableView;
     
     NSMutableArray*         tbiaMosaicMode;
     NSMutableArray*         tbiaListMode;
     
-    NSMutableArray*         album;
     BOOL                    bMultiSelectMode;
     BOOL                    bFromCamera;
-    int                     iViewMode;
     int                     iSelectedCount;
 }
 
@@ -94,24 +87,16 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithNibName:bundle:                                                */
+/*  init                                                                   */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithModel:(NSMutableArray*)model
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if( self )
+    if( self = [super initWithModel:model frame:CGRectMake( 0, 0, 0, 0 ) style:UITableViewStylePlain
+                collectioViewLayout:[[UICollectionViewFlowLayout alloc]init] viewMode:JMFArrayViewModeMosaic] )
     {
-        album = [[NSMutableArray alloc]init];
-        [album addObject:[UIImage imageNamed:@"connie.jpg"]];
-        [album addObject:[UIImage imageNamed:@"jennifer.jpg"]];
-        [album addObject:[UIImage imageNamed:@"rachel.jpg"]];
-        [album addObject:[UIImage imageNamed:@"rachel.jpg"]];
-        [album addObject:[UIImage imageNamed:@"connie.jpg"]];
-        [album addObject:[UIImage imageNamed:@"jennifer.jpg"]];
-        [album addObject:[UIImage imageNamed:@"pareja.jpg"]];
-        iSelectedCount = 0;
+
     }
     return self;
 }
@@ -171,30 +156,22 @@
     iboEmptyAlbumLabel.lineBreakMode = NSLineBreakByWordWrapping;
     iboEmptyAlbumLabel.numberOfLines = 10;
     iboEmptyAlbumLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-    iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", nil );
+    iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_self.model_MESSAGE", nil );
     [self.view addSubview:iboEmptyAlbumLabel];
     
     // Collection View
-    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
+    UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.layout;
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    
-    iboCollectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
-    iboCollectionView.dataSource = self;
-    iboCollectionView.delegate = self;
-    iboCollectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    iboCollectionView.allowsMultipleSelection = bMultiSelectMode;
-    
-    [iboCollectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
-    [self.view addSubview:iboCollectionView];
+    self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.collectionView.allowsMultipleSelection = bMultiSelectMode;
+    [self.collectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
     
     //Table View
-    iboTableView = [[UITableView alloc]initWithFrame:Rect style:UITableViewStylePlain];
-    iboTableView.dataSource = self;
-    iboTableView.delegate = self;
-    iboTableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    iboTableView.allowsMultipleSelection = bMultiSelectMode;
-    [iboTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
-    [self.view addSubview:iboTableView];
+    self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.tableView.allowsMultipleSelection = bMultiSelectMode;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
+
+    [self setFrame:Rect];
 }
 
 /***************************************************************************/
@@ -213,8 +190,7 @@
     [iboEmptyAlbumLabel setFrame:Rect];
     if( bFromCamera ) Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC
     bFromCamera = NO;
-    [iboCollectionView setFrame:Rect];
-    [iboTableView setFrame:Rect];
+    [self setFrame:Rect];
     
     [self redrawControls:NO];
     [self.view bringSubviewToFront:iboEmptyAlbumLabel];
@@ -282,7 +258,7 @@
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
     UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [album addObject:photo];
+    [self.model addObject:photo];
     [picker dismissViewControllerAnimated:YES completion:nil];
     bFromCamera = YES;
     [self reloadData];
@@ -349,32 +325,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  numberOfSectionsInCollectionView:                                      */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
-{
-    return 1;
-}
-
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  collectionView:numberOfItemsInSection:                                 */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return [album count];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  collectionView:numberOfItemsInSection:                                 */
+/*  collectionView:cellForItemAtIndexPath:                                 */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -382,7 +333,7 @@
 {
     JMFCameraIOS_MainCVPhotoCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    cell.iboPhotoImage.image = [album objectAtIndex:indexPath.item];
+    cell.iboPhotoImage.image = [self.model objectAtIndex:indexPath.item];
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 100;
@@ -452,18 +403,6 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  numberOfSectionsInTableView:                                           */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
--(NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
-    return 1;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*  titleForHeaderInSection:                                               */
 /*                                                                         */
 /*                                                                         */
@@ -471,18 +410,6 @@
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     return NSLocalizedString( @"IDS_PICTURES", nil );
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  tableView:numberOfRowsInSection:                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return album.count;
 }
 
 /***************************************************************************/
@@ -497,7 +424,7 @@
     UITableViewCell* cell = nil;
     cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.textLabel.text = [NSString stringWithFormat:@"Photo for row #%ld", (long)indexPath.row];
-    cell.imageView.image = [album objectAtIndex:indexPath.row];
+    cell.imageView.image = [self.model objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -568,33 +495,36 @@
 {
     if( bOnlyButtons == NO )
     {
-        iboEmptyAlbumLabel.hidden = iboCollectionView.hidden = iboTableView.hidden = YES;
-        if( album.count <= 0 ) iViewMode = VIEW_MODE_WELCOME;
-        else if( iViewMode == VIEW_MODE_WELCOME ) iViewMode = VIEW_MODE_MOSAIC;
+        iboEmptyAlbumLabel.hidden = self.collectionView.hidden = self.tableView.hidden = YES;
+        if( self.model.count <= 0 ) self.viewMode = JMFArrayViewModeNone;
+        else if( self.viewMode == JMFArrayViewModeNone ) self.viewMode = JMFArrayViewModeMosaic;
         
-        switch( iViewMode )
+        switch( self.viewMode )
         {
-            case VIEW_MODE_WELCOME:
+            case JMFArrayViewModeNone:
                 iboEmptyAlbumLabel.hidden = NO;
                 iboSelectButton.style = UIBarButtonItemStylePlain;
                 iboSelectButton.enabled = NO;
                 iboSelectButton.title = nil;
                 break;
 
-            case VIEW_MODE_MOSAIC:
-            case VIEW_MODE_LIST:
-                iboCollectionView.hidden = ( iViewMode == VIEW_MODE_LIST );
-                iboTableView.hidden = ( iViewMode == VIEW_MODE_MOSAIC );
+            case JMFArrayViewModeMosaic:
+            case JMFArrayViewModeList:
+                self.collectionView.hidden = ( self.viewMode == JMFArrayViewModeList );
+                self.tableView.hidden = ( self.viewMode == JMFArrayViewModeMosaic );
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
                 iboSelectButton.enabled = YES;
                 iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
+                break;
+                
+            default:
                 break;
         }
     }
     
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setEnabled:( !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( album.count > 0  && !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && album.count > 0 && iSelectedCount != 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX] setEnabled:( self.model.count > 0  && !bMultiSelectMode )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && self.model.count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
 }
 
@@ -607,8 +537,8 @@
 /***************************************************************************/
 -(void)reloadData
 {
-    if( iViewMode == VIEW_MODE_MOSAIC ) [iboCollectionView reloadData];
-    else if( iViewMode == VIEW_MODE_LIST ) [iboTableView reloadData];
+    if( self.viewMode == JMFArrayViewModeMosaic ) [self.collectionView reloadData];
+    else if( self.viewMode == JMFArrayViewModeList ) [self.tableView reloadData];
 }
 
 /***************************************************************************/
@@ -620,13 +550,13 @@
 /***************************************************************************/
 - (void)editPhoto
 {
-    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
+    NSArray*  selectedArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     if( selectedArray.count == 1 )
     {
         NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
-        NSUInteger index = ( iViewMode == VIEW_MODE_MOSAIC ) ? indexPath.item : indexPath.row;
-        UIImage* image = [album objectAtIndex:index];
+        NSUInteger index = ( self.viewMode == JMFArrayViewModeMosaic ) ? indexPath.item : indexPath.row;
+        UIImage* image = [self.model objectAtIndex:index];
         
         JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]initWithImage:image];
         [self.navigationController pushViewController:editVC animated:YES];
@@ -643,22 +573,22 @@
 - (void)onSelectClicked:(id)sender
 {
     NSArray* selectedIndexPathArray;
-    selectedIndexPathArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems]
-                                                               : [iboTableView indexPathsForSelectedRows];
+    selectedIndexPathArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems]
+                                                               : [self.tableView indexPathsForSelectedRows];
     if( selectedIndexPathArray != nil )
     {
         for( NSIndexPath* indexPath in selectedIndexPathArray )
         {
-            if( iViewMode == VIEW_MODE_MOSAIC ) [iboCollectionView deselectItemAtIndexPath:indexPath animated:NO];
-            else [iboTableView deselectRowAtIndexPath:indexPath animated:NO];
+            if( self.viewMode == JMFArrayViewModeMosaic ) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+            else [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     }
 
     bMultiSelectMode = !bMultiSelectMode;
     iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
     self.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_SELECT_ITEMS", nil ) : NSLocalizedString( @"IDS_APP_NAME", nil );
-    iboCollectionView.allowsMultipleSelection = bMultiSelectMode;
-    iboTableView.allowsMultipleSelection = bMultiSelectMode;
+    self.collectionView.allowsMultipleSelection = bMultiSelectMode;
+    self.tableView.allowsMultipleSelection = bMultiSelectMode;
     [self redrawControls:YES];
 }
 
@@ -701,9 +631,9 @@
 - (void)onModeClicked
 {
     iSelectedCount = 0;
-    iViewMode = ( iViewMode == VIEW_MODE_MOSAIC ) ? VIEW_MODE_LIST : VIEW_MODE_MOSAIC;
+    self.viewMode = ( self.viewMode == JMFArrayViewModeMosaic ) ? JMFArrayViewModeList : JMFArrayViewModeMosaic;
     [self redrawControls:NO];
-    self.iboTabBar.items = ( iViewMode == VIEW_MODE_MOSAIC ) ? tbiaMosaicMode : tbiaListMode;
+    self.iboTabBar.items = ( self.viewMode == JMFArrayViewModeMosaic ) ? tbiaMosaicMode : tbiaListMode;
     [self reloadData];
 }
 
@@ -716,7 +646,7 @@
 /***************************************************************************/
 - (void)onDeleteClicked
 {
-    NSArray*  selectedArray = ( iViewMode == VIEW_MODE_MOSAIC ) ? [iboCollectionView indexPathsForSelectedItems] : [iboTableView indexPathsForSelectedRows];
+    NSArray*  selectedArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
@@ -737,7 +667,7 @@
                  {
                      [indexSet addIndex:indexPath.item];
                  }
-                 [album removeObjectsAtIndexes:indexSet];
+                 [self.model removeObjectsAtIndexes:indexSet];
                  iSelectedCount = 0;
                  [self redrawControls:YES];
                  [self reloadData];
@@ -780,8 +710,8 @@
                  {
                      for( JMFFlickrPhoto* photo in results )
                      {
-                         if( photo.thumbnail != nil ) [album addObject:photo.thumbnail];
-                         else if( photo.largeImage != nil ) [album addObject:photo.largeImage];
+                         if( photo.thumbnail != nil ) [self.model addObject:photo.thumbnail];
+                         else if( photo.largeImage != nil ) [self.model addObject:photo.largeImage];
                      }
                  }
                  dispatch_async(dispatch_get_main_queue(), ^

@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCoreDataViewController.h                                            */
+/*  JMFArrayViewController.h                                               */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               CoreData View Controller Class definition file            */
+/*               Array View Controller Class definition file               */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*         NOTE: TableViewController + CollectionViewController            */
@@ -15,7 +15,6 @@
 /***************************************************************************/
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
 
 /***************************************************************************/
 /*                                                                         */
@@ -24,12 +23,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
+typedef NS_ENUM( NSInteger, JMFArrayViewMode )
 {
-    JMFCoreDataViewModeNone     =  0,
-    JMFCoreDataViewModeMosaic   =  1,
-    JMFCoreDataViewModeList     =  2,
-    JMFCoreDataViewModeUnknown  = -1,
+    JMFArrayViewModeNone     =  0,
+    JMFArrayViewModeMosaic   =  1,
+    JMFArrayViewModeList     =  2,
+    JMFArrayViewModeUnknown  = -1,
 };
 
 /***************************************************************************/
@@ -37,15 +36,14 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCoreDataViewController Class Interface                              */
+/*  JMFArrayViewController Class Interface                                 */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCoreDataViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
-                                                         UITableViewDataSource, UITableViewDelegate,
-                                                         NSFetchedResultsControllerDelegate>
+@interface JMFArrayViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+                                                      UITableViewDataSource, UITableViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -54,11 +52,11 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic, strong) NSFetchedResultsController*   fetchedResultsController;
-@property (nonatomic, retain) UITableView*                  tableView;
-@property (nonatomic, retain) UICollectionView*             collectionView;
-@property (nonatomic, retain) UICollectionViewLayout*       layout;
-@property (nonatomic)         JMFCoreDataViewMode           viewMode;
+@property (nonatomic, strong) NSMutableArray*           model;
+@property (nonatomic, retain) UITableView*              tableView;
+@property (nonatomic, retain) UICollectionView*         collectionView;
+@property (nonatomic, retain) UICollectionViewLayout*   layout;
+@property (nonatomic)         JMFArrayViewMode          viewMode;
 
 /***************************************************************************/
 /*                                                                         */
@@ -67,17 +65,9 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
-                                  frame:(CGRect)frame
-                                 style:(UITableViewStyle)style
-                   collectioViewLayout:(UICollectionViewLayout*)layout
-                              viewMode:(JMFCoreDataViewMode)viewMode;
-- (void)setFetchedResultsController:(NSFetchedResultsController*)newFetchedResultsController;
-- (void)performFetch;
-- (void)setSuspendAutomaticTrackingOfChangesInManagedObjectContext:(BOOL)bSuspend;
-- (void)endSuspensionOfUpdatesDueToContextChanges;
+- (id)initWithModel:(NSMutableArray*)model frame:(CGRect)frame style:(UITableViewStyle)style collectioViewLayout:(UICollectionViewLayout*)layout viewMode:(JMFArrayViewMode)viewMode;
 - (void)setFrame:(CGRect)newFrame;
-- (void)setViewMode:(JMFCoreDataViewMode)newViewMode;
+- (void)setViewMode:(JMFArrayViewMode)newViewMode;
 - (void)reloadData;
 
 @end

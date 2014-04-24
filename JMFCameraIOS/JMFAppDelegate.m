@@ -47,9 +47,18 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    self.model = [JMFCoreDataStack coreDataStackWithModelName:NSLocalizedString( @"IDS_APP_NAME", nil )];
+    //self.model = [JMFCoreDataStack coreDataStackWithModelName:NSLocalizedString( @"IDS_APP_NAME", nil )];
     
-    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]init];
+    NSMutableArray* model = [[NSMutableArray alloc] init];
+    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
+    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
+    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
+    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
+    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+    [model addObject:[UIImage imageNamed:@"pareja.jpg"]];
+    
+    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc] initWithModel:model];
     self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
     
     self.window.backgroundColor = [UIColor whiteColor];
