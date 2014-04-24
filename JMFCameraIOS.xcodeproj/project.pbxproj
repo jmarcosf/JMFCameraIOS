@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		900660F41908028A00F249AA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900660F31908028A00F249AA /* CoreImage.framework */; };
+		900660F6190804F700F249AA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900660F5190804F700F249AA /* ImageIO.framework */; };
 		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
 		900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */; };
 		9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */; };
@@ -24,6 +26,14 @@
 		9028F61118FC6DD6000956E7 /* ListMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60718FC6DD6000956E7 /* ListMode@2x.png */; };
 		9028F61518FC6EB7000956E7 /* MosaicMode.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F61318FC6EB7000956E7 /* MosaicMode.png */; };
 		9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */; };
+		904930C6190905030024FAC1 /* _JMFFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930BF190905030024FAC1 /* _JMFFace.m */; };
+		904930C7190905030024FAC1 /* _JMFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C1190905030024FAC1 /* _JMFFilter.m */; };
+		904930C8190905030024FAC1 /* _JMFNamedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C3190905030024FAC1 /* _JMFNamedEntity.m */; };
+		904930C9190905030024FAC1 /* _JMFPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C5190905030024FAC1 /* _JMFPhoto.m */; };
+		904930D21909053C0024FAC1 /* JMFFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930CB1909053C0024FAC1 /* JMFFace.m */; };
+		904930D31909053C0024FAC1 /* JMFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930CD1909053C0024FAC1 /* JMFFilter.m */; };
+		904930D41909053C0024FAC1 /* JMFNamedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930CF1909053C0024FAC1 /* JMFNamedEntity.m */; };
+		904930D51909053C0024FAC1 /* JMFPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930D11909053C0024FAC1 /* JMFPhoto.m */; };
 		9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3A218FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld */; };
 		9051D3E718FB38A20066AB35 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9051D3E618FB38A20066AB35 /* CoreData.framework */; };
 		9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3EA18FB3A280066AB35 /* JMFCoreDataStack.m */; };
@@ -90,6 +100,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		900660F31908028A00F249AA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		900660F5190804F700F249AA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainCVPhotoCell.h; sourceTree = "<group>"; };
 		900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainCVPhotoCell.m; sourceTree = "<group>"; };
 		900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainCVPhotoCell.xib; sourceTree = "<group>"; };
@@ -110,6 +122,22 @@
 		9028F60718FC6DD6000956E7 /* ListMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ListMode@2x.png"; sourceTree = "<group>"; };
 		9028F61318FC6EB7000956E7 /* MosaicMode.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MosaicMode.png; sourceTree = "<group>"; };
 		9028F61418FC6EB7000956E7 /* MosaicMode@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MosaicMode@2x.png"; sourceTree = "<group>"; };
+		904930BE190905030024FAC1 /* _JMFFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFace.h; sourceTree = "<group>"; };
+		904930BF190905030024FAC1 /* _JMFFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFFace.m; sourceTree = "<group>"; };
+		904930C0190905030024FAC1 /* _JMFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFilter.h; sourceTree = "<group>"; };
+		904930C1190905030024FAC1 /* _JMFFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFFilter.m; sourceTree = "<group>"; };
+		904930C2190905030024FAC1 /* _JMFNamedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFNamedEntity.h; sourceTree = "<group>"; };
+		904930C3190905030024FAC1 /* _JMFNamedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFNamedEntity.m; sourceTree = "<group>"; };
+		904930C4190905030024FAC1 /* _JMFPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFPhoto.h; sourceTree = "<group>"; };
+		904930C5190905030024FAC1 /* _JMFPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFPhoto.m; sourceTree = "<group>"; };
+		904930CA1909053C0024FAC1 /* JMFFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFace.h; sourceTree = "<group>"; };
+		904930CB1909053C0024FAC1 /* JMFFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFace.m; sourceTree = "<group>"; };
+		904930CC1909053C0024FAC1 /* JMFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFilter.h; sourceTree = "<group>"; };
+		904930CD1909053C0024FAC1 /* JMFFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFilter.m; sourceTree = "<group>"; };
+		904930CE1909053C0024FAC1 /* JMFNamedEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFNamedEntity.h; sourceTree = "<group>"; };
+		904930CF1909053C0024FAC1 /* JMFNamedEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFNamedEntity.m; sourceTree = "<group>"; };
+		904930D01909053C0024FAC1 /* JMFPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFPhoto.h; sourceTree = "<group>"; };
+		904930D11909053C0024FAC1 /* JMFPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFPhoto.m; sourceTree = "<group>"; };
 		9051D3A318FB37AF0066AB35 /* JMFCameraIOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JMFCameraIOS.xcdatamodel; sourceTree = "<group>"; };
 		9051D3E618FB38A20066AB35 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9051D3E918FB3A280066AB35 /* JMFCoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCoreDataStack.h; sourceTree = "<group>"; };
@@ -186,6 +214,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900660F6190804F700F249AA /* ImageIO.framework in Frameworks */,
+				900660F41908028A00F249AA /* CoreImage.framework in Frameworks */,
 				9051D3E718FB38A20066AB35 /* CoreData.framework in Frameworks */,
 				906E720A18F9D4CF00D1CC63 /* CoreGraphics.framework in Frameworks */,
 				906E720C18F9D4CF00D1CC63 /* UIKit.framework in Frameworks */,
@@ -261,6 +291,14 @@
 		9051D3E818FB3A0E0066AB35 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				904930BE190905030024FAC1 /* _JMFFace.h */,
+				904930BF190905030024FAC1 /* _JMFFace.m */,
+				904930C0190905030024FAC1 /* _JMFFilter.h */,
+				904930C1190905030024FAC1 /* _JMFFilter.m */,
+				904930C2190905030024FAC1 /* _JMFNamedEntity.h */,
+				904930C3190905030024FAC1 /* _JMFNamedEntity.m */,
+				904930C4190905030024FAC1 /* _JMFPhoto.h */,
+				904930C5190905030024FAC1 /* _JMFPhoto.m */,
 				9051D3E918FB3A280066AB35 /* JMFCoreDataStack.h */,
 				9051D3EA18FB3A280066AB35 /* JMFCoreDataStack.m */,
 				9051D3EB18FB3A280066AB35 /* JMFCoreDataTableViewController.h */,
@@ -309,6 +347,8 @@
 		906E720618F9D4CF00D1CC63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				900660F5190804F700F249AA /* ImageIO.framework */,
+				900660F31908028A00F249AA /* CoreImage.framework */,
 				9051D3E618FB38A20066AB35 /* CoreData.framework */,
 				906E720718F9D4CF00D1CC63 /* Foundation.framework */,
 				906E720918F9D4CF00D1CC63 /* CoreGraphics.framework */,
@@ -371,6 +411,14 @@
 		906E723718F9D6B200D1CC63 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				904930CA1909053C0024FAC1 /* JMFFace.h */,
+				904930CB1909053C0024FAC1 /* JMFFace.m */,
+				904930CC1909053C0024FAC1 /* JMFFilter.h */,
+				904930CD1909053C0024FAC1 /* JMFFilter.m */,
+				904930CE1909053C0024FAC1 /* JMFNamedEntity.h */,
+				904930CF1909053C0024FAC1 /* JMFNamedEntity.m */,
+				904930D01909053C0024FAC1 /* JMFPhoto.h */,
+				904930D11909053C0024FAC1 /* JMFPhoto.m */,
 				9051D3A218FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld */,
 			);
 			name = Model;
@@ -558,7 +606,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				904930C6190905030024FAC1 /* _JMFFace.m in Sources */,
+				904930D51909053C0024FAC1 /* JMFPhoto.m in Sources */,
 				9051D3ED18FB3A280066AB35 /* JMFCoreDataStack.m in Sources */,
+				904930C8190905030024FAC1 /* _JMFNamedEntity.m in Sources */,
 				9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */,
 				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
@@ -568,10 +619,15 @@
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,
 				9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */,
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,
+				904930D31909053C0024FAC1 /* JMFFilter.m in Sources */,
 				9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */,
+				904930D41909053C0024FAC1 /* JMFNamedEntity.m in Sources */,
+				904930C9190905030024FAC1 /* _JMFPhoto.m in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
 				9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */,
+				904930D21909053C0024FAC1 /* JMFFace.m in Sources */,
 				9051D3F418FB55D60066AB35 /* JMFFlickr.m in Sources */,
+				904930C7190905030024FAC1 /* _JMFFilter.m in Sources */,
 				906E721418F9D4CF00D1CC63 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Image" syncable="YES">
-        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <relationship name="photo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="image" inverseEntity="Photo" syncable="YES"/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Face" representedClassName="JMFFace" parentEntity="NamedEntity" syncable="YES">
+        <attribute name="faceRect" attributeType="String" syncable="YES"/>
+        <attribute name="leftEyePoint" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mouthPoint" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rightEyePoint" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="face2photo" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="photo2faces" inverseEntity="Photo" syncable="YES"/>
     </entity>
-    <entity name="Photo" syncable="YES">
-        <attribute name="photoName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="image" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Image" inverseName="photo" inverseEntity="Image" syncable="YES"/>
+    <entity name="Filter" representedClassName="JMFFilter" parentEntity="NamedEntity" syncable="YES">
+        <attribute name="active" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="filter2photo" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="photo2filters" inverseEntity="Photo" syncable="YES"/>
+    </entity>
+    <entity name="NamedEntity" representedClassName="JMFNamedEntity" syncable="YES">
+        <attribute name="creationDate" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="modificationDate" attributeType="String" indexed="YES" syncable="YES"/>
+    </entity>
+    <entity name="Photo" representedClassName="JMFPhoto" parentEntity="NamedEntity" syncable="YES">
+        <attribute name="altitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="colorModel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="colorsPerPixel" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="filteredImageUrl" attributeType="String" syncable="YES"/>
+        <attribute name="filteredThumbnailUrl" attributeType="String" syncable="YES"/>
+        <attribute name="geoLocation" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="orientation" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="pixelHeight" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="pixelWidht" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sourceImageUrl" attributeType="String" syncable="YES"/>
+        <attribute name="sourceThumbnailUrl" attributeType="String" syncable="YES"/>
+        <relationship name="photo2faces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Face" inverseName="face2photo" inverseEntity="Face" syncable="YES"/>
+        <relationship name="photo2filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Filter" inverseName="filter2photo" inverseEntity="Filter" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Photo" positionX="-63" positionY="-18" width="128" height="73"/>
-        <element name="Image" positionX="-54" positionY="0" width="128" height="73"/>
+        <element name="Face" positionX="-803" positionY="-603" width="128" height="118"/>
+        <element name="Filter" positionX="-803" positionY="-423" width="128" height="88"/>
+        <element name="NamedEntity" positionX="-909" positionY="-763" width="128" height="73"/>
+        <element name="Photo" positionX="-1008" positionY="-603" width="128" height="268"/>
     </elements>
 </model>
