@@ -1,49 +1,56 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS-Prefix.pch                                                */
+/*  JMFCoreDataCollectionViewController.h                                  */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Precompiled Header Files                                  */
+/*               CoreData CollectionView Controller Class definition file  */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
+/*         NOTE: Adapted from JMFCoreDataTableViewController               */
+/*                                                                         */
+/*  Docs: http://www.stanford.edu/class/cs193p/cgi-bin/drupal/node/389     */
 /*                                                                         */
 /***************************************************************************/
-#import <Availability.h>
-#import "UIAlertView+CompletionBlock.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Version checking                                                        */
+/*                                                                         */
+/*                                                                         */
+/*  JMFCoreDataCollectionViewController Class Interface                    */
+/*                                                                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#ifndef __IPHONE_3_0
-#warning "This project uses features only available in iOS SDK 3.0 and later."
-#endif
+@interface JMFCoreDataCollectionViewController : UICollectionViewController <NSFetchedResultsControllerDelegate>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Imports                                                                 */
+/*  Properties                                                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-    #import <CoreData/CoreData.h>
-#endif
+@property (strong, nonatomic) NSFetchedResultsController*   fetchedResultsController;
+@property (nonatomic)         BOOL                          bSuspendAutomaticTrackingOfChangesInManagedObjectContext;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Defines                                                                 */
+/*  Instance Methods                                                       */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define DEBUG                                               NO
-#define COREDATA_AUTOSAVE                                   YES
-#define COREDATA_AUTOSAVE_DELAY                             12      //Minutes
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController collectionViewLayout:(UICollectionViewLayout*)layout;
+- (void)setFetchedResultsController:(NSFetchedResultsController*)newFetchedResultsController;
+- (void)performFetch;
+- (void)setSuspendAutomaticTrackingOfChangesInManagedObjectContext:(BOOL)bSuspend;
+- (void)endSuspensionOfUpdatesDueToContextChanges;
+
+@end

@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFAppDelegate.h"
+#import "JMFCoreDataStack.h"
 #import "JMFCameraIOS_MainViewController.h"
 
 /***************************************************************************/
@@ -42,10 +43,11 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
+    self.model = [JMFCoreDataStack coreDataStackWithModelName:NSLocalizedString( @"IDS_APP_NAME", nil )];
     
     JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]init];
     self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
@@ -62,8 +64,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillResignActive:(UIApplication *)application
+- (void)applicationWillResignActive:(UIApplication*)application
 {
+    [self.model saveWithErrorBlock:^( NSError* error )
+    {
+        if( DEBUG ) NSLog( @"Error saving data in applicationWillResignActive: %@", error );
+    }];
 }
 
 /***************************************************************************/
@@ -73,8 +79,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (void)applicationDidEnterBackground:(UIApplication*)application
 {
+    [self.model saveWithErrorBlock:^( NSError* error )
+    {
+         if( DEBUG ) NSLog( @"Error saving data in applicationDidEnterBackground: %@", error );
+    }];
 }
 
 /***************************************************************************/
@@ -84,7 +94,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (void)applicationWillEnterForeground:(UIApplication*)application
 {
 }
 
@@ -95,7 +105,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)applicationDidBecomeActive:(UIApplication*)application
 {
 }
 
@@ -106,8 +116,52 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillTerminate:(UIApplication *)application
+- (void)applicationWillTerminate:(UIApplication*)application
 {
+    if( DEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  application:handleEventsForBackgroundURLSession:completionHandler:     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString*)identifier completionHandler:( void (^)() )completionHandler
+{
+    if( DEBUG ) NSLog( @"on application:handleEventsForBackgroundURLSession:completionHandler: here you could save data but you problably did it before" );
+}
+
+#pragma mark - Class Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Instance Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  performCoreDataAutoSave                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)performCoreDataAutoSave
+{
+    if( COREDATA_AUTOSAVE == YES )
+    {
+        if( DEBUG ) NSLog( @"in autosave..." );
+        [self.model saveWithErrorBlock:^( NSError* error )
+        {
+             if( DEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
+        }];
+        [self performSelector:@selector( performCoreDataAutoSave ) withObject:nil afterDelay: COREDATA_AUTOSAVE_DELAY];
+    }
 }
 
 @end

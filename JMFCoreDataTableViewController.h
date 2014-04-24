@@ -39,17 +39,18 @@
 /***************************************************************************/
 @property (strong, nonatomic) NSFetchedResultsController*   fetchedResultsController;
 @property (nonatomic)         BOOL                          bSuspendAutomaticTrackingOfChangesInManagedObjectContext;
-@property                     BOOL                          bDebug;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Instance Methods                                                       */
+/*  Initialization & Instance Methods                                      */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController style:(UITableViewStyle)style;
-- (void)performFetch;
 - (void)setFetchedResultsController:(NSFetchedResultsController*)newFetchedResultsController;
+- (void)performFetch;
+- (void)setSuspendAutomaticTrackingOfChangesInManagedObjectContext:(BOOL)bSuspend;
+- (void)endSuspensionOfUpdatesDueToContextChanges;
 
 @end

@@ -1,30 +1,29 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCoreDataTableViewController.m                                       */
+/*  JMFCoreDataCollectionViewController.m                                  */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               CoreData TableView Controller Class implementation file   */
+/*               CoreData CollectionView Controller Class implementation   */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: See AGTCoreDataTableViewController                        */
+/*         NOTE: Adapted from JMFCoreDataTableViewController               */
 /*                                                                         */
 /*  Docs: http://www.stanford.edu/class/cs193p/cgi-bin/drupal/node/389     */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFCoreDataTableViewController.h"
+#import "JMFCoreDataCollectionViewController.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  JMFCoreDataTableViewController Class Interface                         */
+/*  JMFCoreDataCollectionViewController Class Interface                    */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCoreDataTableViewController()
+@interface JMFCoreDataCollectionViewController()
 
-@property (nonatomic) BOOL bBeganUpdates;
 
 @end
 
@@ -34,14 +33,14 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCoreDataTableViewController Class implementation                    */
+/*  JMFCoreDataCollectionViewController Class implementation               */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFCoreDataTableViewController
+@implementation JMFCoreDataCollectionViewController
 
 /***************************************************************************/
 /*                                                                         */
@@ -79,26 +78,26 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithFetchedResultsController:style:                                */
+/*  initWithFetchedResultsController:layout:                               */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController style:(UITableViewStyle)style
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController collectionViewLayout:(UICollectionViewLayout*)layout
 {
-    if( self = [super initWithStyle:style] )
+    if( self = [super initWithCollectionViewLayout:layout] )
     {
         self.fetchedResultsController = fetchedResultsController;
     }
     return self;
 }
 
-#pragma mark - UITableViewDataSource
+#pragma mark - UICollectionViewDataSource
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UITableViewDataSource Methods                                          */
+/*  UICollectionViewDataSource Methods                                     */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -106,11 +105,11 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  numberOfSectionsInTableView:                                           */
+/*  numberOfSectionsInCollectionView:                                      */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
 {
     return [[self.fetchedResultsController sections] count];
 }
@@ -118,49 +117,13 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  tableView:numberOfRowsInSection:                                       */
+/*  collectionView:numberOfItemsInSection:                                 */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  tableView:titleForHeaderInSection:                                     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
-	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  tableView:sectionForSectionIndexTitle:atIndex:                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)tableView:(UITableView*)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
-{
-	return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  sectionIndexTitlesForTableView:                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
-{
-    return [self.fetchedResultsController sectionIndexTitles];
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -185,8 +148,7 @@
 {
     if( !self.bSuspendAutomaticTrackingOfChangesInManagedObjectContext )
     {
-        [self.tableView beginUpdates];
-        self.bBeganUpdates = YES;
+        //TODO:
     }
 }
 
@@ -204,11 +166,11 @@
         switch( type )
         {
             case NSFetchedResultsChangeInsert:
-                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                 break;
                 
             case NSFetchedResultsChangeDelete:
-                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
                 break;
         }
     }
@@ -228,20 +190,20 @@
         switch( type )
         {
             case NSFetchedResultsChangeInsert:
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
                 break;
                 
             case NSFetchedResultsChangeDelete:
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
                 break;
                 
             case NSFetchedResultsChangeUpdate:
-                [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
                 break;
                 
             case NSFetchedResultsChangeMove:
-                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+                [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
                 break;
         }
     }
@@ -256,7 +218,7 @@
 /***************************************************************************/
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    if( self.bBeganUpdates ) [self.tableView endUpdates];
+    //TODO:
 }
 
 #pragma mark - Instance Methods
@@ -304,7 +266,7 @@
             if( DEBUG ) NSLog( @"[%@ %@] reset to nil",
                               NSStringFromClass( [self class] ),
                               NSStringFromSelector( _cmd ) );
-            [self.tableView reloadData];
+            [self.collectionView reloadData];
         }
     }
 }
@@ -350,7 +312,7 @@
                           NSStringFromClass( [self class] ),
                           NSStringFromSelector( _cmd ) );
     }
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
 }
 
 /***************************************************************************/
@@ -385,4 +347,3 @@
 }
 
 @end
-
