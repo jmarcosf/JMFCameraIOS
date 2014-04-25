@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_EditViewController">
             <connections>
                 <outlet property="iboFilteredImageView" destination="DgM-ar-7bf" id="v8y-b2-OMc"/>
+                <outlet property="iboFullScreenLabel" destination="o2W-mv-cLt" id="4ck-tv-TzN"/>
                 <outlet property="iboSourceImageView" destination="sUc-ew-Aep" id="kSh-7t-omE"/>
                 <outlet property="iboTabBar" destination="daO-Hn-iow" id="zeL-es-Hxr"/>
                 <outlet property="iboTableView" destination="6eI-r9-sIn" id="Yaw-hP-Vc3"/>
@@ -27,7 +28,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6eI-r9-sIn">
-                    <rect key="frame" x="0.0" y="227" width="320" height="228"/>
+                    <rect key="frame" x="0.0" y="240" width="320" height="215"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
@@ -39,9 +40,15 @@
                         <tabBarItem title="Share" image="Share.png" id="IUr-aB-URj"/>
                         <tabBarItem tag="1" title="Facial Rec." image="Show.png" id="nNH-6c-jVw"/>
                         <tabBarItem tag="2" title="Filters" image="Filter.png" id="ZET-57-W5P"/>
-                        <tabBarItem tag="3" title="Show" image="Data.png" id="X6G-gV-A0t"/>
                     </items>
                 </tabBar>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="click the picture to switch to full screen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o2W-mv-cLt">
+                    <rect key="frame" x="0.0" y="207" width="320" height="12"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -50,7 +57,6 @@
         </view>
     </objects>
     <resources>
-        <image name="Data.png" width="25" height="25"/>
         <image name="Filter.png" width="25" height="25"/>
         <image name="Share.png" width="19" height="27"/>
         <image name="Show.png" width="30" height="18"/>

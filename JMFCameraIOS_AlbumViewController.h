@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.h                                      */
+/*  JMFCameraIOS_AlbumViewController.h                                     */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class definition file                */
+/*               Album View Controller Class definition file               */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
@@ -16,12 +16,12 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*  JMFCameraIOS_AlbumViewController Class Interface                       */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
+@interface JMFCameraIOS_AlbumViewController : UIViewController <UIScrollViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,7 +30,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) UIImage*   image;
+@property (nonatomic,strong) NSArray*   album;
 
 /***************************************************************************/
 /*                                                                         */
@@ -39,11 +39,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImageView;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboFilteredImageView;
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFullScreenLabel;
+@property (weak, nonatomic) IBOutlet UIScrollView*      iboScrollView;
+@property (weak, nonatomic) IBOutlet UIPageControl*     iboPageControl;
 
 /***************************************************************************/
 /*                                                                         */
@@ -52,9 +49,15 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image;
-- (void)onShareClicked;
-- (void)onFaceDetectionClicked;
-- (void)onFiltersClicked;
+- (id)initWithAlbum:(NSArray*)album;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* IBActions                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onPageSelected:(id)sender;
 
 @end

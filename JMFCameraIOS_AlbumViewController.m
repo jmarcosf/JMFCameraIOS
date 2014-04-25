@@ -1,25 +1,34 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_ShowViewController.m                                      */
+/*  JMFCameraIOS_AlbumViewController.m                                     */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Show View Controller Class implementation file            */
+/*               Album View Controller Class implementation file           */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFCameraIOS_ShowViewController.h"
+#import "JMFCameraIOS_AlbumViewController.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_ShowViewController Class Interface                        */
+/*  Macros                                                                 */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_ShowViewController ()
+#define SCROLL_SIZE                                 self.iboScrollView.frame.size
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  JMFCameraIOS_AlbumViewController Class Interface                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@interface JMFCameraIOS_AlbumViewController ()
 {
 }
 
@@ -31,14 +40,14 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_ShowViewController Class Implemantation                   */
+/*  JMFCameraIOS_AlbumViewController Class Implemantation                  */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFCameraIOS_ShowViewController
+@implementation JMFCameraIOS_AlbumViewController
 
 #pragma mark - Initialization Methods
 /***************************************************************************/
@@ -54,15 +63,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithImage:                                                         */
+/*  initWithAlbum:                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image
+- (id)initWithAlbum:(NSArray*)album
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
-        self.image = image;
+        self.album = album;
     }
     return self;
 }
@@ -89,22 +98,24 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_SHOW", nil );
+    self.title = NSLocalizedString( @"IDS_ALBUM", nil );
     
-    self.iboScrollView.minimumZoomScale = 1.0;
-    self.iboScrollView.maximumZoomScale = 6.0;
-    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFill;
     self.iboScrollView.delegate = self;
+    self.iboPageControl.numberOfPages = self.album.count;
+    self.iboPageControl.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     
-    UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
-    imageView.image = self.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.iboZoomableView addSubview:imageView];
+    for( int i = 0; i < self.album.count; i++ )
+    {
+        UIImageView* imageView = [[UIImageView alloc] initWithImage:[self.album objectAtIndex:i]];
+        imageView.frame = CGRectMake(i * SCROLL_SIZE.width, 0, SCROLL_SIZE.width, SCROLL_SIZE.height);
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        [imageView setClipsToBounds:YES];
+        [self.iboScrollView addSubview:imageView];
+    }
     
-    UITapGestureRecognizer* tapRecognizer =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector( onPictureClicked: )];
-    [self.iboZoomableView addGestureRecognizer:tapRecognizer];
-    [tapRecognizer setDelegate:self];
+    self.iboScrollView.contentSize = CGSizeMake( SCROLL_SIZE.width * self.album.count, SCROLL_SIZE.width);
+    self.iboScrollView.pagingEnabled = YES;
+    
 }
 
 /***************************************************************************/
@@ -131,9 +142,8 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - UIScrollViewDelegate Methods
+#pragma mark - UIScrollViewDelegate
 /***************************************************************************/
-/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -141,40 +151,40 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  viewForZoomingInScrollView:                                            */
+/*  scrollViewDidEndDecelerating:                                          */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (UIView*)viewForZoomingInScrollView:(UIScrollView*)scrollView
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    return self.iboZoomableView;
+    float offset = scrollView.contentOffset.x;
+    int currentPage = offset / scrollView.frame.size.width;
+    self.iboPageControl.currentPage = currentPage;
 }
 
-#pragma mark - UIGestureRecognizerDelegate Methods
+#pragma mark - IBAction Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  UIGestureRecognizerDelegate Methods                                    */
-/*                                                                         */
+/*  IBAction Methods                                                       */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onPictureClicked:                                                      */
+/*  onPageSelected:                                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)onPictureClicked:(UITapGestureRecognizer*)tapRecognizer
+- (IBAction)onPageSelected:(id)sender
 {
-    //Pending to add show picture in full screen with animation
+    CGRect rect = CGRectMake( self.iboPageControl.currentPage * SCROLL_SIZE.width, 0, SCROLL_SIZE.width, SCROLL_SIZE.height );
+    [self.iboScrollView scrollRectToVisible:rect animated:YES];
 }
 
 @end

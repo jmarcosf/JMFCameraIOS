@@ -22,7 +22,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_ShowViewController : UIViewController <UIScrollViewDelegate>
+@interface JMFCameraIOS_ShowViewController : UIViewController <UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 /***************************************************************************/
 /*                                                                         */

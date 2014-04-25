@@ -57,5 +57,5 @@
 - (void)onModeClicked;
 - (void)onDeleteClicked;
 - (void)onFlickrClicked;
-
+- (void)onAlbumClicked;
 @end

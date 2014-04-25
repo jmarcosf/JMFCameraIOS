@@ -24,6 +24,7 @@
                         <tabBarItem tag="1" title="List Mode" image="ListMode.png" id="bDn-nA-59w"/>
                         <tabBarItem tag="2" title="Delete" image="Delete.png" id="bY6-el-rJk"/>
                         <tabBarItem tag="3" title="Flickr" image="Flickr.png" id="E8c-yl-6F3"/>
+                        <tabBarItem tag="4" title="Album" image="Album.png" id="8Ju-Z7-raG"/>
                     </items>
                 </tabBar>
             </subviews>
@@ -34,6 +35,7 @@
         </view>
     </objects>
     <resources>
+        <image name="Album.png" width="26" height="24"/>
         <image name="Camera.png" width="26" height="19"/>
         <image name="Delete.png" width="19" height="25"/>
         <image name="Flickr.png" width="20" height="24"/>

@@ -13,6 +13,7 @@
 #import "JMFCameraIOS_MainViewController.h"
 #import "JMFArrayViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
+#import "JMFCameraIOS_AlbumViewController.h"
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFFlickr.h"
 
@@ -31,6 +32,7 @@
 #define IDC_UITOOLBAR_BUTTON_MODE_INDEX             1
 #define IDC_UITOOLBAR_BUTTON_DELETE_INDEX           2
 #define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX           3
+#define IDC_UITOOLBAR_BUTTON_ALBUM_INDEX            4
 
 /***************************************************************************/
 /*                                                                         */
@@ -137,9 +139,10 @@
     self.iboTabBar.delegate = self;
     self.iboTabBar.layer.zPosition = -10;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE",   nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:NSLocalizedString( @"IDS_FLICKR", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setTitle:NSLocalizedString( @"IDS_ALBUM", nil )];
     
     //TabBarItems
     UIImage* iconMosaicMode = [UIImage imageNamed:@"MosaicMode.png"];
@@ -234,6 +237,7 @@
         case IDC_UITOOLBAR_BUTTON_MODE_INDEX:   [self onModeClicked];       break;
         case IDC_UITOOLBAR_BUTTON_DELETE_INDEX: [self onDeleteClicked];     break;
         case IDC_UITOOLBAR_BUTTON_FLICKR_INDEX: [self onFlickrClicked];     break;
+        case IDC_UITOOLBAR_BUTTON_ALBUM_INDEX:  [self onAlbumClicked];      break;
     }
 }
 
@@ -525,7 +529,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setEnabled:( self.model.count > 0  && !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && self.model.count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
-}
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode )];}
 
 /***************************************************************************/
 /*                                                                         */
@@ -729,6 +733,19 @@
              }];
         }
     }];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onAlbumClicked:                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onAlbumClicked
+{
+    JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithAlbum:self.model];
+    [self.navigationController pushViewController:albumVC animated:YES];
 }
 
 @end

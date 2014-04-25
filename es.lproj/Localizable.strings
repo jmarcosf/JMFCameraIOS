@@ -24,6 +24,7 @@
 "IDS_EDIT" = "Editar";
 "IDS_DELETE" = "Borrar";
 "IDS_FLICKR" = "Flickr";
+"IDS_ALBUM" = "Album";
 "IDS_PICTURES" = "Fotografías";
 "IDS_SHARE" = "Compartir";
 "IDS_FACE_DETECTION" = "Rec. Facial";
@@ -51,3 +52,4 @@
 "IDS_DOWNLOADING_PICTURES_ERROR" = "Se ha producido un error al descargar las imágenes.";
 "IDS_CONFIRM_SINGLE_DELETION_MESSAGE" = "¿Seguro que desea eliminar esta fotografía?";
 "IDS_CONFIRM_MULTI_DELETION_MESSAGE" = "¿Seguro que desea eliminar estas %d fotografías?";
+"IDS_FULL_SCREEN_MESSAGE" = "pulse sobre la fotografía para verla a pantalla completa";

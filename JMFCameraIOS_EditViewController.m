@@ -28,7 +28,6 @@
 #define IDC_UITOOLBAR_BUTTON_SHARE_INDEX        0
 #define IDC_UITOOLBAR_BUTTON_FACEDET_INDEX      1
 #define IDC_UITOOLBAR_BUTTON_FILTERS_INDEX      2
-#define IDC_UITOOLBAR_BUTTON_SHOW_INDEX         3
 
 /***************************************************************************/
 /*                                                                         */
@@ -113,7 +112,7 @@
     
     self.iboSourceImageView.image = self.image;
     self.iboFilteredImageView.image = self.image;
-
+    self.iboFullScreenLabel.text = NSLocalizedString( @"IDS_FULL_SCREEN_MESSAGE", nil );
 
     //TableView
     [self.iboTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
@@ -128,7 +127,6 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHARE_INDEX]      setTitle:NSLocalizedString( @"IDS_SHARE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FACEDET_INDEX]    setTitle:NSLocalizedString( @"IDS_FACE_DETECTION", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FILTERS_INDEX]    setTitle:NSLocalizedString( @"IDS_FILTERS", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHOW_INDEX]       setTitle:NSLocalizedString( @"IDS_SHOW", nil )];
 }
 
 /***************************************************************************/
@@ -311,7 +309,6 @@
         case IDC_UITOOLBAR_BUTTON_SHARE_INDEX:      [self onShareClicked];          break;
         case IDC_UITOOLBAR_BUTTON_FACEDET_INDEX:    [self onFaceDetectionClicked];  break;
         case IDC_UITOOLBAR_BUTTON_FILTERS_INDEX:    [self onFiltersClicked];        break;
-        case IDC_UITOOLBAR_BUTTON_SHOW_INDEX:       [self onShowClicked:nil];       break;
     }
 }
 
@@ -363,20 +360,6 @@
     [self.navigationController pushViewController:filtersVC animated:YES];
 }
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onShowClicked:                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onShowClicked:(UIImageView*)imageView
-{
-    UIImage* image = ( imageView == nil ) ? self.iboSourceImageView.image : imageView.image;
-    JMFCameraIOS_ShowViewController* showVC = [[JMFCameraIOS_ShowViewController alloc] initWithImage:image];
-    [self.navigationController pushViewController:showVC animated:YES];
-}
-
 #pragma mark - UIResponder Methods
 /***************************************************************************/
 /*                                                                         */
@@ -397,10 +380,17 @@
 /***************************************************************************/
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UIImage* image = nil;
     UITouch* touch = [touches anyObject];
     
-    if( touch.view == self.iboSourceImageView ) [self onShowClicked:self.iboSourceImageView];
-    else if( touch.view == self.iboFilteredImageView ) [self onShowClicked:self.iboFilteredImageView];
+    if( touch.view == self.iboSourceImageView ) image = self.iboSourceImageView.image;
+    else if( touch.view == self.iboFilteredImageView ) image = self.iboFilteredImageView.image;
+    
+    if( image != nil )
+    {
+        JMFCameraIOS_ShowViewController* showVC = [[JMFCameraIOS_ShowViewController alloc] initWithImage:image];
+        [self.navigationController pushViewController:showVC animated:YES];
+    }
 }
 
 @end
