@@ -21,7 +21,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FaceRecViewController : UIViewController
+@interface JMFCameraIOS_FaceRecViewController : UIViewController <UITabBarDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -41,22 +41,7 @@
 /***************************************************************************/
 @property (weak, nonatomic) IBOutlet UIImageView*               iboImageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
-
-@property (weak, nonatomic) IBOutlet UILabel*                   iboFaceLabelTitle;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboLeftEyeLabelTitle;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboRightEyeLabelTitle;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboMouthLabelTitle;
-
-@property (weak, nonatomic) IBOutlet UILabel*                   iboFaceLabel;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboLeftEyeLabel;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboRightEyeLabel;
-@property (weak, nonatomic) IBOutlet UILabel*                   iboMouthLabel;
-
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*           iboDetectButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*           iboClearButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*           iboCancelButton;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem*           iboApplyButton;
-
+@property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
 
 /***************************************************************************/
 /*                                                                         */
@@ -66,17 +51,9 @@
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithImage:(UIImage*)image;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onDetect:(id)sender;
-- (IBAction)onClear:(id)sender;
-- (IBAction)onCancel:(id)sender;
-- (IBAction)onApply:(id)sender;
+- (void)onDetectClicked;
+- (void)onClearClicked;
+- (void)onCancelClicked;
+- (void)onApplyClicked;
 
 @end

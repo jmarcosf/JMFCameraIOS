@@ -20,8 +20,13 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define EYE_SIZE_RATE                       0.3f
-#define MOUTH_SIZE_RATE                     0.4f
+#define IDC_UITOOLBAR_BUTTON_DETECT_INDEX           0
+#define IDC_UITOOLBAR_BUTTON_CLEAR_INDEX            1
+#define IDC_UITOOLBAR_BUTTON_CANCEL_INDEX           2
+#define IDC_UITOOLBAR_BUTTON_APPLY_INDEX            3
+
+#define EYE_SIZE_RATE                               0.3f
+#define MOUTH_SIZE_RATE                             0.4f
 
 /***************************************************************************/
 /*                                                                         */
@@ -92,23 +97,6 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithNibName:bundle:                                                */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (id)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if( self )
-    {
-        // Custom initialization
-    }
-    return self;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*  viewDidLoad                                                            */
 /*                                                                         */
 /*                                                                         */
@@ -120,15 +108,12 @@
     self.title = NSLocalizedString( @"IDS_FACE_DETECTION", nil );
     self.iboImageView.image = self.image;
     
-    self.iboFaceLabelTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_FACE",      nil )];
-    self.iboLeftEyeLabelTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_LEFT_EYE",  nil )];
-    self.iboRightEyeLabelTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_RIGHT_EYE", nil )];
-    self.iboMouthLabelTitle.text    = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MOUTH",     nil )];
-    
-    self.iboDetectButton.title      = NSLocalizedString( @"IDS_DETECT", nil );
-    self.iboClearButton.title       = NSLocalizedString( @"IDS_CLEAR",  nil );
-    self.iboCancelButton.title      = NSLocalizedString( @"IDS_CANCEL", nil );
-    self.iboApplyButton.title       = NSLocalizedString( @"IDS_APPLY",  nil );
+    //TabBar
+    self.iboTabBar.delegate = self;
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX]     setTitle:NSLocalizedString( @"IDS_DETECT", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]      setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX]     setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]      setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
 }
 
 /***************************************************************************/
@@ -142,7 +127,8 @@
 {
     [super viewWillAppear:animated];
     self.iboActivityIndicator.hidden = YES;
-    [self onClear:self];
+    [self.iboActivityIndicator stopAnimating];
+    [self onClearClicked];
 }
 
 /***************************************************************************/
@@ -157,13 +143,13 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - IBAction Methods
+#pragma mark - UITabBarDelegate
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  IBAction Methods                                                       */
+/*  UITabBarDelegate Methods                                               */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -171,85 +157,21 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onDetect:                                                              */
+/*  tabBar:didSelectItem:                                                  */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onDetect:(id)sender
+- (void)tabBar:(UITabBar*)tabBar didSelectItem:(UITabBarItem*)item
 {
-    self.iboActivityIndicator.hidden = NO;
-    [self.iboActivityIndicator startAnimating];
-    NSString* detectingString = [NSString stringWithFormat:@"%@...", NSLocalizedString( @"IDS_DETECTING", nil )];
-    self.iboFaceLabel.font = self.iboLeftEyeLabel.font = self.iboRightEyeLabel.font = self.iboMouthLabel.font = [UIFont italicSystemFontOfSize:12.0];
-    self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = detectingString;
-    self.iboDetectButton.enabled = NO;
-    
-    dispatch_queue_t detectQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
-    dispatch_async( detectQueue, ^
+    switch( item.tag )
     {
-        [self detectFaceWithCompletionBlock:^( bool bDetected )
-        {
-            dispatch_queue_t mainQueue = dispatch_get_main_queue();
-            dispatch_async( mainQueue, ^
-            {
-                self.iboDetectButton.enabled = !bDetected;
-                self.iboClearButton.enabled = bDetected;
-                self.iboApplyButton.enabled = bDetected;
-                [self.iboActivityIndicator stopAnimating];
-                self.iboActivityIndicator.hidden = YES;
-                self.iboFaceLabel.font = self.iboLeftEyeLabel.font = self.iboRightEyeLabel.font = self.iboMouthLabel.font = [UIFont systemFontOfSize:18.0];
-                if( !bDetected ) self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = @"";
-                
-            });
-        }];
-    });
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onClear:                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onClear:(id)sender
-{
-    NSArray* subViewArray = [self.iboImageView subviews];
-    for( UIView* view in subViewArray )
-    {
-        [view removeFromSuperview];
+        case IDC_UITOOLBAR_BUTTON_DETECT_INDEX:     [self onDetectClicked];     break;
+        case IDC_UITOOLBAR_BUTTON_CLEAR_INDEX:      [self onClearClicked];      break;
+        case IDC_UITOOLBAR_BUTTON_CANCEL_INDEX:     [self onCancelClicked];     break;
+        case IDC_UITOOLBAR_BUTTON_APPLY_INDEX:      [self onApplyClicked];      break;
     }
-    self.iboDetectButton.enabled = YES;
-    self.iboClearButton.enabled = NO;
-    self.iboApplyButton.enabled = NO;
-    self.iboFaceLabel.text = self.iboLeftEyeLabel.text = self.iboRightEyeLabel.text = self.iboMouthLabel.text = @"";
 }
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onCancel:                                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onCancel:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onApply:                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onApply:(id)sender
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - Class Instance Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -263,7 +185,81 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  detectFace:                                                            */
+/*  onDetectClicked                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onDetectClicked
+{
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( NO )];
+    self.iboActivityIndicator.hidden = NO;
+    [self.iboActivityIndicator startAnimating];
+    
+    dispatch_queue_t detectQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
+    dispatch_async( detectQueue, ^
+    {
+        [self detectFaceWithCompletionBlock:^( bool bDetected )
+        {
+            dispatch_queue_t mainQueue = dispatch_get_main_queue();
+            dispatch_async( mainQueue, ^
+            {
+                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( !bDetected )];
+                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( bDetected )];
+                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( bDetected )];
+                self.iboActivityIndicator.hidden = YES;
+                [self.iboActivityIndicator stopAnimating];
+            });
+        }];
+    });
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onClearClicked                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onClearClicked
+{
+    NSArray* subViewArray = [self.iboImageView subviews];
+    for( UIView* view in subViewArray )
+    {
+        [view removeFromSuperview];
+    }
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( YES )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( NO )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( NO )];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onCancelClicked                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onCancelClicked
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onApplyClicked                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onApplyClicked
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  detectFaceWithCompletionBlock:                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -287,9 +283,7 @@
             UIView* faceView = [[UIView alloc] initWithFrame:faceRect];
             faceView.layer.borderWidth = 1.5f;
             faceView.layer.borderColor = [[UIColor greenColor] CGColor];
-            [self showFaceFeature:faceView withText:[NSString stringWithFormat:@"(%.0f,%.0f),(%.0f,%.0f)",
-                                                    faceFeature.bounds.origin.x, faceFeature.bounds.origin.y,
-                                                    faceFeature.bounds.size.width, faceFeature.bounds.size.height] forLabel:self.iboFaceLabel];
+            [self showFaceFeature:faceView];
             CGFloat faceWidth = faceRect.size.width;
 
             //Draw Left Eye
@@ -300,9 +294,7 @@
                                                                                 faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
                 leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
                 leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
-                [self showFaceFeature:leftEyeView
-                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)",faceFeature.leftEyePosition.x, faceFeature.leftEyePosition.y]
-                             forLabel:self.iboLeftEyeLabel];
+                [self showFaceFeature:leftEyeView];
             }
             
             //Draw Right Eye
@@ -313,9 +305,7 @@
                                                                                  faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
                 rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
                 rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
-                [self showFaceFeature:rightEyeView
-                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.rightEyePosition.x, faceFeature.rightEyePosition.y]
-                             forLabel:self.iboRightEyeLabel];
+                [self showFaceFeature:rightEyeView];
             }
             
             //Draw Mouth
@@ -326,9 +316,7 @@
                                                                               faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
                 mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
                 mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
-                [self showFaceFeature:mouthView
-                             withText:[NSString stringWithFormat:@"(%.0f,%.0f)", faceFeature.mouthPosition.x, faceFeature.mouthPosition.y]
-                             forLabel:self.iboMouthLabel];
+                [self showFaceFeature:mouthView];
             }
         }
     }
@@ -343,13 +331,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)showFaceFeature:(UIView*)view withText:(NSString*)text forLabel:(UILabel*)label
+- (void)showFaceFeature:(UIView*)view
 {
     dispatch_queue_t mainQueue = dispatch_get_main_queue();
     dispatch_async( mainQueue, ^
     {
         [self.iboImageView addSubview:view];
-        label.text = text;
     });
 }
 

@@ -93,10 +93,13 @@
     
     self.iboScrollView.minimumZoomScale = 1.0;
     self.iboScrollView.maximumZoomScale = 6.0;
+    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFill;
     self.iboScrollView.delegate = self;
     
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
     imageView.image = self.image;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFill;
     [self.iboZoomableView addSubview:imageView];
 }
 

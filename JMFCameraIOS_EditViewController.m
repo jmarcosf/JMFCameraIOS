@@ -114,6 +114,7 @@
     self.iboSourceImageView.image = self.image;
     self.iboFilteredImageView.image = self.image;
 
+
     //TableView
     [self.iboTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
 //  [self.iboTableView registerClass:[JMFCameraIOS_EditTVMapPointCell class] forCellReuseIdentifier:IDS_EDITTV_MAPPOINT_CELL_IDENTIFIER];
@@ -140,6 +141,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.iboSourceImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboFilteredImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboSourceImageView.frame = CGRectMake( 6, 6, 150, 200 );
+    self.iboFilteredImageView.frame = CGRectMake( 164, 6, 150, 200 );
+    [self.iboSourceImageView setClipsToBounds:YES];
+    [self.iboFilteredImageView setClipsToBounds:YES];
 }
 
 /***************************************************************************/
