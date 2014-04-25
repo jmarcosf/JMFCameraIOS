@@ -47,3 +47,14 @@
 #define APPDEBUG                                            NO
 #define COREDATA_AUTOSAVE                                   YES
 #define COREDATA_AUTOSAVE_DELAY                             12      //Minutes
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* Macros                                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+#define Rgb2UIColor( r, g, b )          [UIColor colorWithRed:( (r) / 255.0 ) green:( (g) / 255.0 ) blue:( (b) / 255.0 ) alpha:1.0]
+#define RgbAlpha2UIColor( r, g, b, a )  [UIColor colorWithRed:( (r) / 255.0 ) green:( (g) / 255.0 ) blue:( (b) / 255.0 ) alpha:( (a) / 255.0 )]
+

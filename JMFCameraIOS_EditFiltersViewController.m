@@ -94,7 +94,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_FILTERS", nil );
+    self.title = NSLocalizedString( @"IDS_EDIT_FILTERS", nil );
     
     //TabBar
     self.iboTabBar.delegate = self;
@@ -281,7 +281,7 @@
     UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
     headerView.text = [NSString stringWithFormat:@"   %@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), section + 1];
     headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
-    headerView.backgroundColor = [UIColor grayColor];
+    headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     headerView.textColor = [UIColor whiteColor];
     return headerView;
 }

@@ -14,6 +14,9 @@
 		9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */; };
 		9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */; };
 		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
+		901B1046190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B1044190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m */; };
+		901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 901B1045190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib */; };
+		901B104A190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B1049190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m */; };
 		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
 		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
 		9028F60A18FC6DD6000956E7 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60018FC6DD6000956E7 /* Delete.png */; };
@@ -115,6 +118,11 @@
 		9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FaceRecViewController.xib; sourceTree = "<group>"; };
 		901A0B6C18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+CompletionBlock.h"; sourceTree = "<group>"; };
 		901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+CompletionBlock.m"; sourceTree = "<group>"; };
+		901B1043190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_ShowViewController.h; sourceTree = "<group>"; };
+		901B1044190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_ShowViewController.m; sourceTree = "<group>"; };
+		901B1045190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_ShowViewController.xib; sourceTree = "<group>"; };
+		901B1048190A873200AD1F7C /* JMFCameraIOS_ZoomableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_ZoomableView.h; sourceTree = "<group>"; };
+		901B1049190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_ZoomableView.m; sourceTree = "<group>"; };
 		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		9028F5FF18FC6DD6000956E7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
 		9028F60018FC6DD6000956E7 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
@@ -462,6 +470,9 @@
 				9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */,
 				9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */,
 				9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */,
+				901B1043190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.h */,
+				901B1044190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m */,
+				901B1045190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -474,6 +485,8 @@
 				900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */,
 				905AB5C71905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.h */,
 				905AB5C81905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m */,
+				901B1048190A873200AD1F7C /* JMFCameraIOS_ZoomableView.h */,
+				901B1049190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -601,6 +614,7 @@
 				90AD563218FDFB6500C649FA /* Filters.png in Resources */,
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
 				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
+				901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */,
 				9028F61018FC6DD6000956E7 /* ListMode.png in Resources */,
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
@@ -637,6 +651,7 @@
 				9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */,
 				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
+				901B104A190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m in Sources */,
 				90AD563B18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m in Sources */,
 				90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */,
 				9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */,
@@ -646,6 +661,7 @@
 				9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */,
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,
 				904930DE19095C400024FAC1 /* JMFArrayViewController.m in Sources */,
+				901B1046190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m in Sources */,
 				904930D31909053C0024FAC1 /* JMFFilter.m in Sources */,
 				9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */,
 				904930D41909053C0024FAC1 /* JMFNamedEntity.m in Sources */,

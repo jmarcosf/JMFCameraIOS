@@ -1,60 +1,81 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.h                                      */
+/*  JMFCameraIOS_ZoomableView.m                                            */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class definition file                */
+/*               ZoomableView Class implementation file                    */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
+#import "JMFCameraIOS_ZoomableView.h"
+#import <QuartzCore/QuartzCore.h>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*                                                                         */
+/*  JMFCameraIOS_ZoomableView Class Implementation                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
+@implementation JMFCameraIOS_ZoomableView
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*  Class                                                                  */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) UIImage*   image;
++ (Class)layerClass
+{
+    return [CATiledLayer class]; // Set the UIView layer to CATiledLayer
+}
+
+#pragma mark - UIView Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIView Override Methods                                                */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithFrame:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithFrame:(CGRect)frame
+{
+    if( self = [super initWithFrame:frame] )
+    {
+        CATiledLayer* tempTiledLayer = (CATiledLayer*)self.layer;
+        tempTiledLayer.levelsOfDetail = 5;
+        tempTiledLayer.levelsOfDetailBias = 2;
+        self.opaque = YES;
+    }
+    return self;
+}
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
+/*  drawRect:                                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImageView;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboFilteredImageView;
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (id)initWithImage:(UIImage*)image;
-- (void)onShareClicked;
-- (void)onFaceDetectionClicked;
-- (void)onFiltersClicked;
-- (void)onShowClicked:(UIImageView*)imageView;
+- (void)drawRect:(CGRect)rect
+{
+}
 
 @end
+

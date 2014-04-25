@@ -448,7 +448,6 @@
 /***************************************************************************/
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-
     if( bMultiSelectMode )
     {
         iSelectedCount++;
@@ -558,8 +557,7 @@
         NSUInteger index = ( self.viewMode == JMFArrayViewModeMosaic ) ? indexPath.item : indexPath.row;
         UIImage* image = [self.model objectAtIndex:index];
         
-//      JMFCameraIOS_FiltersViewController* editVC = [[JMFCameraIOS_FiltersViewController alloc]initWithImage:image];
-        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]init];
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithImage:image];
         [self.navigationController pushViewController:editVC animated:YES];
     }
 }

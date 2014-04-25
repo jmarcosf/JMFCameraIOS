@@ -1,27 +1,28 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.h                                      */
+/*  JMFCameraIOS_ShowViewController.h                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class definition file                */
+/*               Show View Controller Class definition file                */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
+#import "JMFCameraIOS_ZoomableView.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*  JMFCameraIOS_ShowViewController Class Interface                        */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
+@interface JMFCameraIOS_ShowViewController : UIViewController <UIScrollViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -39,10 +40,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImageView;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboFilteredImageView;
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
+@property (weak, nonatomic) IBOutlet UIScrollView*              iboScrollView;
+@property (weak, nonatomic) IBOutlet JMFCameraIOS_ZoomableView* iboZoomableView;
 
 /***************************************************************************/
 /*                                                                         */
@@ -52,9 +51,5 @@
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithImage:(UIImage*)image;
-- (void)onShareClicked;
-- (void)onFaceDetectionClicked;
-- (void)onFiltersClicked;
-- (void)onShowClicked:(UIImageView*)imageView;
 
 @end

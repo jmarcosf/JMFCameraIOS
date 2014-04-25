@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_EditViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_FiltersViewController">
             <connections>
                 <outlet property="iboFilter1Label" destination="3MA-A2-HBB" id="xjP-Mv-Jp7"/>
                 <outlet property="iboFilter1Switch" destination="Nb6-Ag-Vzu" id="Eqd-U5-PwF"/>

@@ -6,6 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_EditViewController">
             <connections>
+                <outlet property="iboFilteredImageView" destination="DgM-ar-7bf" id="v8y-b2-OMc"/>
+                <outlet property="iboSourceImageView" destination="sUc-ew-Aep" id="kSh-7t-omE"/>
+                <outlet property="iboTabBar" destination="daO-Hn-iow" id="zeL-es-Hxr"/>
+                <outlet property="iboTableView" destination="6eI-r9-sIn" id="Yaw-hP-Vc3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,30 +18,30 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sUc-ew-Aep">
+                    <rect key="frame" x="2" y="3" width="156" height="262"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DgM-ar-7bf">
+                    <rect key="frame" x="162" y="3" width="156" height="262"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6eI-r9-sIn">
+                    <rect key="frame" x="0.0" y="198" width="320" height="257"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
                 <tabBar contentMode="scaleToFill" id="daO-Hn-iow">
                     <rect key="frame" x="0.0" y="455" width="320" height="49"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
                         <tabBarItem title="Share" image="Share.png" id="IUr-aB-URj"/>
-                        <tabBarItem title="Facial Rec." image="Show.png" id="nNH-6c-jVw"/>
-                        <tabBarItem title="Filters" image="Filter.png" id="ZET-57-W5P"/>
-                        <tabBarItem title="Show" image="Data.png" id="X6G-gV-A0t"/>
+                        <tabBarItem tag="1" title="Facial Rec." image="Show.png" id="nNH-6c-jVw"/>
+                        <tabBarItem tag="2" title="Filters" image="Filter.png" id="ZET-57-W5P"/>
+                        <tabBarItem tag="3" title="Show" image="Data.png" id="X6G-gV-A0t"/>
                     </items>
                 </tabBar>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="sUc-ew-Aep">
-                    <rect key="frame" x="0.0" y="0.0" width="158" height="196"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="DgM-ar-7bf">
-                    <rect key="frame" x="162" y="0.0" width="158" height="196"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                </imageView>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6eI-r9-sIn">
-                    <rect key="frame" x="0.0" y="204" width="320" height="251"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
