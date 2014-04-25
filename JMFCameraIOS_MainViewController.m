@@ -558,7 +558,8 @@
         NSUInteger index = ( self.viewMode == JMFArrayViewModeMosaic ) ? indexPath.item : indexPath.row;
         UIImage* image = [self.model objectAtIndex:index];
         
-        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]initWithImage:image];
+//      JMFCameraIOS_FiltersViewController* editVC = [[JMFCameraIOS_FiltersViewController alloc]initWithImage:image];
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc]init];
         [self.navigationController pushViewController:editVC animated:YES];
     }
 }
@@ -574,7 +575,7 @@
 {
     NSArray* selectedIndexPathArray;
     selectedIndexPathArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems]
-                                                               : [self.tableView indexPathsForSelectedRows];
+                                                                         : [self.tableView indexPathsForSelectedRows];
     if( selectedIndexPathArray != nil )
     {
         for( NSIndexPath* indexPath in selectedIndexPathArray )

@@ -148,6 +148,20 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  tableView:cellForRowAtIndexPath:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    //NOTE: this method must be implemented by derived classes
+    [NSException raise:@"Invoked abstract method" format:@"Derived class must implement this method"];
+    return nil;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  tableView:titleForHeaderInSection:                                     */
 /*                                                                         */
 /*                                                                         */
@@ -214,6 +228,20 @@
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:cellForItemAtIndexPath:                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    //NOTE: this method must be implemented by derived classes
+    [NSException raise:@"Invoked abstract method" format:@"Derived class must implement this method"];
+    return nil;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate

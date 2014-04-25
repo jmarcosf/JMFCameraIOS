@@ -1,28 +1,27 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_EditFiltersViewController.h                               */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Edit Filters View Controller Class definition file        */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
 
-
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*  JMFCameraIOS_EditFiltersViewController Class Interface                 */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate>
+@interface JMFCameraIOS_EditFiltersViewController : UIViewController <UITabBarDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,7 +30,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) UIImage*   image;
 
 /***************************************************************************/
 /*                                                                         */
@@ -40,19 +38,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
 @property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImage;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboTargetImage;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter1Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter2Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter3Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter4Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter5Label;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter1Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter2Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter3Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter4Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter5Switch;
 
 /***************************************************************************/
 /*                                                                         */
@@ -61,11 +48,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image;
-- (void)onShareClicked;
-- (void)onShowClicked;
-- (void)onFiltersClicked;
-- (void)onDataClicked;
 
 /***************************************************************************/
 /*                                                                         */
@@ -74,7 +56,5 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onFilterSwitchChanged:(id)sender;
-
 
 @end
