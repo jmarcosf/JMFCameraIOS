@@ -83,7 +83,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(NSMutableArray*)model frame:(CGRect)frame style:(UITableViewStyle)style collectioViewLayout:(UICollectionViewLayout*)layout viewMode:(JMFArrayViewMode)viewMode
+- (id)initWithModel:(NSMutableArray*)model frame:(CGRect)frame style:(UITableViewStyle)style collectionViewLayout:(UICollectionViewLayout*)layout viewMode:(JMFArrayViewMode)viewMode
 {
     if( self = [super init] )
     {

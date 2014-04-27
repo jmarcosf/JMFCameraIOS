@@ -88,7 +88,7 @@
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
                                  frame:(CGRect)frame
                                  style:(UITableViewStyle)style
-                   collectioViewLayout:(UICollectionViewLayout*)layout
+                  collectionViewLayout:(UICollectionViewLayout*)layout
                               viewMode:(JMFCoreDataViewMode)viewMode
 {
     if( self = [super init] )

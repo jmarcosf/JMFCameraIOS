@@ -6,7 +6,6 @@
 
 extern const struct JMFFilterAttributes {
 	__unsafe_unretained NSString *active;
-	__unsafe_unretained NSString *name;
 } JMFFilterAttributes;
 
 extern const struct JMFFilterRelationships {
@@ -17,7 +16,6 @@ extern const struct JMFFilterFetchedProperties {
 } JMFFilterFetchedProperties;
 
 @class JMFPhoto;
-
 
 
 
@@ -48,16 +46,6 @@ extern const struct JMFFilterFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* name;
-
-
-
-//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
-
-
-
-
-
 @property (nonatomic, strong) JMFPhoto *filter2photo;
 
 //- (BOOL)validateFilter2photo:(id*)value_ error:(NSError**)error_;
@@ -80,12 +68,6 @@ extern const struct JMFFilterFetchedProperties {
 
 - (BOOL)primitiveActiveValue;
 - (void)setPrimitiveActiveValue:(BOOL)value_;
-
-
-
-
-- (NSString*)primitiveName;
-- (void)setPrimitiveName:(NSString*)value;
 
 
 

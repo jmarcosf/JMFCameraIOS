@@ -13,8 +13,6 @@
 #import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_EditFiltersViewController.h"
 #import "JMFCameraIOS_FaceRecViewController.h"
-#import <ImageIO/CGImageSource.h>
-#import <ImageIO/CGImageProperties.h>
 
 /***************************************************************************/
 /*                                                                         */
@@ -143,8 +141,6 @@
     [self.iboFilter3Switch setOn:NO];
     [self.iboFilter4Switch setOn:NO];
     [self.iboFilter5Switch setOn:NO];
-    
-    [self readImageProperties];
 }
 
 /***************************************************************************/
@@ -280,34 +276,5 @@
 - (IBAction)onFilterSwitchChanged:(id)sender
 {
 }
-
-
-
-- (void)readImageProperties
-{
-
-//  CGImageSourceRef imageSource = CGImageSourceCreateWithURL((CFURLRef)imageFileURL, NULL);
-    
-    NSData* imageData =  UIImageJPEGRepresentation( self.image, 0.8f );
-    if( imageData == nil ) return;
-    CGImageSourceRef imageSource = CGImageSourceCreateWithData( (__bridge CFMutableDataRef)imageData, NULL );
-    if( imageSource == nil ) return;
-    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString*)kCGImageSourceShouldCache, nil];
-    
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex( imageSource, 0, (__bridge CFDictionaryRef)options);
-    if( imageProperties )
-    {
-//        NSNumber* pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
-//        NSNumber* pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
-//        NSNumber* bitsColorPerPixel = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
-//        NSNumber* orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
-//        NSString* colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
-        
-        NSLog(@"Image properties: %@", (__bridge NSDictionary*)imageProperties);
-        CFRelease( imageProperties );
-    }
-    CFRelease( imageSource );
-}
-
 
 @end

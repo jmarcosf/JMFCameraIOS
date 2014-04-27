@@ -44,6 +44,7 @@
 "IDS_SELECT" = "Seleccionar";
 "IDS_SELECT_ITEMS" = "Seleccionar elementos";
 
+"IDS_INIT_ERROR_MESSAGE" = "Los directorios de la aplicación no han podido crearse!";
 "IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener 10 fotos de Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";
 "IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Ha seleccionado bajar 15 fotos de Flickr\nTeclee el término de búsqueda:";

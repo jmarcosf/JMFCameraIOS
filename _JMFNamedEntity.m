@@ -6,6 +6,7 @@
 const struct JMFNamedEntityAttributes JMFNamedEntityAttributes = {
 	.creationDate = @"creationDate",
 	.modificationDate = @"modificationDate",
+	.name = @"name",
 };
 
 const struct JMFNamedEntityRelationships JMFNamedEntityRelationships = {
@@ -55,6 +56,13 @@ const struct JMFNamedEntityFetchedProperties JMFNamedEntityFetchedProperties = {
 
 
 @dynamic modificationDate;
+
+
+
+
+
+
+@dynamic name;
 
 
 

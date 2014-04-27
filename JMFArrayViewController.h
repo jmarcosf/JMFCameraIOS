@@ -65,7 +65,7 @@ typedef NS_ENUM( NSInteger, JMFArrayViewMode )
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(NSMutableArray*)model frame:(CGRect)frame style:(UITableViewStyle)style collectioViewLayout:(UICollectionViewLayout*)layout viewMode:(JMFArrayViewMode)viewMode;
+- (id)initWithModel:(NSMutableArray*)model frame:(CGRect)frame style:(UITableViewStyle)style collectionViewLayout:(UICollectionViewLayout*)layout viewMode:(JMFArrayViewMode)viewMode;
 - (void)setFrame:(CGRect)newFrame;
 - (void)setViewMode:(JMFArrayViewMode)newViewMode;
 - (void)reloadData;

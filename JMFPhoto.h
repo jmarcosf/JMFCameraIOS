@@ -16,19 +16,53 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  Enums                                                                  */
 /*                                                                         */
 /*                                                                         */
-/*  JMFPhoto Class InterPhoto                                               */
+/***************************************************************************/
+typedef NS_ENUM( NSInteger, JMFPhotoSource )
+{
+    JMFPhotoSourceUnknown    =  0,
+    JMFPhotoSourceCamera     =  1,
+    JMFPhotoSourceFlickr     =  2,
+    JMFPhotoSourceFeacebook  =  3,
+    JMFPhotoSourceInstagram  =  4,
+    JMFPhotoSourceTwitter    =  5,
+    JMFPhotoSourceOther      = -1
+};
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFPhoto Class Interface                                               */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 @interface JMFPhoto : _JMFPhoto
-{
-    
-}
 
-// Custom logic goes here.
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithImage:(UIImage*)image source:(JMFPhotoSource)source andThumbnail:(UIImage*)thumbnail;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail;
+- (void)setMetadataFromImage:(UIImage*)image;
+- (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation;
 
 @end
+

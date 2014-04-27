@@ -10,12 +10,13 @@
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
+#import "JMFCoreDataStack.h"
 #import "JMFCameraIOS_MainViewController.h"
-#import "JMFArrayViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
 #import "JMFCameraIOS_AlbumViewController.h"
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFFlickr.h"
+@import AddressBook;
 
 /***************************************************************************/
 /*                                                                         */
@@ -56,6 +57,12 @@
     BOOL                    bMultiSelectMode;
     BOOL                    bFromCamera;
     int                     iSelectedCount;
+    
+    CLLocationManager*      locationManager;
+    NSNumber*               currentLongitude;
+    NSNumber*               currentLatitude;
+    NSNumber*               currentAltitude;
+    NSString*               currentGeoLocation;
 }
 
 @end
@@ -93,13 +100,20 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(NSMutableArray*)model
+- (id)initWithModel:(JMFCoreDataStack*)model
 {
-    if( self = [super initWithModel:model frame:CGRectMake( 0, 0, 0, 0 ) style:UITableViewStylePlain
-                collectioViewLayout:[[UICollectionViewFlowLayout alloc]init] viewMode:JMFArrayViewModeMosaic] )
-    {
-
-    }
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFPhoto entityName]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.modificationDate ascending:NO]];
+    NSFetchedResultsController* fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                                             managedObjectContext:model.context
+                                                                                               sectionNameKeyPath:nil
+                                                                                                        cacheName:nil];
+    
+    self = [super initWithFetchedResultsController:fetchResultsController
+                                             frame:CGRectMake( 0, 0, 0, 0 )
+                                             style:UITableViewStylePlain
+                              collectionViewLayout:[[UICollectionViewFlowLayout alloc]init]
+                                          viewMode:JMFCoreDataViewModeMosaic];
     return self;
 }
 
@@ -135,6 +149,13 @@
     [iboSelectButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14], NSFontAttributeName,nil]forState:UIControlStateNormal];
     [self.navigationItem setRightBarButtonItem:iboSelectButton];
 
+    //CoreLocation
+    locationManager =  [[CLLocationManager alloc]init];
+    locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    locationManager.delegate = self;
+    currentLongitude = currentLatitude = currentAltitude = nil;
+    currentGeoLocation = nil;
+    
     //TabBar
     self.iboTabBar.delegate = self;
     self.iboTabBar.layer.zPosition = -10;
@@ -197,6 +218,20 @@
     
     [self redrawControls:NO];
     [self.view bringSubviewToFront:iboEmptyAlbumLabel];
+    if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  viewDidDisappear:                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if( [CLLocationManager locationServicesEnabled] ) [locationManager stopUpdatingLocation];
 }
 
 /***************************************************************************/
@@ -241,6 +276,46 @@
     }
 }
 
+#pragma mark - CLLocationManagerDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  CLLocationManagerDelegate Methods                                      */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  locationManager:didUpdateLocations:                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)locationManager:(CLLocationManager*)manager didUpdateLocations:(NSArray*)locations
+{
+    CLLocation* currentLocation = [locations lastObject];
+    currentLongitude = [NSNumber numberWithDouble:currentLocation.coordinate.longitude];
+    currentLatitude  = [NSNumber numberWithDouble:currentLocation.coordinate.latitude];
+    currentAltitude  = [NSNumber numberWithDouble:currentLocation.altitude];
+    
+    CLGeocoder* geocoder = [[CLGeocoder alloc]init];
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^( NSArray* placemarks, NSError *error )
+    {
+         if( placemarks.count > 0 )
+         {
+             CLPlacemark* info = [placemarks lastObject];
+             NSString* locationString = [NSString stringWithFormat:@"%@\n%@\n%@",
+                                         [[info addressDictionary] objectForKey:(NSString*)kABPersonAddressStreetKey],
+                                         [[info addressDictionary] objectForKey:(NSString*)kABPersonAddressZIPKey],
+                                         [[info addressDictionary] objectForKey:(NSString*)kABPersonAddressCountryKey]];
+             currentGeoLocation = locationString;
+         }
+    }];
+}
+
 #pragma mark - UIImagePickerControllerDelegate
 /***************************************************************************/
 /*                                                                         */
@@ -261,11 +336,12 @@
 /***************************************************************************/
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-    UIImage* photo = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [self.model addObject:photo];
+    UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    JMFPhoto* newPhoto = [[JMFPhoto alloc]initWithImage:image source:JMFPhotoSourceCamera andThumbnail:nil];
+    [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
     [picker dismissViewControllerAnimated:YES completion:nil];
     bFromCamera = YES;
-    [self reloadData];
+//  [self reloadData];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -335,9 +411,10 @@
 /***************************************************************************/
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
+    JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     JMFCameraIOS_MainCVPhotoCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    cell.iboPhotoImage.image = [self.model objectAtIndex:indexPath.item];
+    cell.iboPhotoImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 100;
@@ -425,10 +502,11 @@
 /***************************************************************************/
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     UITableViewCell* cell = nil;
     cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.textLabel.text = [NSString stringWithFormat:@"Photo for row #%ld", (long)indexPath.row];
-    cell.imageView.image = [self.model objectAtIndex:indexPath.row];
+    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];
     return cell;
 }
 
@@ -496,25 +574,27 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons
 {
+    int count = [[self.fetchedResultsController fetchedObjects]count];
+    
     if( bOnlyButtons == NO )
     {
         iboEmptyAlbumLabel.hidden = self.collectionView.hidden = self.tableView.hidden = YES;
-        if( self.model.count <= 0 ) self.viewMode = JMFArrayViewModeNone;
-        else if( self.viewMode == JMFArrayViewModeNone ) self.viewMode = JMFArrayViewModeMosaic;
+        if( count <= 0 ) self.viewMode = JMFCoreDataViewModeNone;
+        else if( self.viewMode == JMFCoreDataViewModeNone ) self.viewMode = JMFCoreDataViewModeMosaic;
         
         switch( self.viewMode )
         {
-            case JMFArrayViewModeNone:
+            case JMFCoreDataViewModeNone:
                 iboEmptyAlbumLabel.hidden = NO;
                 iboSelectButton.style = UIBarButtonItemStylePlain;
                 iboSelectButton.enabled = NO;
                 iboSelectButton.title = nil;
                 break;
 
-            case JMFArrayViewModeMosaic:
-            case JMFArrayViewModeList:
-                self.collectionView.hidden = ( self.viewMode == JMFArrayViewModeList );
-                self.tableView.hidden = ( self.viewMode == JMFArrayViewModeMosaic );
+            case JMFCoreDataViewModeMosaic:
+            case JMFCoreDataViewModeList:
+                self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
+                self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
                 iboSelectButton.enabled = YES;
                 iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
@@ -526,8 +606,8 @@
     }
     
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setEnabled:( !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setEnabled:( self.model.count > 0  && !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && self.model.count > 0 && iSelectedCount != 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setEnabled:( count > 0  && !bMultiSelectMode )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode )];}
 
@@ -540,8 +620,8 @@
 /***************************************************************************/
 -(void)reloadData
 {
-    if( self.viewMode == JMFArrayViewModeMosaic ) [self.collectionView reloadData];
-    else if( self.viewMode == JMFArrayViewModeList ) [self.tableView reloadData];
+    if( self.viewMode == JMFCoreDataViewModeMosaic ) [self.collectionView reloadData];
+    else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView reloadData];
 }
 
 /***************************************************************************/
@@ -553,13 +633,14 @@
 /***************************************************************************/
 - (void)editPhoto
 {
-    NSArray*  selectedArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
+    NSArray*  selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     if( selectedArray.count == 1 )
     {
         NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
-        NSUInteger index = ( self.viewMode == JMFArrayViewModeMosaic ) ? indexPath.item : indexPath.row;
-        UIImage* image = [self.model objectAtIndex:index];
+//      NSUInteger index = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? indexPath.item : indexPath.row;
+        JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];;
         
         JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithImage:image];
         [self.navigationController pushViewController:editVC animated:YES];
@@ -576,13 +657,13 @@
 - (void)onSelectClicked:(id)sender
 {
     NSArray* selectedIndexPathArray;
-    selectedIndexPathArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems]
+    selectedIndexPathArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems]
                                                                          : [self.tableView indexPathsForSelectedRows];
     if( selectedIndexPathArray != nil )
     {
         for( NSIndexPath* indexPath in selectedIndexPathArray )
         {
-            if( self.viewMode == JMFArrayViewModeMosaic ) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+            if( self.viewMode == JMFCoreDataViewModeMosaic ) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
             else [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     }
@@ -634,9 +715,9 @@
 - (void)onModeClicked
 {
     iSelectedCount = 0;
-    self.viewMode = ( self.viewMode == JMFArrayViewModeMosaic ) ? JMFArrayViewModeList : JMFArrayViewModeMosaic;
+    self.viewMode = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? JMFCoreDataViewModeList : JMFCoreDataViewModeMosaic;
     [self redrawControls:NO];
-    self.iboTabBar.items = ( self.viewMode == JMFArrayViewModeMosaic ) ? tbiaMosaicMode : tbiaListMode;
+    self.iboTabBar.items = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? tbiaMosaicMode : tbiaListMode;
     [self reloadData];
 }
 
@@ -649,7 +730,7 @@
 /***************************************************************************/
 - (void)onDeleteClicked
 {
-    NSArray*  selectedArray = ( self.viewMode == JMFArrayViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
+    NSArray*  selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
@@ -670,7 +751,7 @@
                  {
                      [indexSet addIndex:indexPath.item];
                  }
-                 [self.model removeObjectsAtIndexes:indexSet];
+//               [self.model removeObjectsAtIndexes:indexSet];
                  iSelectedCount = 0;
                  [self redrawControls:YES];
                  [self reloadData];
@@ -713,8 +794,8 @@
                  {
                      for( JMFFlickrPhoto* photo in results )
                      {
-                         if( photo.thumbnail != nil ) [self.model addObject:photo.thumbnail];
-                         else if( photo.largeImage != nil ) [self.model addObject:photo.largeImage];
+                         JMFPhoto* newPhoto = [[JMFPhoto alloc]initWithImage:photo.largeImage source:JMFPhotoSourceFlickr andThumbnail:photo.thumbnail];
+                         [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
                      }
                  }
                  dispatch_async(dispatch_get_main_queue(), ^
@@ -744,8 +825,8 @@
 /***************************************************************************/
 - (void)onAlbumClicked
 {
-    JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithAlbum:self.model];
-    [self.navigationController pushViewController:albumVC animated:YES];
+//    JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithAlbum:self.model];
+//    [self.navigationController pushViewController:albumVC animated:YES];
 }
 
 @end

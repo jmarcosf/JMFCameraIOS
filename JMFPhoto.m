@@ -12,6 +12,8 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFPhoto.h"
+#import <ImageIO/CGImageSource.h>
+#import <ImageIO/CGImageProperties.h>
 
 /***************************************************************************/
 /*                                                                         */
@@ -21,8 +23,6 @@
 /*                                                                         */
 /***************************************************************************/
 @interface JMFPhoto ()
-
-// Private interface goes here.
 
 @end
 
@@ -41,6 +41,112 @@
 /***************************************************************************/
 @implementation JMFPhoto
 
-// Custom logic goes here.
+#pragma mark - Initialization Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithImage:andThumbnail:                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithImage:(UIImage*)image source:(JMFPhotoSource)source andThumbnail:(UIImage*)thumbnail;
+{
+    if( image == nil ) return nil;
+    
+    if( self = [super init] )
+    {
+        self.source = [NSNumber numberWithInt:source];
+        self.altitude = self.longitude = self.latitude = nil;
+        self.colorModel = self.filteredImageUrl = self.filteredThumbnailUrl = self.geoLocation = self.sourceImageUrl = self.sourceThumbnailUrl = nil;
+        self.colorsPerPixel = self.orientation = nil;
+        self.pixelHeight = self.pixelWidth = nil;
+        
+        [self saveImageFile:image withTumbnail:thumbnail];
+        [self setMetadataFromImage:image];
+    }
+    return self;
+}
+
+#pragma mark - Class Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Methods                                                          */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  saveImageFile:withTumbnail:                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail
+{
+    
+    //    NSString* appDocumentsDirectory =  [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    //    NSString* templateStr = [NSString stringWithFormat:@"%@/filename-XXXXX", appDocumentsDirectory];
+    //    char template[templateStr.length + 1];
+    //    strcpy( template, [templateStr cStringUsingEncoding:NSASCIIStringEncoding] );
+    //    char* filename = mktemp( template );
+    //    NSURL* url = [appDocumentsDirectory URLByAppendingPathComponent:imagen.jpg];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setMetadataFromImage:                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setMetadataFromImage:(UIImage*)image
+{
+    NSData* imageData = UIImageJPEGRepresentation( image, 0.8f );
+    if( imageData == nil ) return;
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData( (__bridge CFMutableDataRef)imageData, NULL );
+    if( imageSource == nil ) return;
+    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString*)kCGImageSourceShouldCache, nil];
+    
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex( imageSource, 0, (__bridge CFDictionaryRef)options);
+    if( imageProperties )
+    {
+        self.colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
+        self.colorsPerPixel    = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
+        self.orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
+        self.pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
+        self.pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
+        CFRelease( imageProperties );
+    }
+    CFRelease( imageSource );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setLocationLongitude:latitude:altitude:geoLocation:                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation
+{
+    self.longitude = longitude;
+    self.latitude  = latitude;
+    self.altitude  = altitude;
+    self.geoLocation = geoLocation;
+}
 
 @end

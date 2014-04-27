@@ -11,7 +11,10 @@
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFArrayViewController.h"
+#import "JMFCoreDataViewController.h"
+#import "JMFNamedEntity.h"
+#import "JMFPhoto.h"
+@import CoreLocation;
 
 /***************************************************************************/
 /*                                                                         */
@@ -22,8 +25,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_MainViewController : JMFArrayViewController <UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                                     UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDelegate>
+@interface JMFCameraIOS_MainViewController : JMFCoreDataViewController <UITabBarDelegate, CLLocationManagerDelegate,
+                                                                        UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+                                                                        UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -41,7 +45,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(NSMutableArray*)model;
+- (id)initWithModel:(JMFCoreDataStack*)model;
 
 /***************************************************************************/
 /*                                                                         */

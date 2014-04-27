@@ -14,7 +14,8 @@ const struct JMFPhotoAttributes JMFPhotoAttributes = {
 	.longitude = @"longitude",
 	.orientation = @"orientation",
 	.pixelHeight = @"pixelHeight",
-	.pixelWidht = @"pixelWidht",
+	.pixelWidth = @"pixelWidth",
+	.source = @"source",
 	.sourceImageUrl = @"sourceImageUrl",
 	.sourceThumbnailUrl = @"sourceThumbnailUrl",
 };
@@ -83,8 +84,13 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"pixelWidhtValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"pixelWidht"];
+	if ([key isEqualToString:@"pixelWidthValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"pixelWidth"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"sourceValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"source"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -279,26 +285,52 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 
 
 
-@dynamic pixelWidht;
+@dynamic pixelWidth;
 
 
 
-- (int32_t)pixelWidhtValue {
-	NSNumber *result = [self pixelWidht];
+- (int32_t)pixelWidthValue {
+	NSNumber *result = [self pixelWidth];
 	return [result intValue];
 }
 
-- (void)setPixelWidhtValue:(int32_t)value_ {
-	[self setPixelWidht:[NSNumber numberWithInt:value_]];
+- (void)setPixelWidthValue:(int32_t)value_ {
+	[self setPixelWidth:[NSNumber numberWithInt:value_]];
 }
 
-- (int32_t)primitivePixelWidhtValue {
-	NSNumber *result = [self primitivePixelWidht];
+- (int32_t)primitivePixelWidthValue {
+	NSNumber *result = [self primitivePixelWidth];
 	return [result intValue];
 }
 
-- (void)setPrimitivePixelWidhtValue:(int32_t)value_ {
-	[self setPrimitivePixelWidht:[NSNumber numberWithInt:value_]];
+- (void)setPrimitivePixelWidthValue:(int32_t)value_ {
+	[self setPrimitivePixelWidth:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic source;
+
+
+
+- (int16_t)sourceValue {
+	NSNumber *result = [self source];
+	return [result shortValue];
+}
+
+- (void)setSourceValue:(int16_t)value_ {
+	[self setSource:[NSNumber numberWithShort:value_]];
+}
+
+- (int16_t)primitiveSourceValue {
+	NSNumber *result = [self primitiveSource];
+	return [result shortValue];
+}
+
+- (void)setPrimitiveSourceValue:(int16_t)value_ {
+	[self setPrimitiveSource:[NSNumber numberWithShort:value_]];
 }
 
 

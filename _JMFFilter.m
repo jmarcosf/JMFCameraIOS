@@ -5,7 +5,6 @@
 
 const struct JMFFilterAttributes JMFFilterAttributes = {
 	.active = @"active",
-	.name = @"name",
 };
 
 const struct JMFFilterRelationships JMFFilterRelationships = {
@@ -74,13 +73,6 @@ const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
 - (void)setPrimitiveActiveValue:(BOOL)value_ {
 	[self setPrimitiveActive:[NSNumber numberWithBool:value_]];
 }
-
-
-
-
-
-@dynamic name;
-
 
 
 

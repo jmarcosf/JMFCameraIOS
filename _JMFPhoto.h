@@ -15,7 +15,8 @@ extern const struct JMFPhotoAttributes {
 	__unsafe_unretained NSString *longitude;
 	__unsafe_unretained NSString *orientation;
 	__unsafe_unretained NSString *pixelHeight;
-	__unsafe_unretained NSString *pixelWidht;
+	__unsafe_unretained NSString *pixelWidth;
+	__unsafe_unretained NSString *source;
 	__unsafe_unretained NSString *sourceImageUrl;
 	__unsafe_unretained NSString *sourceThumbnailUrl;
 } JMFPhotoAttributes;
@@ -30,6 +31,7 @@ extern const struct JMFPhotoFetchedProperties {
 
 @class JMFFace;
 @class JMFFilter;
+
 
 
 
@@ -182,15 +184,29 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* pixelWidht;
+@property (nonatomic, strong) NSNumber* pixelWidth;
 
 
 
-@property int32_t pixelWidhtValue;
-- (int32_t)pixelWidhtValue;
-- (void)setPixelWidhtValue:(int32_t)value_;
+@property int32_t pixelWidthValue;
+- (int32_t)pixelWidthValue;
+- (void)setPixelWidthValue:(int32_t)value_;
 
-//- (BOOL)validatePixelWidht:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validatePixelWidth:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* source;
+
+
+
+@property int16_t sourceValue;
+- (int16_t)sourceValue;
+- (void)setSourceValue:(int16_t)value_;
+
+//- (BOOL)validateSource:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -328,11 +344,20 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 
-- (NSNumber*)primitivePixelWidht;
-- (void)setPrimitivePixelWidht:(NSNumber*)value;
+- (NSNumber*)primitivePixelWidth;
+- (void)setPrimitivePixelWidth:(NSNumber*)value;
 
-- (int32_t)primitivePixelWidhtValue;
-- (void)setPrimitivePixelWidhtValue:(int32_t)value_;
+- (int32_t)primitivePixelWidthValue;
+- (void)setPrimitivePixelWidthValue:(int32_t)value_;
+
+
+
+
+- (NSNumber*)primitiveSource;
+- (void)setPrimitiveSource:(NSNumber*)value;
+
+- (int16_t)primitiveSourceValue;
+- (void)setPrimitiveSourceValue:(int16_t)value_;
 
 
 

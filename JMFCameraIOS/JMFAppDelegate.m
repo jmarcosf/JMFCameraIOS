@@ -47,19 +47,50 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    //self.model = [JMFCoreDataStack coreDataStackWithModelName:NSLocalizedString( @"IDS_APP_NAME", nil )];
+    //Model with NSArray
+//    NSMutableArray* model = [[NSMutableArray alloc] init];
+//    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
+//    [model addObject:[UIImage imageNamed:@"pareja.jpg"]];
     
-    NSMutableArray* model = [[NSMutableArray alloc] init];
-    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
-    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
-    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
-    [model addObject:[UIImage imageNamed:@"rachel.jpg"]];
-    [model addObject:[UIImage imageNamed:@"connie.jpg"]];
-    [model addObject:[UIImage imageNamed:@"jennifer.jpg"]];
-    [model addObject:[UIImage imageNamed:@"pareja.jpg"]];
+//    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc] initWithModel:model];
+//    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
+
     
-    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc] initWithModel:model];
+    NSString* documentsDirectory =  [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSString* imageDirectory = [documentsDirectory stringByAppendingPathComponent:@"/Images"];
+    NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:@"/Thumbnails"];
+    NSError*  imageDirectoryError = nil;
+    NSError*  thumbnailsDirectoryError = nil;
+    
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:imageDirectory] )
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:imageDirectory withIntermediateDirectories:NO attributes:nil error:&imageDirectoryError];
+    }
+    
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:thumbnailsDirectory] )
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:thumbnailsDirectory withIntermediateDirectories:NO attributes:nil error:&thumbnailsDirectoryError];
+    }
+    
+    if( imageDirectoryError || thumbnailsDirectoryError )
+    {
+        NSString* IDS_OK      = NSLocalizedString( @"IDS_OK", nil );
+        NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_INIT_ERROR_MESSAGE", nil );
+        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"error" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil, nil];
+        [alertView show];
+        return NO;
+    }
+    
+    //Model with CoreData
+    self.model = [JMFCoreDataStack coreDataStackWithModelName:@"JMFCameraIOS"];
+    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]initWithModel:self.model];
     self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
+    [self performCoreDataAutoSave];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

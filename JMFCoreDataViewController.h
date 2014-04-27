@@ -70,7 +70,7 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
                                   frame:(CGRect)frame
                                  style:(UITableViewStyle)style
-                   collectioViewLayout:(UICollectionViewLayout*)layout
+                  collectionViewLayout:(UICollectionViewLayout*)layout
                               viewMode:(JMFCoreDataViewMode)viewMode;
 - (void)setFetchedResultsController:(NSFetchedResultsController*)newFetchedResultsController;
 - (void)performFetch;

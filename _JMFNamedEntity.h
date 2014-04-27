@@ -7,6 +7,7 @@
 extern const struct JMFNamedEntityAttributes {
 	__unsafe_unretained NSString *creationDate;
 	__unsafe_unretained NSString *modificationDate;
+	__unsafe_unretained NSString *name;
 } JMFNamedEntityAttributes;
 
 extern const struct JMFNamedEntityRelationships {
@@ -14,6 +15,7 @@ extern const struct JMFNamedEntityRelationships {
 
 extern const struct JMFNamedEntityFetchedProperties {
 } JMFNamedEntityFetchedProperties;
+
 
 
 
@@ -52,6 +54,16 @@ extern const struct JMFNamedEntityFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSString* name;
+
+
+
+//- (BOOL)validateName:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 
 @end
 
@@ -70,6 +82,12 @@ extern const struct JMFNamedEntityFetchedProperties {
 
 - (NSString*)primitiveModificationDate;
 - (void)setPrimitiveModificationDate:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveName;
+- (void)setPrimitiveName:(NSString*)value;
 
 
 

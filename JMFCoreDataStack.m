@@ -53,9 +53,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@synthesize model = _model;                         //When using readonly property with custom getter,
-@synthesize storeCoordinator = _storeCoordinator;   // auto-synthesize is disabled
-@synthesize context = _context;                     //See: http://www.cocoaosx.com/2012/12/04/auto-synthesize-property-reglas-excepciones/
+@synthesize model               = _model;                   //When using readonly property with custom getter,
+@synthesize storeCoordinator    = _storeCoordinator;        //     auto-synthesize is disabled
+@synthesize context             = _context;                 //See: http://www.cocoaosx.com/2012/12/04/auto-synthesize-property-reglas-excepciones/
 
 /***************************************************************************/
 /*                                                                         */
@@ -64,10 +64,7 @@
 /***************************************************************************/
 - (NSManagedObjectModel*)model
 {
-    if( _model == nil )
-    {
-        _model = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelUrl];
-    }
+    if( _model == nil ) _model = [[NSManagedObjectModel alloc] initWithContentsOfURL:self.modelUrl];
     return _model;
 }
 
@@ -92,7 +89,7 @@
             NSNotification *note = [NSNotification
                                     notificationWithName:[JMFCoreDataStack persistentStoreCoordinatorErrorNotificationName]
                                     object:self
-                                    userInfo:@{@"Error" : error}];
+                                    userInfo:@{ @"Error" : error } ];
             [[NSNotificationCenter defaultCenter] postNotification:note];
             if( APPDEBUG ) NSLog( @"Error while adding a Store: %@", error );
             return nil;
@@ -265,11 +262,11 @@
     NSError* error = nil;
     if( !_context )
     {
+        NSString* errorKey = @"Attempted to save a nil NSManagedObjectContext. This JMFCoreDataStack has no context - probably there was an earlier error trying to access the CoreData database file.";
         error = [NSError errorWithDomain:@"JMFCoreDataStack"
                                   code:1
-                              userInfo:@{NSLocalizedDescriptionKey:@"Attempted to save a nil NSManagedObjectContext. This JMFCoreDataStack has no context - probably there was an earlier error trying to access the CoreData database file."}];
+                              userInfo:@{ NSLocalizedDescriptionKey:errorKey }];
         if( errorBlock != nil ) errorBlock( error );
-        
     }
     else if( self.context.hasChanges )
     {
