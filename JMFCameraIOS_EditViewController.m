@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFCameraIOS_EditViewController.h"
+#import "JMFCameraIOS_EditTVDataCell.h"
 #import "JMFCameraIOS_FaceRecViewController.h"
 #import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_ShowViewController.h"
@@ -23,11 +24,16 @@
 /*                                                                         */
 /***************************************************************************/
 #define IDS_EDITTV_NORMAL_CELL_IDENTIFIER       @"EditTVNormalCellIdentifier"
-#define IDS_EDITTV_MAPPOINT_CELL_IDENTIFIER     @"EditTVMapPointCellIdentifier"
+#define IDS_EDITTV_NORMAL_CELL_XIBNAME          @"JMFCameraIOS_EditTVDataCell"
 
 #define IDC_UITOOLBAR_BUTTON_SHARE_INDEX        0
 #define IDC_UITOOLBAR_BUTTON_FACEDET_INDEX      1
 #define IDC_UITOOLBAR_BUTTON_FILTERS_INDEX      2
+
+#define SECTION_METADATA                        0
+#define SECTION_LOCATION                        1
+#define SECTION_FACE_DETECTION                  2
+#define SECTION_FILTERS                         3
 
 /***************************************************************************/
 /*                                                                         */
@@ -39,6 +45,10 @@
 @interface JMFCameraIOS_EditViewController ()
 {
     NSArray*    headerStrings;
+    NSArray*    metadataTitleStrings;
+    NSArray*    metadataValues;
+    NSArray*    locationTitleStrings;
+    NSArray*    locationValues;
 }
 
 @end
@@ -72,15 +82,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithImage:                                                         */
+/*  initWithPhoto:                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image
+- (id)initWithPhoto:(JMFPhoto *)photo
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
-        self.image = image;
+        self.photo = photo;
     }
     return self;
 }
@@ -108,15 +118,27 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
     self.title = NSLocalizedString( @"IDS_EDIT", nil );
-    headerStrings = @[@"IDS_METADATA", @"IDS_FILTERS", @"IDS_FACES"];
     
-    self.iboSourceImageView.image = self.image;
-    self.iboFilteredImageView.image = self.image;
+    headerStrings = @[@"IDS_METADATA", @"IDS_LOCATION", @"IDS_FACES", @"IDS_FILTERS" ];
+    metadataTitleStrings = @[@"IDS_SOURCE", @"IDS_COLOR_MODEL", @"IDS_COLORS_PER_PIXEL", @"IDS_ORIENTATION", @"IDS_PIXEL_HEIGHT", @"IDS_PIXEL_WIDTH" ];
+    locationTitleStrings = @[@"IDS_LONGITUDE", @"IDS_LATITUDE", @"IDS_ALTITUDE", @"IDS_GEOLOCATION" ];
+
+    metadataValues = @[[self.photo sourceFromNumber:self.photo.source], self.photo.colorModel, self.photo.colorsPerPixel,
+                       [self.photo orientationFromNumber:self.photo.orientation], self.photo.pixelHeight, self.photo.pixelWidth];
+    locationValues = @[self.photo.longitude, self.photo.latitude, self.photo.altitude, self.photo.geoLocation];
+    
+    self.iboSourceImageView.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboFullScreenLabel.text = NSLocalizedString( @"IDS_FULL_SCREEN_MESSAGE", nil );
 
+    self.iboNameTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_NAME",     nil )];
+    self.iboCreatedTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_CREATED",  nil )];
+    self.iboModifiedTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MODIFIED", nil )];
+    self.iboNameValue.text     = self.photo.name;
+    self.iboCreatedValue.text  = [self.photo.creationDate description];
+    self.iboModifiedValue.text = [self.photo.modificationDate description];
+
     //TableView
-    [self.iboTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
-//  [self.iboTableView registerClass:[JMFCameraIOS_EditTVMapPointCell class] forCellReuseIdentifier:IDS_EDITTV_MAPPOINT_CELL_IDENTIFIER];
+    [self.iboTableView registerNib:[UINib nibWithNibName:IDS_EDITTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
     self.iboTableView.sectionHeaderHeight = 2.0;
     self.iboTableView.sectionFooterHeight = 20.0;
     self.iboTableView.dataSource = self;
@@ -140,11 +162,9 @@
 {
     [super viewWillAppear:animated];
     self.iboSourceImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.iboFilteredImageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.iboSourceImageView.frame = CGRectMake( 6, 6, 150, 200 );
-    self.iboFilteredImageView.frame = CGRectMake( 164, 6, 150, 200 );
+    self.iboSourceImageView.frame = CGRectMake( 2, 2, 150, 150 );
     [self.iboSourceImageView setClipsToBounds:YES];
-    [self.iboFilteredImageView setClipsToBounds:YES];
+    self.iboFullScreenLabel.frame = CGRectMake( 2, 154, 148, 20 );
 }
 
 /***************************************************************************/
@@ -179,7 +199,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return 3;
+    return headerStrings.count;
 }
 
 /***************************************************************************/
@@ -203,7 +223,10 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    int rows = 0;
+    if( section == SECTION_METADATA ) rows = 6;
+    else if( section == SECTION_LOCATION ) rows = 4;
+    return rows;
 }
 
 /***************************************************************************/
@@ -215,9 +238,36 @@
 /***************************************************************************/
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"Section %d - Row %d", indexPath.section + 1, indexPath.row + 1];
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
+    JMFCameraIOS_EditTVDataCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
+
+    cell.iboDataTitle.text = nil;
+    cell.iboDataValue.text = nil;
+    cell.iboDataIcon.image = nil;
+    
+    switch( indexPath.section )
+    {
+        case SECTION_METADATA:
+            cell.iboDataTitle.text = NSLocalizedString( [metadataTitleStrings objectAtIndex:indexPath.row], nil );
+            cell.iboDataValue.text = [[metadataValues objectAtIndex:indexPath.row] description];
+            break;
+            
+        case SECTION_LOCATION:
+            cell.iboDataTitle.text = NSLocalizedString( [locationTitleStrings objectAtIndex:indexPath.row], nil );
+            cell.iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
+            break;
+            
+//        case SECTION_FACE_DETECTION:
+//            break;
+//            
+//        case SECTION_FILTERS:
+//            break;
+            
+        default:
+            cell.iboDataTitle.text = [NSString stringWithFormat:@"Section %d - Row %d", indexPath.section + 1, indexPath.row + 1];
+            break;
+    }
+    
+
     return cell;
 }
 
@@ -280,7 +330,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
 
@@ -343,8 +393,8 @@
 /***************************************************************************/
 - (void)onFaceDetectionClicked
 {
-    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithImage:self.image];
-    [self.navigationController pushViewController:faceRecVC animated:YES];
+//    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithImage:self.image];
+//    [self.navigationController pushViewController:faceRecVC animated:YES];
 }
 
 /***************************************************************************/
@@ -356,8 +406,8 @@
 /***************************************************************************/
 - (void)onFiltersClicked
 {
-    JMFCameraIOS_FiltersViewController* filtersVC = [[JMFCameraIOS_FiltersViewController alloc] initWithImage:self.image];
-    [self.navigationController pushViewController:filtersVC animated:YES];
+//    JMFCameraIOS_FiltersViewController* filtersVC = [[JMFCameraIOS_FiltersViewController alloc] initWithImage:self.image];
+//    [self.navigationController pushViewController:filtersVC animated:YES];
 }
 
 #pragma mark - UIResponder Methods
@@ -383,11 +433,9 @@
     UIImage* image = nil;
     UITouch* touch = [touches anyObject];
     
-    if( touch.view == self.iboSourceImageView ) image = self.iboSourceImageView.image;
-    else if( touch.view == self.iboFilteredImageView ) image = self.iboFilteredImageView.image;
-    
-    if( image != nil )
+    if( touch.view == self.iboSourceImageView )
     {
+        image = self.iboSourceImageView.image;
         JMFCameraIOS_ShowViewController* showVC = [[JMFCameraIOS_ShowViewController alloc] initWithImage:image];
         [self.navigationController pushViewController:showVC animated:YES];
     }

@@ -1,28 +1,27 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.h                                      */
+/*  JMFCameraIOS_EditTVDataCell.h                                          */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class definition file                */
+/*               Edit TableView Photo Data Cell Class definition file      */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFPhoto.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*  JMFCameraIOS_EditTVDataCell Class Interface                            */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
+@interface JMFCameraIOS_EditTVDataCell : UITableViewCell
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,7 +30,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFPhoto*      photo;
+@property (nonatomic)       BOOL                    bMapCell;
 
 /***************************************************************************/
 /*                                                                         */
@@ -40,16 +39,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImageView;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFullScreenLabel;
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboCreatedTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboCreatedValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboModifiedTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboModifiedValue;
+@property (weak, nonatomic) IBOutlet UILabel*       iboDataTitle;
+@property (weak, nonatomic) IBOutlet UILabel*       iboDataValue;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboDataIcon;
 
 /***************************************************************************/
 /*                                                                         */
@@ -58,9 +50,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo;
-- (void)onShareClicked;
-- (void)onFaceDetectionClicked;
-- (void)onFiltersClicked;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 
 @end

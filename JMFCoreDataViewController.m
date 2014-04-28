@@ -130,7 +130,8 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
 {
-    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
+//    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
+    return 1;
 }
 
 /***************************************************************************/
@@ -142,7 +143,9 @@
 /***************************************************************************/
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+//  return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+    int count = [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
 /***************************************************************************/
@@ -179,7 +182,8 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[self.fetchedResultsController sections] count] : 0;
+//    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[self.fetchedResultsController sections] count] : 0;
+    return 1;
 }
 
 /***************************************************************************/
@@ -191,7 +195,8 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+//    return ( self.viewMode == JMFCoreDataViewModeList ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
 /***************************************************************************/
@@ -519,8 +524,10 @@
 - (void)reloadData
 {
     //refresh both controls data to free memory
-    [self.tableView reloadData];
-    [self.collectionView reloadData];
+//    [self.tableView reloadData];
+//    [self.collectionView reloadData];
+    if( self.viewMode == JMFCoreDataViewModeMosaic ) [self.collectionView reloadData];
+    else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView reloadData];
 }
 
 #pragma mark - Instance Private Methods

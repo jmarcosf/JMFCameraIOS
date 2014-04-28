@@ -138,6 +138,47 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  sourceFromNumber:                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSString*)sourceFromNumber:(NSNumber*)source
+{
+    NSArray* sourceStrings = @[@"IDS_UNKNOWN", @"IDS_CAMERA", @"IDS_FLICKR", @"IDS_FACEBOOK", @"IDS_INSTAGRAM", @"IDS_TWITTER", @"IDS_OTHER" ];
+    NSString* sourceDescription = nil;
+    
+    if( [source intValue] >= JMFPhotoSourceUnknown && [source intValue] <= JMFPhotoSourceOther )
+    {
+        sourceDescription = NSLocalizedString( [sourceStrings objectAtIndex:[source intValue]], nil );
+    }
+    else sourceDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
+    return sourceDescription;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  orientationFromNumber:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSString*)orientationFromNumber:(NSNumber*)orientation
+{
+    NSArray* orientationStrings = @[@"IDS_UNKNOWN", @"IDS_TOPLEFT", @"IDS_TOPRIGHT", @"IDS_BOTTOMRIGHT",
+                                    @"IDS_BOTOMLEFT", @"IDS_LEFTTOP", @"IDS_RIGHTTOP", @"RIGHTBOTTOM", @"LEFTBOTTOM" ];
+    NSString* orientationDescription = nil;
+    
+    if( [orientation intValue] >= 1 && [orientation intValue] <= 8 )
+    {
+        orientationDescription = NSLocalizedString( [orientationStrings objectAtIndex:[orientation intValue]], nil );
+    }
+    else orientationDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
+    return orientationDescription;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  setMetadataFromImage:                                                  */
 /*                                                                         */
 /*                                                                         */

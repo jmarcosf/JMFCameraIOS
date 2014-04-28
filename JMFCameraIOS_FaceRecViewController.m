@@ -70,14 +70,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithImage:                                                         */
+/*  initWithPhoto:andImage:                                                */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image
+- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
+        self.photo = photo;
         self.image = image;
     }
     return self;
@@ -106,6 +107,7 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
     self.title = NSLocalizedString( @"IDS_FACE_DETECTION", nil );
+    if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboImageView.image = self.image;
     
     //TabBar

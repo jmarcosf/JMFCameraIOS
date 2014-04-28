@@ -25,10 +25,10 @@ typedef NS_ENUM( NSInteger, JMFPhotoSource )
     JMFPhotoSourceUnknown    =  0,
     JMFPhotoSourceCamera     =  1,
     JMFPhotoSourceFlickr     =  2,
-    JMFPhotoSourceFeacebook  =  3,
+    JMFPhotoSourceFacebook   =  3,
     JMFPhotoSourceInstagram  =  4,
     JMFPhotoSourceTwitter    =  5,
-    JMFPhotoSourceOther      = -1
+    JMFPhotoSourceOther      =  6
 };
 
 /***************************************************************************/
@@ -61,6 +61,8 @@ typedef NS_ENUM( NSInteger, JMFPhotoSource )
 /*                                                                         */
 /***************************************************************************/
 - (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation;
+- (NSString*)sourceFromNumber:(NSNumber*)source;
+- (NSString*)orientationFromNumber:(NSNumber*)orientation;
 
 @end
 

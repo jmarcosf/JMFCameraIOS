@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
+#import "JMFPhoto.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,6 +31,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+@property (nonatomic,strong) JMFPhoto*  photo;
 @property (nonatomic,strong) UIImage*   image;
 
 /***************************************************************************/
@@ -50,7 +52,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image;
+- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image;
 - (void)onDetectClicked;
 - (void)onClearClicked;
 - (void)onCancelClicked;

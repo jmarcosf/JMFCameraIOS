@@ -26,11 +26,15 @@
 "IDS_FLICKR" = "Flickr";
 "IDS_ALBUM" = "Album";
 "IDS_PICTURES" = "Fotografías";
+"IDS_NAME" = "Nombre";
+"IDS_CREATED" = "Creada";
+"IDS_MODIFIED" = "Modificada";
 "IDS_SHARE" = "Compartir";
 "IDS_FACE_DETECTION" = "Rec. Facial";
 "IDS_FILTERS" = "Filtros";
 "IDS_SHOW" = "Show";
 "IDS_METADATA" = "Metadata";
+"IDS_LOCATION" = "Localización";
 "IDS_FILTERS" = "Filters";
 "IDS_FACES" = "Faces";
 "IDS_FILTER" = "Filtro";
@@ -43,6 +47,32 @@
 "IDS_DETECTING" = "detectando";
 "IDS_SELECT" = "Seleccionar";
 "IDS_SELECT_ITEMS" = "Seleccionar elementos";
+
+"IDS_SOURCE" = "Origen";
+"IDS_COLOR_MODEL" = "Modelo de Color";
+"IDS_COLORS_PER_PIXEL" = "Colores por pixel";
+"IDS_ORIENTATION" = "Orientación";
+"IDS_PIXEL_HEIGHT" = "Altura en pixeles";
+"IDS_PIXEL_WIDTH" = "Anchura en pixeles";
+"IDS_LONGITUDE" = "Longitud";
+"IDS_LATITUDE" = "Latitud";
+"IDS_ALTITUDE" = "Altitud";
+"IDS_GEOLOCATION" = "GeoLocalización";
+
+"IDS_UNKNOWN" = "Desconocido";
+"IDS_FACEBOOK" = "Facebook";
+"IDS_INSTAGRAM" = "Instagram";
+"IDS_TWITTER" = "Twitter";
+"IDS_OTHER" = "Otro";
+
+"IDS_TOPLEFT" = "Arriba, Izquierda";
+"IDS_TOPRIGHT" = "Arriba, Derecha";
+"IDS_BOTTOMRIGHT" = "Abajo, Derecha";
+"IDS_BOTOMLEFT" = "Abajo, Izquierda";
+"IDS_LEFTTOP" = "Izquierda, Arriba";
+"IDS_RIGHTTOP" = "Derecha, Arriba";
+"RIGHTBOTTOM" = "Derecha, Abajo";
+"LEFTBOTTOM" = "Izquierda, Abajo";
 
 "IDS_INIT_ERROR_MESSAGE" = "Los directorios de la aplicación no han podido crearse!";
 "IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener fotos de Flickr";

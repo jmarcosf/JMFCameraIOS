@@ -105,6 +105,8 @@
 		90C40CC1190DBEFE00D6E78E /* NoImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90C40CC0190DBEFE00D6E78E /* NoImage.jpg */; };
 		90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4918FD80BE00CEA576 /* Checked.png */; };
 		90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */; };
+		90E58CBD190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */; };
+		90E58CBE190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -251,6 +253,9 @@
 		90C40CC0190DBEFE00D6E78E /* NoImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NoImage.jpg; sourceTree = "<group>"; };
 		90DFEF4918FD80BE00CEA576 /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
 		90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checked@2x.png"; sourceTree = "<group>"; };
+		90E58CBA190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_EditTVDataCell.h; sourceTree = "<group>"; };
+		90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_EditTVDataCell.m; sourceTree = "<group>"; };
+		90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_EditTVDataCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -530,6 +535,9 @@
 				905AB5C81905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m */,
 				901B1048190A873200AD1F7C /* JMFCameraIOS_ZoomableView.h */,
 				901B1049190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m */,
+				90E58CBA190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.h */,
+				90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */,
+				90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -668,6 +676,7 @@
 				901B104D190AB08400AD1F7C /* Search.png in Resources */,
 				905AB5CF1905D54C009B822F /* ArrowDown@2x.png in Resources */,
 				9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */,
+				90E58CBE190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib in Resources */,
 				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
 				9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */,
 				9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */,
@@ -717,6 +726,7 @@
 				904930D31909053C0024FAC1 /* JMFFilter.m in Sources */,
 				9051D3A418FB37AF0066AB35 /* JMFCameraIOS.xcdatamodeld in Sources */,
 				904930D41909053C0024FAC1 /* JMFNamedEntity.m in Sources */,
+				90E58CBD190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m in Sources */,
 				904930C9190905030024FAC1 /* _JMFPhoto.m in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
 				9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */,

@@ -662,19 +662,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setEnabled:( count > 0  && !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  reloadData                                                             */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
--(void)reloadData
-{
-    if( self.viewMode == JMFCoreDataViewModeMosaic ) [self.collectionView reloadData];
-    else if( self.viewMode == JMFCoreDataViewModeList ) [self.tableView reloadData];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];
 }
 
 /***************************************************************************/
@@ -691,11 +679,9 @@
     if( selectedArray.count == 1 )
     {
         NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
-//      NSUInteger index = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? indexPath.item : indexPath.row;
         JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        UIImage* image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];;
         
-        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithImage:image];
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithPhoto:photo];
         [self.navigationController pushViewController:editVC animated:YES];
     }
 }
@@ -799,12 +785,12 @@
         {
              if( buttonIndex == 1 )
              {
-                 NSMutableIndexSet* indexSet = [[NSMutableIndexSet alloc]init];
                  for( NSIndexPath* indexPath in selectedArray )
                  {
-                     [indexSet addIndex:indexPath.item];
+                     JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                     [self.fetchedResultsController.managedObjectContext deleteObject:photo];
                  }
-//               [self.model removeObjectsAtIndexes:indexSet];
+                 [self.model saveWithErrorBlock:nil];                 
                  iSelectedCount = 0;
                  [self redrawControls:YES];
                  [self reloadData];

@@ -227,8 +227,8 @@
 /***************************************************************************/
 - (void)onShowClicked
 {
-    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithImage:self.image];
-    [self.navigationController pushViewController:faceRecVC animated:YES];
+//    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithPhoto:self.photo andImage:<#(UIImage *)#>
+//    [self.navigationController pushViewController:faceRecVC animated:YES];
 }
 
 /***************************************************************************/

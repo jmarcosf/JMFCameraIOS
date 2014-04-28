@@ -26,11 +26,15 @@
 "IDS_FLICKR" = "Flickr";
 "IDS_ALBUM" = "Album";
 "IDS_PICTURES" = "Pictures";
+"IDS_NAME" = "Name";
+"IDS_CREATED" = "Created";
+"IDS_MODIFIED" = "Modified";
 "IDS_SHARE" = "Share";
 "IDS_FACE_DETECTION" = "Face Detection";
 "IDS_FILTERS" = "Filters";
 "IDS_SHOW" = "Show";
 "IDS_METADATA" = "Metadata";
+"IDS_LOCATION" = "Location";
 "IDS_FILTERS" = "Filters";
 "IDS_FACES" = "Faces";
 "IDS_FILTER" = "Filter";
@@ -43,6 +47,32 @@
 "IDS_DETECTING" = "detecting";
 "IDS_SELECT" = "Select";
 "IDS_SELECT_ITEMS" = "Select Items";
+
+"IDS_SOURCE" = "Source";
+"IDS_COLOR_MODEL" = "Color Model";
+"IDS_COLORS_PER_PIXEL" = "Colors per pixel";
+"IDS_ORIENTATION" = "Orientation";
+"IDS_PIXEL_HEIGHT" = "Pixel height";
+"IDS_PIXEL_WIDTH" = "Pixel Width";
+"IDS_LONGITUDE" = "Longitude";
+"IDS_LATITUDE" = "Latitude";
+"IDS_ALTITUDE" = "Altitude";
+"IDS_GEOLOCATION" = "GeoLocation";
+
+"IDS_UNKNOWN" = "Unknown";
+"IDS_FACEBOOK" = "Facebook";
+"IDS_INSTAGRAM" = "Instagram";
+"IDS_TWITTER" = "Twitter";
+"IDS_OTHER" = "Other";
+
+"IDS_TOPLEFT" = "Top, Left";
+"IDS_TOPRIGHT" = "Top, Right";
+"IDS_BOTTOMRIGHT" = "Bottom, Right";
+"IDS_BOTOMLEFT" = "Bottom, Left";
+"IDS_LEFTTOP" = "Left, Top";
+"IDS_RIGHTTOP" = "Right, Top";
+"RIGHTBOTTOM" = "Right, Bottom";
+"LEFTBOTTOM" = "Left, Bottom";
 
 "IDS_INIT_ERROR_MESSAGE" = "Application directories couldn't be created!";
 "IDS_EMPTY_ALBUM_MESSAGE" = "Welcome to JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture with the device or click \"Flickr\" button to download pictures from Flickr";
