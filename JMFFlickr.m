@@ -22,7 +22,7 @@
 /*                                                                         */
 /***************************************************************************/
 #define kFlickrAPIKey               @"f886542ef1da27324037337a59dee61a"
-#define IDS_FLICKR_SEARCH_URL       @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=15&format=json&nojsoncallback=1"
+#define IDS_FLICKR_SEARCH_URL       @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=5&format=json&nojsoncallback=1"
 #define IDS_FLICKR_PHOTO_URL        @"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg"
 
 /***************************************************************************/

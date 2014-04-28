@@ -169,8 +169,8 @@
 /***************************************************************************/
 + (JMFCoreDataStack*)coreDataStackWithModelName:(NSString *)modelName databaseFileName:(NSString*)databaseFileName
 {
-    NSURL* url = ( databaseFileName ) ? [[self applicationDocumentsDirectory] URLByAppendingPathComponent:databaseFileName]
-                                      : [[self applicationDocumentsDirectory] URLByAppendingPathComponent:modelName];
+    NSURL* url = ( databaseFileName != nil ) ? [[self applicationDocumentsDirectory] URLByAppendingPathComponent:databaseFileName]
+                                             : [[self applicationDocumentsDirectory] URLByAppendingPathComponent:modelName];
 
     return [self coreDataStackWithModelName:modelName databaseUrl:url];
 }

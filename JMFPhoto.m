@@ -12,6 +12,8 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFPhoto.h"
+#import "JMFNamedEntity.h"
+#import "JMFUtility.h"
 #import <ImageIO/CGImageSource.h>
 #import <ImageIO/CGImageProperties.h>
 
@@ -23,6 +25,9 @@
 /*                                                                         */
 /***************************************************************************/
 @interface JMFPhoto ()
+
+- (void)setMetadataFromImage:(UIImage*)image;
+- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail;
 
 @end
 
@@ -41,6 +46,30 @@
 /***************************************************************************/
 @implementation JMFPhoto
 
+
+#pragma mark - Key Value Observing Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Key Value Observing Methods                                            */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  observableKeys                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSArray*)observableKeys
+{
+    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFPhotoRelationships.photo2faces, JMFPhotoRelationships.photo2filters];
+}
+
 #pragma mark - Initialization Methods
 /***************************************************************************/
 /*                                                                         */
@@ -55,26 +84,29 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithImage:andThumbnail:                                            */
+/*  photoWithImage:source:thumbnail:inContext:                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image source:(JMFPhotoSource)source andThumbnail:(UIImage*)thumbnail;
++ (instancetype)photoWithImage:(UIImage*)image source:(JMFPhotoSource)source thumbnail:(UIImage*)thumbnail inContext:(NSManagedObjectContext*)context
 {
-    if( image == nil ) return nil;
+    JMFPhoto* photo = [JMFPhoto insertInManagedObjectContext:context];
     
-    if( self = [super init] )
-    {
-        self.source = [NSNumber numberWithInt:source];
-        self.altitude = self.longitude = self.latitude = nil;
-        self.colorModel = self.filteredImageUrl = self.filteredThumbnailUrl = self.geoLocation = self.sourceImageUrl = self.sourceThumbnailUrl = nil;
-        self.colorsPerPixel = self.orientation = nil;
-        self.pixelHeight = self.pixelWidth = nil;
-        
-        [self saveImageFile:image withTumbnail:thumbnail];
-        [self setMetadataFromImage:image];
-    }
-    return self;
+    photo.name = [JMFUtility generateNewImageFileName];
+    photo.creationDate = photo.modificationDate = [NSDate date];
+    
+    photo.source = [NSNumber numberWithInt:source];
+    photo.sourceImageUrl = photo.sourceThumbnailUrl = nil;
+    photo.filteredImageUrl = photo.filteredThumbnailUrl = @"";//nil;
+    photo.altitude = photo.longitude = photo.latitude = @0;//nil;
+    photo.geoLocation = photo.colorModel = @"";
+    photo.colorsPerPixel = photo.orientation = nil;
+    photo.pixelHeight = photo.pixelWidth = nil;
+    
+    [photo setMetadataFromImage:image];
+    [photo saveImageFile:image withTumbnail:thumbnail];
+    
+    return photo;
 }
 
 #pragma mark - Class Methods
@@ -91,19 +123,16 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  saveImageFile:withTumbnail:                                            */
+/*  setLocationLongitude:latitude:altitude:geoLocation:                    */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail
+- (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation
 {
-    
-    //    NSString* appDocumentsDirectory =  [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-    //    NSString* templateStr = [NSString stringWithFormat:@"%@/filename-XXXXX", appDocumentsDirectory];
-    //    char template[templateStr.length + 1];
-    //    strcpy( template, [templateStr cStringUsingEncoding:NSASCIIStringEncoding] );
-    //    char* filename = mktemp( template );
-    //    NSURL* url = [appDocumentsDirectory URLByAppendingPathComponent:imagen.jpg];
+    if( longitude != nil   ) self.longitude   = longitude;
+    if( latitude != nil    ) self.latitude    = latitude;
+    if( altitude != nil    ) self.altitude    = altitude;
+    if( geoLocation != nil ) self.geoLocation = geoLocation;
 }
 
 /***************************************************************************/
@@ -137,16 +166,28 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  setLocationLongitude:latitude:altitude:geoLocation:                    */
+/*  saveImageFile:withTumbnail:                                            */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation
+- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail
 {
-    self.longitude = longitude;
-    self.latitude  = latitude;
-    self.altitude  = altitude;
-    self.geoLocation = geoLocation;
+    if( image == nil ) return;
+    
+    self.sourceImageUrl     = [JMFUtility pathForImageFileName:self.name];
+    self.sourceThumbnailUrl = [JMFUtility pathForThumbnailFileName:self.name];
+    
+    if( thumbnail == nil )
+    {
+        CGSize destinationSize = CGSizeMake( [self.pixelWidth integerValue] / 4, [self.pixelHeight integerValue] / 4 );
+        UIGraphicsBeginImageContext( destinationSize );
+        [image drawInRect:CGRectMake( 0, 0, destinationSize.width, destinationSize.height ) ];
+        thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    
+    [UIImageJPEGRepresentation( image, 1.0 ) writeToFile:self.sourceImageUrl options:NSAtomicWrite error:nil];
+    [UIImageJPEGRepresentation( thumbnail, 1.0 ) writeToFile:self.sourceThumbnailUrl options:NSAtomicWrite error:nil];
 }
 
 @end

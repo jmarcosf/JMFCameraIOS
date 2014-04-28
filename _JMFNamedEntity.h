@@ -44,7 +44,7 @@ extern const struct JMFNamedEntityFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* modificationDate;
+@property (nonatomic, strong) NSDate* modificationDate;
 
 
 
@@ -80,8 +80,8 @@ extern const struct JMFNamedEntityFetchedProperties {
 
 
 
-- (NSString*)primitiveModificationDate;
-- (void)setPrimitiveModificationDate:(NSString*)value;
+- (NSDate*)primitiveModificationDate;
+- (void)setPrimitiveModificationDate:(NSDate*)value;
 
 
 

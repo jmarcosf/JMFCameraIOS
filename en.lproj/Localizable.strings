@@ -45,9 +45,9 @@
 "IDS_SELECT_ITEMS" = "Select Items";
 
 "IDS_INIT_ERROR_MESSAGE" = "Application directories couldn't be created!";
-"IDS_EMPTY_ALBUM_MESSAGE" = "Welcome to JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture with the device or click \"Flickr\" button to download 10 pictures from Flickr";
+"IDS_EMPTY_ALBUM_MESSAGE" = "Welcome to JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture with the device or click \"Flickr\" button to download pictures from Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No camera found!\nAre you using simulator?";
-"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "You are about to download 15 pictures from Flickr\nType your term search:";
+"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Download 5 pictures from Flickr\nType your term search:";
 "IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Type the search term";
 "IDS_DOWNLOADING_PICTURES" = "Downloading pictures\nPlease wait...";
 "IDS_DOWNLOADING_PICTURES_ERROR" = "There was an error downloading pictures.";

@@ -1,178 +1,156 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFAppDelegate.m                                                       */
+/*  JMFUtility.m                                                           */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               App Delegate Class implementation File                    */
+/*               JMFUtility Class implementation File                      */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFAppDelegate.h"
 #import "JMFUtility.h"
-#import "JMFCoreDataStack.h"
-#import "JMFCameraIOS_MainViewController.h"
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Defines                                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+#define APPLICATION_IMAGES_SUBDIRECTORY                     @"/Images"
+#define APPLICATION_THUMBNAILS_SUB_DIRECTORY                @"/Thumbnails"
+#define CURRENT_IMAGE_NUMBER_KEY                            @"CurrentImageNumber"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFAppDelegate Class Implementation                                    */
+/*  JMFUtility Class Implementation                                        */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFAppDelegate
+@implementation JMFUtility
 
-#pragma mark - UIApplicationDelegate
+#pragma mark - Class Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIApplicationDelegate Methods                                          */
+/*  JMFUtility Class Methods                                               */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  application:didFinishLaunchingWithOptions:                             */
+/*  applicationDocumentsDirectory                                          */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
++ (NSString*)applicationDocumentsDirectory
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    return [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+}
 
-    if( ![JMFUtility createApplicationDirectories] )
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  imagesDirectory                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)imagesDirectory
+{
+    return [[JMFUtility applicationDocumentsDirectory] stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  thumbnailsDirectory                                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)thumbnailsDirectory
+{
+    return [[JMFUtility applicationDocumentsDirectory] stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  createApplicationDirectories                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (BOOL)createApplicationDirectories
+{
+    NSString* imagesDirectory = [JMFUtility imagesDirectory];
+    NSString* thumbnailsDirectory = [JMFUtility thumbnailsDirectory];
+    NSError* imageDirectoryError = nil;
+    NSError* thumbnailsDirectoryError = nil;
+
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:imagesDirectory] )
     {
-        NSString* IDS_OK      = NSLocalizedString( @"IDS_OK", nil );
-        NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_INIT_ERROR_MESSAGE", nil );
-        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"error" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil, nil];
-        [alertView show];
-        return NO;
+        [[NSFileManager defaultManager] createDirectoryAtPath:imagesDirectory withIntermediateDirectories:NO attributes:nil error:&imageDirectoryError];
     }
     
-    //Model with CoreData
-    self.model = [JMFCoreDataStack coreDataStackWithModelName:@"JMFCameraIOS"];
-    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]initWithModel:self.model];
-    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
-//  [self performCoreDataAutoSave];
-    
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillResignActive:                                           */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillResignActive:(UIApplication*)application
-{
-    [self.model saveWithErrorBlock:^( NSError* error )
+    if( ![[NSFileManager defaultManager] fileExistsAtPath:thumbnailsDirectory] )
     {
-        if( APPDEBUG ) NSLog( @"Error saving data in applicationWillResignActive: %@", error );
-    }];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidEnterBackground:                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidEnterBackground:(UIApplication*)application
-{
-    [self.model saveWithErrorBlock:^( NSError* error )
-    {
-         if( APPDEBUG ) NSLog( @"Error saving data in applicationDidEnterBackground: %@", error );
-    }];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillEnterForeground:                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillEnterForeground:(UIApplication*)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidBecomeActive:                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidBecomeActive:(UIApplication*)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillTerminate:                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillTerminate:(UIApplication*)application
-{
-    if( APPDEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  application:handleEventsForBackgroundURLSession:completionHandler:     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString*)identifier completionHandler:( void (^)() )completionHandler
-{
-    if( APPDEBUG ) NSLog( @"on application:handleEventsForBackgroundURLSession:completionHandler: here you could save data but you problably did it before" );
-}
-
-#pragma mark - Class Instance Methods
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  Class Instance Methods                                                 */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  performCoreDataAutoSave                                                */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)performCoreDataAutoSave
-{
-    if( COREDATA_AUTOSAVE == YES )
-    {
-        if( APPDEBUG ) NSLog( @"in autosave..." );
-        [self.model saveWithErrorBlock:^( NSError* error )
-        {
-             if( APPDEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
-        }];
-        [self performSelector:@selector( performCoreDataAutoSave ) withObject:nil afterDelay: COREDATA_AUTOSAVE_DELAY];
+        [[NSFileManager defaultManager] createDirectoryAtPath:thumbnailsDirectory withIntermediateDirectories:NO attributes:nil error:&thumbnailsDirectoryError];
     }
+    
+    return ( !imageDirectoryError && !thumbnailsDirectoryError );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  generateNewImageFileName                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)generateNewImageFileName
+{
+    NSUserDefaults* defaultsDictionary = [NSUserDefaults standardUserDefaults];
+    int currentImageNumber = [[defaultsDictionary objectForKey:CURRENT_IMAGE_NUMBER_KEY] integerValue];
+    NSString* newFileName = [NSString stringWithFormat:@"IMG%05d.jpg", ++currentImageNumber];
+    [defaultsDictionary setObject:[NSNumber numberWithInteger:currentImageNumber] forKey:CURRENT_IMAGE_NUMBER_KEY];
+    [defaultsDictionary synchronize];
+    return newFileName;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  pathForImageFileName:imageFileName:                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)pathForImageFileName:(NSString*)imageFileName
+{
+    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSString* imageDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
+    return [imageDirectory stringByAppendingString:[NSString stringWithFormat:@"/%@", imageFileName]];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  pathForThumbnailFileName:thumbnailFileName:                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName
+{
+    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
+    return [thumbnailsDirectory stringByAppendingString:[NSString stringWithFormat:@"/%@", thumbnailFileName]];
 }
 
 @end

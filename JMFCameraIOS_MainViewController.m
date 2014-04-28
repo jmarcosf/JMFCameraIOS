@@ -26,6 +26,7 @@
 /*                                                                         */
 /***************************************************************************/
 #define IDS_MAINCV_PHOTO_CELL_XIBNAME               @"JMFCameraIOS_MainCVPhotoCell"
+#define IDS_MAINCV_HEADER_CELL_IDENTIFIER           @"MainCVHeaderCellIdentifier"
 #define IDS_MAINCV_PHOTO_CELL_IDENTIFIER            @"MainCVPhotoCellIdentifier"
 #define IDS_MAINTV_PHOTO_CELL_IDENTIFIER            @"MainTVPhotoCellIdentifier"
 
@@ -102,8 +103,10 @@
 /***************************************************************************/
 - (id)initWithModel:(JMFCoreDataStack*)model
 {
+
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFPhoto entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.modificationDate ascending:NO]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )],
+                                [NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.modificationDate ascending:NO]];
     NSFetchedResultsController* fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                                              managedObjectContext:model.context
                                                                                                sectionNameKeyPath:nil
@@ -114,8 +117,15 @@
                                              style:UITableViewStylePlain
                               collectionViewLayout:[[UICollectionViewFlowLayout alloc]init]
                                           viewMode:JMFCoreDataViewModeMosaic];
+    if( self )
+    {
+        self.model = model;
+    }
     return self;
 }
+
+
+
 
 /***************************************************************************/
 /*                                                                         */
@@ -180,7 +190,7 @@
     iboEmptyAlbumLabel.lineBreakMode = NSLineBreakByWordWrapping;
     iboEmptyAlbumLabel.numberOfLines = 10;
     iboEmptyAlbumLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-    iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_self.model_MESSAGE", nil );
+    iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", nil );
     [self.view addSubview:iboEmptyAlbumLabel];
     
     // Collection View
@@ -188,6 +198,7 @@
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.collectionView.allowsMultipleSelection = bMultiSelectMode;
+    [self.collectionView registerClass:[UICollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:IDS_MAINCV_HEADER_CELL_IDENTIFIER];
     [self.collectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
     
     //Table View
@@ -337,9 +348,13 @@
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    JMFPhoto* newPhoto = [[JMFPhoto alloc]initWithImage:image source:JMFPhotoSourceCamera andThumbnail:nil];
+    JMFPhoto* newPhoto = [JMFPhoto photoWithImage:image
+                                           source:JMFPhotoSourceCamera
+                                        thumbnail:nil
+                                        inContext:self.fetchedResultsController.managedObjectContext];
     [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
     [picker dismissViewControllerAnimated:YES completion:nil];
+    [self.model saveWithErrorBlock:nil];
     bFromCamera = YES;
 //  [self reloadData];
 }
@@ -388,7 +403,35 @@
 /***************************************************************************/
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
 {
-    return CGSizeMake( 1, 1 );
+    return CGSizeMake( collectionView.frame.size.width, 25 );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:viewForSupplementaryElementOfKind:atIndexPath:          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString*)kind atIndexPath:(NSIndexPath*)indexPath
+{
+    UICollectionReusableView *reusableView = nil;
+    
+    if( kind == UICollectionElementKindSectionHeader )
+    {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                          withReuseIdentifier:IDS_MAINCV_HEADER_CELL_IDENTIFIER
+                                                                 forIndexPath:indexPath];
+        if( reusableView != nil )
+        {
+            CGRect frame = CGRectMake( 5, 0, reusableView.frame.size.width - 10, reusableView.frame.size.height );
+            UILabel* header = [[UILabel alloc]initWithFrame:frame];
+            int picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects];
+            header.text = [NSString stringWithFormat:@"%d %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
+            [reusableView addSubview:header];
+        }
+    }
+    return reusableView;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -414,7 +457,11 @@
     JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     JMFCameraIOS_MainCVPhotoCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    cell.iboPhotoImage.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];
+    
+    NSData*  imageData = [NSData dataWithContentsOfFile:photo.sourceThumbnailUrl];
+    UIImage* image = [UIImage imageWithData:imageData];
+    cell.iboPhotoImage.image = ( image != nil ) ? image : [UIImage imageNamed:@"NoImage.jpg"];
+    cell.bImageOK = ( image != nil );
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 100;
@@ -490,7 +537,8 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return NSLocalizedString( @"IDS_PICTURES", nil );
+    int picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [NSString stringWithFormat:@"%d %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
 }
 
 /***************************************************************************/
@@ -503,10 +551,15 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSData*  imageData = [NSData dataWithContentsOfFile:photo.sourceThumbnailUrl];
+    UIImage* image = [UIImage imageWithData:imageData];
+    
     UITableViewCell* cell = nil;
     cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
     cell.textLabel.text = [NSString stringWithFormat:@"Photo for row #%ld", (long)indexPath.row];
-    cell.imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:photo.sourceThumbnailUrl]]];
+    cell.imageView.image = ( image != nil ) ? image : [UIImage imageNamed:@"NoImage.jpg"];
+//    cell.bImageOK = ( image != nil );
+    
     return cell;
 }
 
@@ -609,7 +662,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setEnabled:( count > 0  && !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode )];}
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];}
 
 /***************************************************************************/
 /*                                                                         */
@@ -790,16 +843,32 @@
             JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
             [flickrEngine searchFlickrForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
              {
-                 if( !error )
-                 {
-                     for( JMFFlickrPhoto* photo in results )
-                     {
-                         JMFPhoto* newPhoto = [[JMFPhoto alloc]initWithImage:photo.largeImage source:JMFPhotoSourceFlickr andThumbnail:photo.thumbnail];
-                         [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
-                     }
-                 }
+//                 if( !error )
+//                 {
+//                     for( JMFFlickrPhoto* photo in results )
+//                     {
+//                         JMFPhoto* newPhoto = [JMFPhoto photoWithImage:photo.largeImage
+//                                                                source:JMFPhotoSourceFlickr
+//                                                             thumbnail:photo.thumbnail
+//                                                             inContext:self.fetchedResultsController.managedObjectContext];
+//                         [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
+//                         [self.model saveWithErrorBlock:nil];
+//                     }
+//                 }
                  dispatch_async(dispatch_get_main_queue(), ^
                  {
+                     if( !error )
+                     {
+                         for( JMFFlickrPhoto* photo in results )
+                         {
+                             JMFPhoto* newPhoto = [JMFPhoto photoWithImage:photo.largeImage
+                                                                    source:JMFPhotoSourceFlickr
+                                                                 thumbnail:photo.thumbnail
+                                                                 inContext:self.fetchedResultsController.managedObjectContext];
+                             [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
+                         }
+                         [self.model saveWithErrorBlock:nil];
+                     }
                      [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
                      if( !error )
                      {

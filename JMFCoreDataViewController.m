@@ -97,7 +97,7 @@
         self.tableView                  = [[UITableView alloc] initWithFrame:frame style:style];
         self.layout                     = layout;
         self.collectionView             = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
-        self.viewMode                   = viewMode;
+        _viewMode                       = viewMode;
         
         self.tableView.dataSource       = self;
         self.tableView.delegate         = self;
@@ -108,6 +108,55 @@
         [self.view addSubview:self.collectionView];
     }
     return self;
+}
+
+#pragma mark - UICollectionViewDataSource
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UICollectionViewDataSource Methods                                     */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  numberOfSectionsInCollectionView:                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
+{
+    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:numberOfItemsInSection:                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  collectionView:cellForItemAtIndexPath:                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
+{
+    //NOTE: this method must be implemented by derived classes
+    [NSException raise:@"Invoked abstract method" format:@"Derived class must implement this method"];
+    return nil;
 }
 
 #pragma mark - UITableViewDataSource
@@ -193,55 +242,6 @@
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
 {
     return ( self.viewMode == JMFCoreDataViewModeList ) ? [self.fetchedResultsController sectionIndexTitles] : nil;
-}
-
-#pragma mark - UICollectionViewDataSource
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  UICollectionViewDataSource Methods                                     */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  numberOfSectionsInCollectionView:                                      */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView*)collectionView
-{
-    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[self.fetchedResultsController sections] count] : 0;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  collectionView:numberOfItemsInSection:                                 */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects] : 0;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  collectionView:cellForItemAtIndexPath:                                 */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
--(UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
-{
-    //NOTE: this method must be implemented by derived classes
-    [NSException raise:@"Invoked abstract method" format:@"Derived class must implement this method"];
-    return nil;
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -393,15 +393,15 @@
         
         if( newFetchedResultsController )
         {
-            if( DEBUG ) NSLog( @"[%@ %@] %@",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ),
-                              oldFetchedResultsController ? @"updated" : @"set" );
+            if( APPDEBUG ) NSLog( @"[%@ %@] %@",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ),
+                           oldFetchedResultsController ? @"updated" : @"set" );
             [self performFetch];
         }
         else
         {
-            if( DEBUG ) NSLog( @"[%@ %@] reset to nil",
+            if( APPDEBUG ) NSLog( @"[%@ %@] reset to nil",
                               NSStringFromClass( [self class] ),
                               NSStringFromSelector( _cmd ) );
             [self.tableView reloadData];
@@ -422,33 +422,33 @@
     {
         if( self.fetchedResultsController.fetchRequest.predicate )
         {
-            if( DEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ),
-                              self.fetchedResultsController.fetchRequest.entityName,
-                              self.fetchedResultsController.fetchRequest.predicate );
+            if( APPDEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ),
+                           self.fetchedResultsController.fetchRequest.entityName,
+                           self.fetchedResultsController.fetchRequest.predicate );
         }
         else
         {
-            if( DEBUG ) NSLog( @"[%@ %@] fetching all %@ (i.e., no predicate)",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ),
-                              self.fetchedResultsController.fetchRequest.entityName );
+            if( APPDEBUG ) NSLog( @"[%@ %@] fetching all %@ (i.e., no predicate)",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ),
+                           self.fetchedResultsController.fetchRequest.entityName );
         }
         
         NSError *error;
         [self.fetchedResultsController performFetch:&error];
-        if( error && DEBUG ) NSLog( @"[%@ %@] %@ (%@)",
-                                   NSStringFromClass( [self class] ),
-                                   NSStringFromSelector( _cmd ),
-                                   [error localizedDescription],
-                                   [error localizedFailureReason] );
+        if( error && APPDEBUG ) NSLog( @"[%@ %@] %@ (%@)",
+                                NSStringFromClass( [self class] ),
+                                NSStringFromSelector( _cmd ),
+                                [error localizedDescription],
+                                [error localizedFailureReason] );
     }
     else
     {
-        if( DEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
-                          NSStringFromClass( [self class] ),
-                          NSStringFromSelector( _cmd ) );
+        if( APPDEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
+                       NSStringFromClass( [self class] ),
+                       NSStringFromSelector( _cmd ) );
     }
     [self reloadData];
 }
@@ -505,7 +505,7 @@
 /***************************************************************************/
 - (void)setViewMode:(JMFCoreDataViewMode)newViewMode
 {
-    self.viewMode = newViewMode;
+    _viewMode = newViewMode;
     [self reloadData];
 }
 
