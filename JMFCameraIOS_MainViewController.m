@@ -124,9 +124,6 @@
     return self;
 }
 
-
-
-
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -351,12 +348,11 @@
     JMFPhoto* newPhoto = [JMFPhoto photoWithImage:image
                                            source:JMFPhotoSourceCamera
                                         thumbnail:nil
-                                        inContext:self.fetchedResultsController.managedObjectContext];
+                                        inContext:self.model.context];
     [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
     [picker dismissViewControllerAnimated:YES completion:nil];
-    [self.model saveWithErrorBlock:nil];
     bFromCamera = YES;
-//  [self reloadData];
+    [self.model saveWithErrorBlock:nil];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -424,6 +420,8 @@
                                                                  forIndexPath:indexPath];
         if( reusableView != nil )
         {
+            NSArray* subViews = [reusableView subviews];
+            for( UIView* subView in subViews ) [subView removeFromSuperview];
             CGRect frame = CGRectMake( 5, 0, reusableView.frame.size.width - 10, reusableView.frame.size.height );
             UILabel* header = [[UILabel alloc]initWithFrame:frame];
             int picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects];
@@ -674,14 +672,14 @@
 /***************************************************************************/
 - (void)editPhoto
 {
-    NSArray*  selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
+    NSArray* selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     if( selectedArray.count == 1 )
     {
         NSIndexPath* indexPath = [selectedArray objectAtIndex:0];
         JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
         
-        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithPhoto:photo];
+        JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithPhoto:photo inModel:self.model];
         [self.navigationController pushViewController:editVC animated:YES];
     }
 }
@@ -697,7 +695,7 @@
 {
     NSArray* selectedIndexPathArray;
     selectedIndexPathArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems]
-                                                                         : [self.tableView indexPathsForSelectedRows];
+                                                                            : [self.tableView indexPathsForSelectedRows];
     if( selectedIndexPathArray != nil )
     {
         for( NSIndexPath* indexPath in selectedIndexPathArray )
@@ -779,7 +777,7 @@
     if( selectedArray.count )
     {
         if( selectedArray.count > 1 ) IDS_MESSAGE = [NSString stringWithFormat:NSLocalizedString( @"IDS_CONFIRM_MULTI_DELETION_MESSAGE", nil ), selectedArray.count ];
-        
+
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:IDS_TITLE message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_CANCEL otherButtonTitles:IDS_OK, nil];
         [alertView showWithCompletion:^( UIAlertView* alertView, NSInteger buttonIndex )
         {
@@ -788,12 +786,11 @@
                  for( NSIndexPath* indexPath in selectedArray )
                  {
                      JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
-                     [self.fetchedResultsController.managedObjectContext deleteObject:photo];
+                     [self.model.context deleteObject:photo];
                  }
-                 [self.model saveWithErrorBlock:nil];                 
                  iSelectedCount = 0;
                  [self redrawControls:YES];
-                 [self reloadData];
+                 [self.model saveWithErrorBlock:nil];
              }
         }];
     }
@@ -829,18 +826,6 @@
             JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
             [flickrEngine searchFlickrForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
              {
-//                 if( !error )
-//                 {
-//                     for( JMFFlickrPhoto* photo in results )
-//                     {
-//                         JMFPhoto* newPhoto = [JMFPhoto photoWithImage:photo.largeImage
-//                                                                source:JMFPhotoSourceFlickr
-//                                                             thumbnail:photo.thumbnail
-//                                                             inContext:self.fetchedResultsController.managedObjectContext];
-//                         [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
-//                         [self.model saveWithErrorBlock:nil];
-//                     }
-//                 }
                  dispatch_async(dispatch_get_main_queue(), ^
                  {
                      if( !error )
@@ -850,21 +835,15 @@
                              JMFPhoto* newPhoto = [JMFPhoto photoWithImage:photo.largeImage
                                                                     source:JMFPhotoSourceFlickr
                                                                  thumbnail:photo.thumbnail
-                                                                 inContext:self.fetchedResultsController.managedObjectContext];
+                                                                 inContext:self.model.context];
                              [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
                          }
-                         [self.model saveWithErrorBlock:nil];
+                         if( results.count > 0 ) [self.model saveWithErrorBlock:nil];
                      }
+                     
                      [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
-                     if( !error )
-                     {
-                         [self redrawControls:NO];
-                         [self reloadData];
-                     }
-                     else
-                     {
-                         [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
-                     }
+                     if( !error ) [self redrawControls:NO];
+                     else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
                  });
              }];
         }
@@ -880,8 +859,8 @@
 /***************************************************************************/
 - (void)onAlbumClicked
 {
-//    JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithAlbum:self.model];
-//    [self.navigationController pushViewController:albumVC animated:YES];
+    JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithFetchedResultsController:self.fetchedResultsController];
+    [self.navigationController pushViewController:albumVC animated:YES];
 }
 
 @end

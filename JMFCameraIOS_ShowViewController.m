@@ -93,13 +93,13 @@
     
     self.iboScrollView.minimumZoomScale = 1.0;
     self.iboScrollView.maximumZoomScale = 6.0;
-    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFit;
     self.iboScrollView.delegate = self;
     
     UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
     imageView.image = self.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFit;
     [self.iboZoomableView addSubview:imageView];
     
     UITapGestureRecognizer* tapRecognizer =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector( onPictureClicked: )];

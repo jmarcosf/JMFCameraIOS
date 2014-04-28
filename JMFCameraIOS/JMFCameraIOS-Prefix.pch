@@ -46,7 +46,7 @@
 /***************************************************************************/
 #define APPDEBUG                                            NO
 #define COREDATA_AUTOSAVE                                   YES
-#define COREDATA_AUTOSAVE_DELAY                             12      //Minutes
+#define COREDATA_AUTOSAVE_DELAY                             5      //Seconds
 
 /***************************************************************************/
 /*                                                                         */

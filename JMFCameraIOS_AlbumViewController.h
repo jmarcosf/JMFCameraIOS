@@ -30,7 +30,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) NSArray*   album;
+@property (nonatomic,strong) NSFetchedResultsController*    fetchedResultsController;
 
 /***************************************************************************/
 /*                                                                         */
@@ -49,7 +49,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithAlbum:(NSArray*)album;
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController;
 
 /***************************************************************************/
 /*                                                                         */

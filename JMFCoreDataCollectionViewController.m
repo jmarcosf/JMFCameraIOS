@@ -140,85 +140,13 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  controllerWillChangeContent:                                           */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
-{
-    if( !self.bSuspendAutomaticTrackingOfChangesInManagedObjectContext )
-    {
-        //TODO:
-    }
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  controller:didChangeSection:atIndex:forChangeType:                     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)controller:(NSFetchedResultsController*)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex orChangeType:(NSFetchedResultsChangeType)type
-{
-    if( !self.bSuspendAutomaticTrackingOfChangesInManagedObjectContext )
-    {
-        switch( type )
-        {
-            case NSFetchedResultsChangeInsert:
-                [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-                break;
-                
-            case NSFetchedResultsChangeDelete:
-                [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]];
-                break;
-        }
-    }
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)controller:(NSFetchedResultsController*)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath
-{
-    if( !self.bSuspendAutomaticTrackingOfChangesInManagedObjectContext )
-    {
-        switch( type )
-        {
-            case NSFetchedResultsChangeInsert:
-                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-                break;
-                
-            case NSFetchedResultsChangeDelete:
-                [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                break;
-                
-            case NSFetchedResultsChangeUpdate:
-                [self.collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                break;
-                
-            case NSFetchedResultsChangeMove:
-                [self.collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                [self.collectionView insertItemsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]];
-                break;
-        }
-    }
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*  controllerDidChangeContent:                                            */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    //TODO:
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Instance Methods

@@ -82,15 +82,16 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithPhoto:                                                         */
+/*  initWithPhoto:inModel:                                                 */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto *)photo
+- (id)initWithPhoto:(JMFPhoto *)photo inModel:(JMFCoreDataStack *)model
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
         self.photo = photo;
+        self.model = model;
     }
     return self;
 }
@@ -164,7 +165,7 @@
     self.iboSourceImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.iboSourceImageView.frame = CGRectMake( 2, 2, 150, 150 );
     [self.iboSourceImageView setClipsToBounds:YES];
-    self.iboFullScreenLabel.frame = CGRectMake( 2, 154, 148, 20 );
+    self.iboFullScreenLabel.frame = CGRectMake( 2, 150, 148, 20 );
 }
 
 /***************************************************************************/
@@ -393,8 +394,8 @@
 /***************************************************************************/
 - (void)onFaceDetectionClicked
 {
-//    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithImage:self.image];
-//    [self.navigationController pushViewController:faceRecVC animated:YES];
+    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithPhoto:self.photo andImage:self.iboSourceImageView.image];
+    [self.navigationController pushViewController:faceRecVC animated:YES];
 }
 
 /***************************************************************************/

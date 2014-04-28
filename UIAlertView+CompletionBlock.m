@@ -56,11 +56,11 @@ static const char kNSCBAlertWrapper;
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if( self.completionBlock )
     {
-        self.completionBlock(alertView, buttonIndex);
+        self.completionBlock( alertView, buttonIndex) ;
     }
 }
 
@@ -71,12 +71,12 @@ static const char kNSCBAlertWrapper;
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)alertViewCancel:(UIAlertView *)alertView
+- (void)alertViewCancel:(UIAlertView*)alertView
 {
 
     if( self.completionBlock )
     {
-        self.completionBlock(alertView, alertView.cancelButtonIndex);
+        self.completionBlock( alertView, alertView.cancelButtonIndex );
     }
 }
 
@@ -112,12 +112,12 @@ static const char kNSCBAlertWrapper;
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)showWithCompletion:(void(^)(UIAlertView *alertView, NSInteger buttonIndex))completion
+- (void)showWithCompletion:(void(^)( UIAlertView* alertView, NSInteger buttonIndex ) )completion
 {
-    NSCBAlertWrapper *alertWrapper = [[NSCBAlertWrapper alloc] init];
+    NSCBAlertWrapper* alertWrapper = [[NSCBAlertWrapper alloc] init];
     alertWrapper.completionBlock = completion;
     self.delegate = alertWrapper;
-    objc_setAssociatedObject(self, &kNSCBAlertWrapper, alertWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject( self, &kNSCBAlertWrapper, alertWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
     [self show];
 }
 

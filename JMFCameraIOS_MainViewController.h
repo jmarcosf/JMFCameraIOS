@@ -36,7 +36,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic, strong)   JMFCoreDataStack*   model;
+@property (nonatomic,strong) JMFCoreDataStack*      model;
 
 /***************************************************************************/
 /*                                                                         */

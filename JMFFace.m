@@ -41,6 +41,189 @@
 /***************************************************************************/
 @implementation JMFFace
 
-// Custom logic goes here.
+#pragma mark - Key Value Observing Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Key Value Observing Methods                                            */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  observableKeys                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSArray*)observableKeys
+{
+    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFFaceRelationships.face2photo];
+}
+
+#pragma mark - Initialization Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  faceWithName:feature:inContext:                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (instancetype)faceWithName:(NSString*)name feature:(CIFaceFeature*)feature inContext:(NSManagedObjectContext*)context
+{
+    JMFFace* face = [JMFFace insertInManagedObjectContext:context];
+    
+    face.name = name;
+    face.creationDate = face.modificationDate = [NSDate date];
+    int flags = 0;
+    if( feature.hasLeftEyePosition    ) flags |= FACEFLAG_HAS_LEFT_EYE;
+    if( feature.hasRightEyePosition   ) flags |= FACEFLAG_HAS_RIGHT_EYE;
+    if( feature.hasMouthPosition      ) flags |= FACEFLAG_HAS_MOUTH;
+    if( feature.hasTrackingID         ) flags |= FACEFLAG_HAS_TRACKING_ID;
+    if( feature.hasTrackingFrameCount ) flags |= FACEFLAG_HAS_TRACKING_FRAME_COUNT;
+    if( feature.hasFaceAngle          ) flags |= FACEFLAG_HAS_FACE_ANGLE;
+    if( feature.hasSmile              ) flags |= FACEFLAG_HAS_SMILE;
+    if( feature.leftEyeClosed         ) flags |= FACEFLAG_HAS_LEFT_EYE_CLOSED;
+    if( feature.rightEyeClosed        ) flags |= FACEFLAG_HAS_RIGHT_EYE_CLOSED;
+    face.flags = [NSNumber numberWithInt:flags];
+    face.faceRect = NSStringFromCGRect( feature.bounds );
+    face.leftEyePoint  = ( feature.hasLeftEyePosition  ) ? NSStringFromCGPoint( feature.leftEyePosition  ) : nil;
+    face.rightEyePoint = ( feature.hasRightEyePosition ) ? NSStringFromCGPoint( feature.rightEyePosition ) : nil;
+    face.mouthPoint    = ( feature.hasMouthPosition    ) ? NSStringFromCGPoint( feature.mouthPosition    ) : nil;
+    
+    return face;
+}
+
+#pragma mark - Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasLeftEye                                                             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasLeftEye
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_LEFT_EYE );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasRightEye                                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasRightEye
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_RIGHT_EYE );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasMouth                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasMouth
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_MOUTH );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasTrackingId                                                          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasTrackingId
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_TRACKING_ID );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasTrackingFrameCount                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasTrackingFrameCount
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_TRACKING_FRAME_COUNT );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasFaceAngle                                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasFaceAngle
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_FACE_ANGLE );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasSmile                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasSmile
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_SMILE );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasLeftEyeClosed                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasLeftEyeClosed
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_LEFT_EYE_CLOSED );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  hasRightEyeClosed                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)hasRightEyeClosed
+{
+    return ( [self.flags intValue] & FACEFLAG_HAS_RIGHT_EYE_CLOSED );
+}
 
 @end

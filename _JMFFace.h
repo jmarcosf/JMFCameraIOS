@@ -6,6 +6,7 @@
 
 extern const struct JMFFaceAttributes {
 	__unsafe_unretained NSString *faceRect;
+	__unsafe_unretained NSString *flags;
 	__unsafe_unretained NSString *leftEyePoint;
 	__unsafe_unretained NSString *mouthPoint;
 	__unsafe_unretained NSString *rightEyePoint;
@@ -19,6 +20,7 @@ extern const struct JMFFaceFetchedProperties {
 } JMFFaceFetchedProperties;
 
 @class JMFPhoto;
+
 
 
 
@@ -43,6 +45,20 @@ extern const struct JMFFaceFetchedProperties {
 
 
 //- (BOOL)validateFaceRect:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* flags;
+
+
+
+@property int32_t flagsValue;
+- (int32_t)flagsValue;
+- (void)setFlagsValue:(int32_t)value_;
+
+//- (BOOL)validateFlags:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -97,6 +113,15 @@ extern const struct JMFFaceFetchedProperties {
 
 - (NSString*)primitiveFaceRect;
 - (void)setPrimitiveFaceRect:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveFlags;
+- (void)setPrimitiveFlags:(NSNumber*)value;
+
+- (int32_t)primitiveFlagsValue;
+- (void)setPrimitiveFlagsValue:(int32_t)value_;
 
 
 

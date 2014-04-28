@@ -12,6 +12,8 @@
 /***************************************************************************/
 #import "JMFCameraIOS_FaceRecViewController.h"
 #import "UIImageView+GeometryConversion.h"
+#import "JMFFace.h"
+#import "JMFAppDelegate.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,12 +33,31 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  JMFFace Flags                                                          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+#pragma pack( 1 )
+typedef struct _FACE_FEATURE_TAG_
+{
+    CGRect      faceRect;
+    CGPoint     leftEyePoint;
+    CGPoint     rightEyePoint;
+    CGPoint     mouthPoint;
+    int32_t     faceFlags;
+} FACE_FEATURE;
+#pragma pack()
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  JMFCameraIOS_FaceRecViewController Class Interface                     */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 @interface JMFCameraIOS_FaceRecViewController ()
 {
+    NSFetchedResultsController*     fetchResultsController;
 }
 
 @end
@@ -116,6 +137,8 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]      setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX]     setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]      setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
+
+    [self drawFaces];
 }
 
 /***************************************************************************/
@@ -187,6 +210,111 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  drawFaces                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)drawFaces
+{
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.creationDate ascending:NO],
+                                [NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
+    fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                 managedObjectContext:self.photo.managedObjectContext
+                                                                   sectionNameKeyPath:nil
+                                                                            cacheName:nil];
+    NSError *error;
+    [fetchResultsController performFetch:&error];
+    
+    int count = [[fetchResultsController fetchedObjects]count];;
+    for( int i = 0; i < count; i++ )
+    {
+        JMFFace* face = [fetchResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        [self drawFace:face];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  drawFace:                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)drawFace:(JMFFace*)face
+{
+	// For convert CoreImage coordinates to UIKit coordinates
+	CGAffineTransform transform = CGAffineTransformMakeScale( 1, -1 );
+	transform = CGAffineTransformTranslate( transform, 0, - self.iboImageView.bounds.size.height );
+//    CIImage* image = [CIImage imageWithCGImage:self.iboImageView.image.CGImage];
+    
+    // Draw Face Rect
+    CGRect imageFaceRect = CGRectFromString( face.faceRect );
+    const CGRect faceRect = CGRectApplyAffineTransform( [self.iboImageView convertRectFromImage:imageFaceRect], transform );
+    UIView* faceView = [[UIView alloc] initWithFrame:faceRect];
+    faceView.layer.borderWidth = 1.5f;
+    faceView.layer.borderColor = [[UIColor greenColor] CGColor];
+    [self drawFeature:faceView];
+    CGFloat faceWidth = faceRect.size.width;
+    
+    //Draw Left Eye
+    if( face.hasLeftEye )
+    {
+        CGPoint imageLeftEyePosition = CGPointFromString( face.leftEyePoint );
+        const CGPoint leftEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:imageLeftEyePosition], transform );
+        UIView* leftEyeView = [[UIView alloc] initWithFrame:CGRectMake( leftEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, leftEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                       faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+        leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
+        leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
+        [self drawFeature:leftEyeView];
+    }
+    
+    //Draw Right Eye
+    if( face.hasRightEye )
+    {
+        CGPoint imageRightEyePosition = CGPointFromString( face.rightEyePoint );
+        const CGPoint rightEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:imageRightEyePosition], transform );
+        UIView* rightEyeView = [[UIView alloc] initWithFrame:CGRectMake( rightEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, rightEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
+                                                                        faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
+        rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
+        rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
+        [self drawFeature:rightEyeView];
+    }
+    
+    //Draw Mouth
+    if( face.hasMouth )
+    {
+        CGPoint imageMouthPosition = CGPointFromString( face.mouthPoint );
+        const CGPoint mouthPos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:imageMouthPosition], transform );
+        UIView* mouthView = [[UIView alloc] initWithFrame:CGRectMake( mouthPos.x - faceWidth * MOUTH_SIZE_RATE * 0.5f, mouthPos.y - faceWidth * MOUTH_SIZE_RATE * 0.5f,
+                                                                     faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
+        mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
+        mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
+        [self drawFeature:mouthView];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  drawFeature:                                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)drawFeature:(UIView*)view
+{
+//    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+//    dispatch_async( mainQueue, ^
+//                   {
+//                       [self.iboImageView addSubview:view];
+//                   });
+    [self.iboImageView addSubview:view];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  onDetectClicked                                                        */
 /*                                                                         */
 /*                                                                         */
@@ -205,6 +333,7 @@
             dispatch_queue_t mainQueue = dispatch_get_main_queue();
             dispatch_async( mainQueue, ^
             {
+                [self drawFaces];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( !bDetected )];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( bDetected )];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( bDetected )];
@@ -271,75 +400,16 @@
     NSDictionary*   options  = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh forKey:CIDetectorAccuracy];
  	CIDetector*     detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
 	NSArray*        features = [detector featuresInImage:image];
-    
-	// For convert CoreImage coordinates to UIKit coordinates
-	CGAffineTransform transform = CGAffineTransformMakeScale( 1, -1 );
-	transform = CGAffineTransformTranslate( transform, 0, - self.iboImageView.bounds.size.height );
 	
     if( features.count != 0 )
     {
         for( CIFaceFeature* faceFeature in features )
         {
-            // Draw Face Rect
-            const CGRect faceRect = CGRectApplyAffineTransform( [self.iboImageView convertRectFromImage:faceFeature.bounds], transform );
-            UIView* faceView = [[UIView alloc] initWithFrame:faceRect];
-            faceView.layer.borderWidth = 1.5f;
-            faceView.layer.borderColor = [[UIColor greenColor] CGColor];
-            [self showFaceFeature:faceView];
-            CGFloat faceWidth = faceRect.size.width;
-
-            //Draw Left Eye
-            if( faceFeature.hasLeftEyePosition )
-            {
-                const CGPoint leftEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.leftEyePosition], transform );
-                UIView* leftEyeView = [[UIView alloc] initWithFrame:CGRectMake( leftEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, leftEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
-                                                                                faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
-                leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
-                leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
-                [self showFaceFeature:leftEyeView];
-            }
-            
-            //Draw Right Eye
-            if( faceFeature.hasRightEyePosition )
-            {
-                const CGPoint rightEyePos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.rightEyePosition], transform );
-                UIView* rightEyeView = [[UIView alloc] initWithFrame:CGRectMake( rightEyePos.x - faceWidth * EYE_SIZE_RATE * 0.5f, rightEyePos.y - faceWidth * EYE_SIZE_RATE * 0.5f,
-                                                                                 faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
-                rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
-                rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
-                [self showFaceFeature:rightEyeView];
-            }
-            
-            //Draw Mouth
-            if( faceFeature.hasMouthPosition )
-            {
-                const CGPoint mouthPos = CGPointApplyAffineTransform( [self.iboImageView convertPointFromImage:faceFeature.mouthPosition], transform );
-                UIView* mouthView = [[UIView alloc] initWithFrame:CGRectMake( mouthPos.x - faceWidth * MOUTH_SIZE_RATE * 0.5f, mouthPos.y - faceWidth * MOUTH_SIZE_RATE * 0.5f,
-                                                                              faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
-                mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
-                mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
-                [self showFaceFeature:mouthView];
-            }
+            JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature inContext:fetchResultsController.managedObjectContext];
         }
     }
     
     if( completionBlock ) completionBlock( features.count != 0 );
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  showFaceFeature:withText:forLabel:                                     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)showFaceFeature:(UIView*)view
-{
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    dispatch_async( mainQueue, ^
-    {
-        [self.iboImageView addSubview:view];
-    });
 }
 
 @end

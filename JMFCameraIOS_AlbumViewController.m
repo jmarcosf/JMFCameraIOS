@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import "JMFCameraIOS_AlbumViewController.h"
+#import "JMFPhoto.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,6 +31,7 @@
 /***************************************************************************/
 @interface JMFCameraIOS_AlbumViewController ()
 {
+    int     albumCount;
 }
 
 @end
@@ -67,11 +69,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithAlbum:(NSArray*)album
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
-        self.album = album;
+        self.fetchedResultsController = fetchedResultsController;
+        albumCount = [fetchedResultsController fetchedObjects].count;
     }
     return self;
 }
@@ -101,21 +104,21 @@
     self.title = NSLocalizedString( @"IDS_ALBUM", nil );
     
     self.iboScrollView.delegate = self;
-    self.iboPageControl.numberOfPages = self.album.count;
+    self.iboPageControl.numberOfPages = albumCount;
     self.iboPageControl.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     
-    for( int i = 0; i < self.album.count; i++ )
+    for( int i = 0; i < albumCount; i++ )
     {
-        UIImageView* imageView = [[UIImageView alloc] initWithImage:[self.album objectAtIndex:i]];
+        JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:photo.sourceImageUrl]];
         imageView.frame = CGRectMake(i * SCROLL_SIZE.width, 0, SCROLL_SIZE.width, SCROLL_SIZE.height);
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         [imageView setClipsToBounds:YES];
         [self.iboScrollView addSubview:imageView];
     }
     
-    self.iboScrollView.contentSize = CGSizeMake( SCROLL_SIZE.width * self.album.count, SCROLL_SIZE.width);
+    self.iboScrollView.contentSize = CGSizeMake( SCROLL_SIZE.width * albumCount, SCROLL_SIZE.width);
     self.iboScrollView.pagingEnabled = YES;
-    
 }
 
 /***************************************************************************/

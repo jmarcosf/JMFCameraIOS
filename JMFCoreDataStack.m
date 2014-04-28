@@ -24,8 +24,8 @@
 @interface JMFCoreDataStack ()
 @property (strong, nonatomic, readonly) NSManagedObjectModel*           model;
 @property (strong, nonatomic, readonly) NSPersistentStoreCoordinator*   storeCoordinator;
-@property (strong, nonatomic) NSURL*                                    modelUrl;
-@property (strong, nonatomic) NSURL*                                    databaseUrl;
+@property (strong, nonatomic)           NSURL*                          modelUrl;
+@property (strong, nonatomic)           NSURL*                          databaseUrl;
 @end
 
 /***************************************************************************/

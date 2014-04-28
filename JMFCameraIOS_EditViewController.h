@@ -11,6 +11,7 @@
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
+#import "JMFCoreDataStack.h"
 #import "JMFPhoto.h"
 
 /***************************************************************************/
@@ -31,7 +32,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFPhoto*      photo;
+@property (nonatomic,strong) JMFCoreDataStack*      model;
+@property (nonatomic,strong) JMFPhoto*              photo;
 
 /***************************************************************************/
 /*                                                                         */
@@ -58,7 +60,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo;
+- (id)initWithPhoto:(JMFPhoto*)photo inModel:(JMFCoreDataStack*)model;
 - (void)onShareClicked;
 - (void)onFaceDetectionClicked;
 - (void)onFiltersClicked;

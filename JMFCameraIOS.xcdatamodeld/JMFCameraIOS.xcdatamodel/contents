@@ -2,6 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Face" representedClassName="JMFFace" parentEntity="NamedEntity" syncable="YES">
         <attribute name="faceRect" attributeType="String" syncable="YES"/>
+        <attribute name="flags" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="leftEyePoint" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mouthPoint" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rightEyePoint" optional="YES" attributeType="String" syncable="YES"/>
@@ -35,7 +36,7 @@
         <relationship name="photo2filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Filter" inverseName="filter2photo" inverseEntity="Filter" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Face" positionX="-803" positionY="-603" width="128" height="118"/>
+        <element name="Face" positionX="-803" positionY="-603" width="128" height="135"/>
         <element name="Filter" positionX="-803" positionY="-423" width="128" height="75"/>
         <element name="NamedEntity" positionX="-909" positionY="-763" width="128" height="90"/>
         <element name="Photo" positionX="-1008" positionY="-603" width="128" height="285"/>
