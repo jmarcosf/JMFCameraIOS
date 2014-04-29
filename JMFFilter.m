@@ -41,6 +41,105 @@
 /***************************************************************************/
 @implementation JMFFilter
 
-// Custom logic goes here.
+
+#pragma mark - Key Value Observing Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Key Value Observing Methods                                            */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  observableKeys                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSArray*)observableKeys
+{
+    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFFilterRelationships.photo];
+}
+
+#pragma mark - Initialization Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  faceWithName:feature:inContext:                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (instancetype)filterWithName:(NSString*)name photo:(JMFPhoto*)photo inContext:(NSManagedObjectContext*)context
+{
+    JMFFilter* filter = [JMFFilter insertInManagedObjectContext:context];
+    
+    filter.photo = photo;
+    filter.name = name;
+    filter.creationDate = filter.modificationDate = [NSDate date];
+    
+    return filter;
+}
+
+#pragma mark - Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  isActive                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)isActive
+{
+    return( self.activeValue );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  isValidFilter                                                          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)isValidFilter
+{
+    return( ![self.name isEqualToString:@"CIFilterNone"] );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  activeToString                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSString*)activeToString
+{
+    NSString* localizedString = ( self.activeValue ) ? @"IDS_YES" : @"IDS_NO";
+    return NSLocalizedString( localizedString, nil );
+}
 
 @end

@@ -23,7 +23,7 @@
 /***************************************************************************/
 #define IDC_UITOOLBAR_BUTTON_CLEAR_INDEX            0
 #define IDC_UITOOLBAR_BUTTON_DETECT_INDEX           1
-#define IDC_UITOOLBAR_BUTTON_APPLY_INDEX            2
+#define IDC_UITOOLBAR_BUTTON_SAVE_INDEX             2
 
 #define EYE_SIZE_RATE                               0.3f
 #define MOUTH_SIZE_RATE                             0.4f
@@ -108,6 +108,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationItem.hidesBackButton = YES;
     self.title = NSLocalizedString( @"IDS_FACE_DETECTION", nil );
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboImageView.image = self.image;
@@ -116,7 +117,7 @@
     self.iboTabBar.delegate = self;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setTitle:NSLocalizedString( @"IDS_DETECT", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:NSLocalizedString( @"IDS_SAVE", nil )];
 
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
@@ -126,12 +127,11 @@
                                                                    managedObjectContext:self.model.context
                                                                      sectionNameKeyPath:nil
                                                                               cacheName:nil];
-
     fetchedResultsController.delegate = self;
     NSError *error;
     [fetchedResultsController performFetch:&error];
     if( !error ) [self drawFaces];
-    else if( APPDEBUG ) NSLog( @"Fetch error: %@", error );
+    else if( APPDEBUG ) NSLog( @"Fetch Faces error: %@", error );
 }
 
 /***************************************************************************/
@@ -144,14 +144,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.hidesBackButton = YES;
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
     
     int count = [[fetchedResultsController fetchedObjects]count];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setEnabled:( count > 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( count <= 0 )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( YES )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:( YES )];
 }
 
 /***************************************************************************/
@@ -188,9 +187,9 @@
 {
     switch( item.tag )
     {
-        case IDC_UITOOLBAR_BUTTON_CLEAR_INDEX:      [self onClearClicked];      break;
-        case IDC_UITOOLBAR_BUTTON_DETECT_INDEX:     [self onDetectClicked];     break;
-        case IDC_UITOOLBAR_BUTTON_APPLY_INDEX:      [self onApplyClicked];      break;
+        case IDC_UITOOLBAR_BUTTON_CLEAR_INDEX:  [self onClearClicked];  break;
+        case IDC_UITOOLBAR_BUTTON_DETECT_INDEX: [self onDetectClicked]; break;
+        case IDC_UITOOLBAR_BUTTON_SAVE_INDEX:   [self onSaveClicked];   break;
     }
 }
 
@@ -365,11 +364,11 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onApplyClicked                                                         */
+/*  onSaveClicked                                                          */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)onApplyClicked
+- (void)onSaveClicked
 {
     [self.navigationController popViewControllerAnimated:YES];
 }

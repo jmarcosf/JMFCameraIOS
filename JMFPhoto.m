@@ -138,18 +138,18 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  sourceFromNumber:                                                      */
+/*  sourceToString                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (NSString*)sourceFromNumber:(NSNumber*)source
+- (NSString*)sourceToString
 {
     NSArray* sourceStrings = @[@"IDS_UNKNOWN", @"IDS_CAMERA", @"IDS_FLICKR", @"IDS_FACEBOOK", @"IDS_INSTAGRAM", @"IDS_TWITTER", @"IDS_OTHER" ];
     NSString* sourceDescription = nil;
     
-    if( [source intValue] >= JMFPhotoSourceUnknown && [source intValue] <= JMFPhotoSourceOther )
+    if( self.sourceValue >= JMFPhotoSourceUnknown && self.sourceValue <= JMFPhotoSourceOther )
     {
-        sourceDescription = NSLocalizedString( [sourceStrings objectAtIndex:[source intValue]], nil );
+        sourceDescription = NSLocalizedString( [sourceStrings objectAtIndex:self.sourceValue], nil );
     }
     else sourceDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
     return sourceDescription;
@@ -158,19 +158,19 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  orientationFromNumber:                                                 */
+/*  orientationToString                                                    */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (NSString*)orientationFromNumber:(NSNumber*)orientation
+- (NSString*)orientationToString
 {
     NSArray* orientationStrings = @[@"IDS_UNKNOWN", @"IDS_TOPLEFT", @"IDS_TOPRIGHT", @"IDS_BOTTOMRIGHT",
                                     @"IDS_BOTOMLEFT", @"IDS_LEFTTOP", @"IDS_RIGHTTOP", @"RIGHTBOTTOM", @"LEFTBOTTOM" ];
     NSString* orientationDescription = nil;
     
-    if( [orientation intValue] >= 1 && [orientation intValue] <= 8 )
+    if( self.orientationValue >= 1 && self.orientationValue <= 8 )
     {
-        orientationDescription = NSLocalizedString( [orientationStrings objectAtIndex:[orientation intValue]], nil );
+        orientationDescription = NSLocalizedString( [orientationStrings objectAtIndex:self.orientationValue], nil );
     }
     else orientationDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
     return orientationDescription;

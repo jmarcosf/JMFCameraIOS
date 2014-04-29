@@ -20,7 +20,6 @@
 		901B104D190AB08400AD1F7C /* Search.png in Resources */ = {isa = PBXBuildFile; fileRef = 901B104B190AB08400AD1F7C /* Search.png */; };
 		901B104E190AB08400AD1F7C /* Search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901B104C190AB08400AD1F7C /* Search@2x.png */; };
 		901B1051190B20E200AD1F7C /* Album.png in Resources */ = {isa = PBXBuildFile; fileRef = 901B104F190B20E200AD1F7C /* Album.png */; };
-		901B1052190B20E200AD1F7C /* Album@2x.textClipping in Resources */ = {isa = PBXBuildFile; fileRef = 901B1050190B20E200AD1F7C /* Album@2x.textClipping */; };
 		901B1057190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 901B1055190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.m */; };
 		901B1058190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 901B1056190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.xib */; };
 		901F419A190D3DF40014EA24 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901F4199190D3DF40014EA24 /* CoreLocation.framework */; };
@@ -43,6 +42,11 @@
 		903E7F73190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F71190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib */; };
 		903E7F77190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 903E7F75190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m */; };
 		903E7F78190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F76190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib */; };
+		903E7F7E190FD5B900E1EF5F /* Album@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F79190FD5B900E1EF5F /* Album@2x.png */; };
+		903E7F7F190FD5B900E1EF5F /* Process.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7A190FD5B900E1EF5F /* Process.png */; };
+		903E7F80190FD5B900E1EF5F /* Process@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7B190FD5B900E1EF5F /* Process@2x.png */; };
+		903E7F81190FD5B900E1EF5F /* Save.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7C190FD5B900E1EF5F /* Save.png */; };
+		903E7F82190FD5B900E1EF5F /* Save@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7D190FD5B900E1EF5F /* Save@2x.png */; };
 		904930C6190905030024FAC1 /* _JMFFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930BF190905030024FAC1 /* _JMFFace.m */; };
 		904930C7190905030024FAC1 /* _JMFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C1190905030024FAC1 /* _JMFFilter.m */; };
 		904930C8190905030024FAC1 /* _JMFNamedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C3190905030024FAC1 /* _JMFNamedEntity.m */; };
@@ -99,8 +103,6 @@
 		90AD563518FDFB6500C649FA /* Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562D18FDFB6500C649FA /* Share@2x.png */; };
 		90AD563618FDFB6500C649FA /* Show.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562E18FDFB6500C649FA /* Show.png */; };
 		90AD563718FDFB6500C649FA /* Show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90AD562F18FDFB6500C649FA /* Show@2x.png */; };
-		90AD563B18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AD563918FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m */; };
-		90AD563C18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */; };
 		90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */; };
 		90AE9BF618FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */; };
 		90C40CC1190DBEFE00D6E78E /* NoImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90C40CC0190DBEFE00D6E78E /* NoImage.jpg */; };
@@ -139,7 +141,6 @@
 		901B104B190AB08400AD1F7C /* Search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Search.png; sourceTree = "<group>"; };
 		901B104C190AB08400AD1F7C /* Search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Search@2x.png"; sourceTree = "<group>"; };
 		901B104F190B20E200AD1F7C /* Album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Album.png; sourceTree = "<group>"; };
-		901B1050190B20E200AD1F7C /* Album@2x.textClipping */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Album@2x.textClipping"; sourceTree = "<group>"; };
 		901B1054190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_AlbumViewController.h; sourceTree = "<group>"; };
 		901B1055190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_AlbumViewController.m; sourceTree = "<group>"; };
 		901B1056190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_AlbumViewController.xib; sourceTree = "<group>"; };
@@ -166,6 +167,11 @@
 		903E7F74190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainTVCell.h; sourceTree = "<group>"; };
 		903E7F75190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainTVCell.m; sourceTree = "<group>"; };
 		903E7F76190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainTVCell.xib; sourceTree = "<group>"; };
+		903E7F79190FD5B900E1EF5F /* Album@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Album@2x.png"; sourceTree = "<group>"; };
+		903E7F7A190FD5B900E1EF5F /* Process.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Process.png; sourceTree = "<group>"; };
+		903E7F7B190FD5B900E1EF5F /* Process@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Process@2x.png"; sourceTree = "<group>"; };
+		903E7F7C190FD5B900E1EF5F /* Save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Save.png; sourceTree = "<group>"; };
+		903E7F7D190FD5B900E1EF5F /* Save@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Save@2x.png"; sourceTree = "<group>"; };
 		904930BE190905030024FAC1 /* _JMFFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFace.h; sourceTree = "<group>"; };
 		904930BF190905030024FAC1 /* _JMFFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFFace.m; sourceTree = "<group>"; };
 		904930C0190905030024FAC1 /* _JMFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFilter.h; sourceTree = "<group>"; };
@@ -248,9 +254,6 @@
 		90AD562D18FDFB6500C649FA /* Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Share@2x.png"; sourceTree = "<group>"; };
 		90AD562E18FDFB6500C649FA /* Show.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Show.png; sourceTree = "<group>"; };
 		90AD562F18FDFB6500C649FA /* Show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Show@2x.png"; sourceTree = "<group>"; };
-		90AD563818FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_EditFiltersViewController.h; sourceTree = "<group>"; };
-		90AD563918FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_EditFiltersViewController.m; sourceTree = "<group>"; };
-		90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_EditFiltersViewController.xib; sourceTree = "<group>"; };
 		90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FiltersViewController.h; sourceTree = "<group>"; };
 		90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_FiltersViewController.m; sourceTree = "<group>"; };
 		90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FiltersViewController.xib; sourceTree = "<group>"; };
@@ -316,7 +319,11 @@
 			children = (
 				903E7F6D190F9AB000E1EF5F /* MapLocation.png */,
 				901B104F190B20E200AD1F7C /* Album.png */,
-				901B1050190B20E200AD1F7C /* Album@2x.textClipping */,
+				903E7F79190FD5B900E1EF5F /* Album@2x.png */,
+				903E7F7A190FD5B900E1EF5F /* Process.png */,
+				903E7F7B190FD5B900E1EF5F /* Process@2x.png */,
+				903E7F7C190FD5B900E1EF5F /* Save.png */,
+				903E7F7D190FD5B900E1EF5F /* Save@2x.png */,
 				901B104B190AB08400AD1F7C /* Search.png */,
 				901B104C190AB08400AD1F7C /* Search@2x.png */,
 				9053C33519071E8300A13EEF /* GreenCheck.png */,
@@ -526,9 +533,6 @@
 				90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.h */,
 				90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */,
 				90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */,
-				90AD563818FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.h */,
-				90AD563918FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m */,
-				90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -642,7 +646,6 @@
 				901B104E190AB08400AD1F7C /* Search@2x.png in Resources */,
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
 				905AB5D61905DA68009B822F /* Apply.png in Resources */,
-				901B1052190B20E200AD1F7C /* Album@2x.textClipping in Resources */,
 				90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */,
 				90AD563418FDFB6500C649FA /* Share.png in Resources */,
 				901B1058190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.xib in Resources */,
@@ -650,6 +653,7 @@
 				9028F61518FC6EB7000956E7 /* MosaicMode.png in Resources */,
 				90AD563718FDFB6500C649FA /* Show@2x.png in Resources */,
 				906E724718F9E6FD00D1CC63 /* Localizable.strings in Resources */,
+				903E7F7F190FD5B900E1EF5F /* Process.png in Resources */,
 				90AD563318FDFB6500C649FA /* Filters@2x.png in Resources */,
 				90AE9BF618FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib in Resources */,
 				906E721A18F9D4CF00D1CC63 /* Images.xcassets in Resources */,
@@ -659,7 +663,6 @@
 				905AB5D01905D54C009B822F /* ArrowUp.png in Resources */,
 				9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */,
 				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
-				90AD563C18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib in Resources */,
 				9053C33819071E8300A13EEF /* GreenCheck@2x.png in Resources */,
 				9028F60818FC6DD6000956E7 /* Camera.png in Resources */,
 				905AB5CE1905D54C009B822F /* ArrowDown.png in Resources */,
@@ -672,6 +675,7 @@
 				905AB5D71905DA68009B822F /* Apply@2x.png in Resources */,
 				905AB5D11905D54C009B822F /* ArrowUp@2x.png in Resources */,
 				90AD563218FDFB6500C649FA /* Filters.png in Resources */,
+				903E7F7E190FD5B900E1EF5F /* Album@2x.png in Resources */,
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
 				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
 				901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */,
@@ -679,13 +683,16 @@
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 				901B104D190AB08400AD1F7C /* Search.png in Resources */,
+				903E7F82190FD5B900E1EF5F /* Save@2x.png in Resources */,
 				905AB5CF1905D54C009B822F /* ArrowDown@2x.png in Resources */,
 				903E7F78190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib in Resources */,
 				9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */,
 				90E58CBE190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib in Resources */,
 				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
+				903E7F81190FD5B900E1EF5F /* Save.png in Resources */,
 				9028F60B18FC6DD6000956E7 /* Delete@2x.png in Resources */,
 				9028F60D18FC6DD6000956E7 /* Edit@2x.png in Resources */,
+				903E7F80190FD5B900E1EF5F /* Process@2x.png in Resources */,
 				90AD563518FDFB6500C649FA /* Share@2x.png in Resources */,
 				901B1051190B20E200AD1F7C /* Album.png in Resources */,
 				905AB5D91905DA68009B822F /* Cancel@2x.png in Resources */,
@@ -717,7 +724,6 @@
 				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
 				901B104A190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m in Sources */,
-				90AD563B18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m in Sources */,
 				90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */,
 				9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */,
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,

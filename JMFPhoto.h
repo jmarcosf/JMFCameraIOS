@@ -61,8 +61,8 @@ typedef NS_ENUM( NSInteger, JMFPhotoSource )
 /*                                                                         */
 /***************************************************************************/
 - (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation;
-- (NSString*)sourceFromNumber:(NSNumber*)source;
-- (NSString*)orientationFromNumber:(NSNumber*)orientation;
+- (NSString*)sourceToString;
+- (NSString*)orientationToString;
 
 @end
 

@@ -167,4 +167,21 @@
     return [dateFormatter stringFromDate:date];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  indexPathForCellSubview:inTableView:                                   */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSIndexPath*)indexPathForCellSubview:(UIView*)view inTableView:(UITableView*)tableView
+{
+    while( view != nil )
+    {
+        if ([view isKindOfClass:[UITableViewCell class]]) return [tableView indexPathForCell:(UITableViewCell*)view];
+        else view = [view superview];
+    }
+    return nil;
+}
+
 @end

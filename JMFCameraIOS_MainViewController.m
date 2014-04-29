@@ -559,7 +559,7 @@
     cell.iboNameLabel.text   = photo.name;
     cell.iboSizeLabel.text   = [NSString stringWithFormat:@"%d x %d", photo.pixelWidthValue, photo.pixelHeightValue];
     cell.iboSourceTitle.text = [NSLocalizedString( @"IDS_SOURCE", nil ) stringByAppendingString:@":"];
-    cell.iboSourceValue.text = [photo sourceFromNumber:photo.source];
+    cell.iboSourceValue.text = [photo sourceToString];
     cell.iboWhenTitle.text   = [NSLocalizedString( @"IDS_WHEN", nil ) stringByAppendingString:@":"];
     cell.iboWhenValue.text   = [JMFUtility formattedStringFromDate:photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
     cell.iboWhereTitle.text  = [NSLocalizedString( @"IDS_WHERE", nil ) stringByAppendingString:@":"];

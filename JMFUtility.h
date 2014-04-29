@@ -39,6 +39,7 @@
 + (NSString*)pathForImageFileName:(NSString*)imageFileName;
 + (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName;
 + (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format;
++ (NSIndexPath*)indexPathForCellSubview:(UIView*)view inTableView:(UITableView*)tableView;
 @end
 
 

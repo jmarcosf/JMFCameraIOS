@@ -15,6 +15,8 @@
 "IDS_ERROR" = "Error";
 "IDS_OK" = "OK";
 "IDS_CANCEL" = "Cancel";
+"IDS_YES" = "Yes";
+"IDS_NO" = "No";
 "IDS_APPLY" = "Apply";
 "IDS_CLEAR" = "Clear";
 "IDS_CAMERA" = "Camera";
@@ -49,6 +51,9 @@
 "IDS_SELECT_ITEMS" = "Select Items";
 "IDS_WHEN" = "When";
 "IDS_WHERE" = "Where";
+"IDS_ACTIVE" = "Active";
+"IDS_SAVE" = "Save";
+"IDS_PROCESS" = "Process";
 
 "IDS_SOURCE" = "Source";
 "IDS_COLOR_MODEL" = "Color Model";

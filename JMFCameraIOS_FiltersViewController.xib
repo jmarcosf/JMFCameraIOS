@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_FiltersViewController">
             <connections>
-                <outlet property="iboFilter1Label" destination="3MA-A2-HBB" id="xjP-Mv-Jp7"/>
-                <outlet property="iboFilter1Switch" destination="Nb6-Ag-Vzu" id="Eqd-U5-PwF"/>
-                <outlet property="iboFilter2Label" destination="OPo-CP-oYP" id="ofW-6r-qPI"/>
-                <outlet property="iboFilter2Switch" destination="eAj-Sw-LKd" id="dSe-sh-9ol"/>
-                <outlet property="iboFilter3Label" destination="pS8-eS-CvR" id="KC7-Zd-6uo"/>
-                <outlet property="iboFilter3Switch" destination="SPy-zS-85B" id="nEN-St-Egk"/>
-                <outlet property="iboFilter4Label" destination="XFT-As-cEb" id="ZFq-dn-odA"/>
-                <outlet property="iboFilter4Switch" destination="GQA-i6-R6X" id="PwU-fw-V77"/>
-                <outlet property="iboFilter5Label" destination="wnU-Ib-Jws" id="UCH-bu-Mpw"/>
-                <outlet property="iboFilter5Switch" destination="lfN-iI-5qy" id="UnH-AC-MtK"/>
+                <outlet property="iboFilterTable" destination="Ncd-Nm-AD0" id="qQ3-2w-Cnn"/>
                 <outlet property="iboSourceImage" destination="j69-0q-k5I" id="WAD-nL-hWw"/>
                 <outlet property="iboTabBar" destination="8FO-QH-gFN" id="fBf-g6-mqI"/>
                 <outlet property="iboTargetImage" destination="TWG-Mm-657" id="ebQ-tp-lFb"/>
@@ -27,90 +18,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="j69-0q-k5I" userLabel="SourceImage">
+                    <rect key="frame" x="0.0" y="64" width="160" height="160"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="TWG-Mm-657" userLabel="TargetImage">
+                    <rect key="frame" x="160" y="64" width="160" height="160"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ncd-Nm-AD0">
+                    <rect key="frame" x="0.0" y="182" width="320" height="334"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
                 <tabBar contentMode="scaleToFill" id="8FO-QH-gFN">
                     <rect key="frame" x="0.0" y="519" width="320" height="49"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <items>
-                        <tabBarItem title="Compartir" image="Share.png" id="0YJ-4G-HnC"/>
-                        <tabBarItem tag="1" title="Rec. Facial" image="Show.png" id="AFn-Oi-1II"/>
-                        <tabBarItem tag="2" title="Filtros" image="Filter.png" id="m5u-I7-1eO"/>
-                        <tabBarItem tag="3" title="Datos" image="Data.png" id="35I-S2-JXC"/>
+                        <tabBarItem title="Cancel" image="Cancel.png" id="bIh-sD-lrF"/>
+                        <tabBarItem tag="1" title="Clear" image="Delete.png" id="0YJ-4G-HnC"/>
+                        <tabBarItem tag="2" title="Apply" image="Process.png" id="AFn-Oi-1II"/>
+                        <tabBarItem tag="3" title="Save" image="Save.png" id="m5u-I7-1eO"/>
                     </items>
                 </tabBar>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="j69-0q-k5I">
-                    <rect key="frame" x="135" y="22" width="160" height="160"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="TWG-Mm-657">
-                    <rect key="frame" x="135" y="309" width="160" height="160"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Nb6-Ag-Vzu">
-                    <rect key="frame" x="25" y="17" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="onFilterSwitchChanged:" destination="-1" eventType="valueChanged" id="dg1-d5-6iT"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtro 1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3MA-A2-HBB">
-                    <rect key="frame" x="9" y="53" width="81" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="eAj-Sw-LKd">
-                    <rect key="frame" x="25" y="88" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="onFilterSwitchChanged:" destination="-1" eventType="valueChanged" id="Vy5-TL-nae"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtro 2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OPo-CP-oYP">
-                    <rect key="frame" x="9" y="124" width="81" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="SPy-zS-85B">
-                    <rect key="frame" x="25" y="159" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="onFilterSwitchChanged:" destination="-1" eventType="valueChanged" id="C3Z-kB-EgD"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtro 3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pS8-eS-CvR">
-                    <rect key="frame" x="9" y="195" width="81" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="GQA-i6-R6X">
-                    <rect key="frame" x="25" y="230" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="onFilterSwitchChanged:" destination="-1" eventType="valueChanged" id="Jz9-2s-WCx"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtro 4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XFT-As-cEb">
-                    <rect key="frame" x="9" y="266" width="81" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="lfN-iI-5qy">
-                    <rect key="frame" x="25" y="301" width="51" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <connections>
-                        <action selector="onFilterSwitchChanged:" destination="-1" eventType="valueChanged" id="yFg-zl-zEy"/>
-                    </connections>
-                </switch>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filtro 5" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wnU-Ib-Jws">
-                    <rect key="frame" x="9" y="337" width="81" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -119,9 +50,9 @@
         </view>
     </objects>
     <resources>
-        <image name="Data.png" width="25" height="25"/>
-        <image name="Filter.png" width="25" height="25"/>
-        <image name="Share.png" width="19" height="27"/>
-        <image name="Show.png" width="30" height="18"/>
+        <image name="Cancel.png" width="22" height="22"/>
+        <image name="Delete.png" width="19" height="25"/>
+        <image name="Process.png" width="28" height="28"/>
+        <image name="Save.png" width="23" height="24"/>
     </resources>
 </document>

@@ -53,6 +53,7 @@
     NSArray*                        locationTitleStrings;
     NSArray*                        locationValues;
     NSFetchedResultsController*     faceResultsController;
+    NSFetchedResultsController*     filtersResultsController;
 }
 
 @end
@@ -128,8 +129,8 @@
     metadataTitleStrings = @[@"IDS_SOURCE", @"IDS_COLOR_MODEL", @"IDS_COLORS_PER_PIXEL", @"IDS_ORIENTATION", @"IDS_PIXEL_HEIGHT", @"IDS_PIXEL_WIDTH" ];
     locationTitleStrings = @[@"IDS_LONGITUDE", @"IDS_LATITUDE", @"IDS_ALTITUDE", @"IDS_GEOLOCATION" ];
 
-    metadataValues = @[[self.photo sourceFromNumber:self.photo.source], self.photo.colorModel, self.photo.colorsPerPixel,
-                       [self.photo orientationFromNumber:self.photo.orientation], self.photo.pixelHeight, self.photo.pixelWidth];
+    metadataValues = @[[self.photo sourceToString], self.photo.colorModel, self.photo.colorsPerPixel,
+                       [self.photo orientationToString], self.photo.pixelHeight, self.photo.pixelWidth];
     locationValues = @[self.photo.longitude, self.photo.latitude, self.photo.altitude, self.photo.geoLocation];
     
     self.iboSourceImageView.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
@@ -174,16 +175,30 @@
     
     //Faces Query
     faceResultsController = nil;    //Reset contents
-    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
-    request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
-    faceResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+    NSFetchRequest* facesRequest = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
+    facesRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    facesRequest.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
+    faceResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:facesRequest
                                                                 managedObjectContext:self.model.context
                                                                   sectionNameKeyPath:nil
                                                                            cacheName:nil];
-    NSError *error;
-    [faceResultsController performFetch:&error];
-    if( error && APPDEBUG ) NSLog( @"Fetch error: %@", error );
+    NSError *facesError;
+    [faceResultsController performFetch:&facesError];
+    if( facesError && APPDEBUG ) NSLog( @"Fetch Faces error: %@", facesError );
+    
+    //Filters Query
+    filtersResultsController = nil;    //Reset contents
+    NSFetchRequest* filtersRequest = [NSFetchRequest fetchRequestWithEntityName:[JMFFilter entityName]];
+    filtersRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    filtersRequest.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
+    filtersResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:filtersRequest
+                                                                managedObjectContext:self.model.context
+                                                                  sectionNameKeyPath:nil
+                                                                           cacheName:nil];
+    NSError *filtersError;
+    [filtersResultsController performFetch:&filtersError];
+    if( filtersError && APPDEBUG ) NSLog( @"Fetch Filters error: %@", filtersError );
+    
     [self.iboTableView reloadData];
 }
 
@@ -247,6 +262,7 @@
     if( section == SECTION_METADATA ) rows = 6;
     else if( section == SECTION_LOCATION ) rows = 4;
     else if( section == SECTION_FACE_DETECTION ) rows = [[faceResultsController fetchedObjects]count];
+    else if( section == SECTION_FILTERS ) rows = [[filtersResultsController fetchedObjects]count];
     return rows;
 }
 
@@ -283,16 +299,19 @@
             cell.iboDataValue.text = face.faceRect;
             break;
         }
-//
-//        case SECTION_FILTERS:
-//            break;
+
+        case SECTION_FILTERS:
+        {
+            JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
+            cell.iboDataTitle.text = filter.name;
+            cell.iboDataValue.text = [[NSLocalizedString( @"IDS_ACTIVE", nil ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
+            break;
+        }
             
         default:
-            cell.iboDataTitle.text = [NSString stringWithFormat:@"Section %d - Row %d", indexPath.section + 1, indexPath.row + 1];
             break;
     }
     
-
     return cell;
 }
 
@@ -434,8 +453,11 @@
 /***************************************************************************/
 - (void)onFiltersClicked
 {
-//    JMFCameraIOS_FiltersViewController* filtersVC = [[JMFCameraIOS_FiltersViewController alloc] initWithImage:self.image];
-//    [self.navigationController pushViewController:filtersVC animated:YES];
+    JMFCameraIOS_FiltersViewController* filtersVC = [[JMFCameraIOS_FiltersViewController alloc]
+                                                    initWithPhoto:self.photo
+                                                    andImage:self.iboSourceImageView.image
+                                                    inModel:self.model];
+    [self.navigationController pushViewController:filtersVC animated:YES];
 }
 
 #pragma mark - UIResponder Methods

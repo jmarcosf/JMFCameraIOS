@@ -11,7 +11,8 @@
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-
+#import "JMFPhoto.h"
+#import "JMFFilter.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -22,7 +23,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate>
+@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate,
+                                                                  UITableViewDataSource, UITableViewDelegate,
+                                                                  UIPickerViewDataSource, UIPickerViewDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,7 +34,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) UIImage*   image;
+@property (nonatomic,strong) JMFCoreDataStack*      model;
+@property (nonatomic,strong) JMFPhoto*              photo;
+@property (nonatomic,strong) UIImage*               image;
 
 /***************************************************************************/
 /*                                                                         */
@@ -40,19 +45,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
 @property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImage;
 @property (weak, nonatomic) IBOutlet UIImageView*   iboTargetImage;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter1Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter2Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter3Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter4Label;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFilter5Label;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter1Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter2Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter3Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter4Switch;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFilter5Switch;
+@property (weak, nonatomic) IBOutlet UITableView*   iboFilterTable;
+@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
 
 /***************************************************************************/
 /*                                                                         */
@@ -61,20 +57,13 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithImage:(UIImage*)image;
-- (void)onShareClicked;
-- (void)onShowClicked;
-- (void)onFiltersClicked;
-- (void)onDataClicked;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onFilterSwitchChanged:(id)sender;
-
+- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
+- (void)enableButtons;
+- (void)addFilter:(id)sender;
+- (void)onCancelClicked;
+- (void)onClearClicked;
+- (void)onApplyClicked;
+- (void)onSaveClicked;
+- (void)onSwitchChanged:(id)sender;
 
 @end

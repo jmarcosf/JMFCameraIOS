@@ -58,6 +58,6 @@
 - (void)drawFace:(JMFFace*)face;
 - (void)onClearClicked;
 - (void)onDetectClicked;
-- (void)onApplyClicked;
+- (void)onSaveClicked;
 
 @end

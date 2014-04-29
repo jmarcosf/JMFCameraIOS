@@ -33,7 +33,7 @@
                     <items>
                         <tabBarItem title="Clear" image="Delete.png" id="gYF-LX-nVu"/>
                         <tabBarItem tag="1" title="Detect" image="Search.png" id="9X0-zg-dOy"/>
-                        <tabBarItem tag="2" title="Apply" image="Apply.png" id="3VQ-qS-lg3"/>
+                        <tabBarItem tag="2" title="Save" image="Save.png" id="3VQ-qS-lg3"/>
                     </items>
                 </tabBar>
             </subviews>
@@ -44,8 +44,8 @@
         </view>
     </objects>
     <resources>
-        <image name="Apply.png" width="22" height="22"/>
         <image name="Delete.png" width="19" height="25"/>
+        <image name="Save.png" width="23" height="24"/>
         <image name="Search.png" width="25" height="24"/>
     </resources>
 </document>
