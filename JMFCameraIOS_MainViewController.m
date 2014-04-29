@@ -12,6 +12,7 @@
 /***************************************************************************/
 #import "JMFCameraIOS_MainViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
+#import "JMFCameraIOS_MainTVCell.h"
 #import "JMFCameraIOS_AlbumViewController.h"
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFFlickr.h"
@@ -24,10 +25,11 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define IDS_MAINCV_PHOTO_CELL_XIBNAME               @"JMFCameraIOS_MainCVPhotoCell"
 #define IDS_MAINCV_HEADER_CELL_IDENTIFIER           @"MainCVHeaderCellIdentifier"
+#define IDS_MAINCV_PHOTO_CELL_XIBNAME               @"JMFCameraIOS_MainCVPhotoCell"
 #define IDS_MAINCV_PHOTO_CELL_IDENTIFIER            @"MainCVPhotoCellIdentifier"
-#define IDS_MAINTV_PHOTO_CELL_IDENTIFIER            @"MainTVPhotoCellIdentifier"
+#define IDS_MAINTV_CELL_XIBNAME                     @"JMFCameraIOS_MainTVCell"
+#define IDS_MAINTV_CELL_IDENTIFIER                  @"MainTVCellIdentifier"
 
 #define IDC_UITOOLBAR_BUTTON_CAMERA_INDEX           0
 #define IDC_UITOOLBAR_BUTTON_MODE_INDEX             1
@@ -200,7 +202,7 @@
     //Table View
     self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.tableView.allowsMultipleSelection = bMultiSelectMode;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER];
+    [self.tableView registerNib:[UINib nibWithNibName:IDS_MAINTV_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_MAINTV_CELL_IDENTIFIER];
 
     [self setFrame:Rect];
 }
@@ -551,14 +553,24 @@
     NSData*  imageData = [NSData dataWithContentsOfFile:photo.sourceThumbnailUrl];
     UIImage* image = [UIImage imageWithData:imageData];
     
-    UITableViewCell* cell = nil;
-    cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_PHOTO_CELL_IDENTIFIER forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"Photo for row #%ld", (long)indexPath.row];
-    cell.imageView.image = ( image != nil ) ? image : [UIImage imageNamed:@"NoImage.jpg"];
-//    cell.bImageOK = ( image != nil );
+    JMFCameraIOS_MainTVCell* cell = nil;
+    cell = [tableView dequeueReusableCellWithIdentifier:IDS_MAINTV_CELL_IDENTIFIER forIndexPath:indexPath];
+    cell.imageView.image     = ( image != nil ) ? image : [UIImage imageNamed:@"NoImage.jpg"];
+    cell.iboNameLabel.text   = photo.name;
+    cell.iboSizeLabel.text   = [NSString stringWithFormat:@"%d x %d", photo.pixelWidthValue, photo.pixelHeightValue];
+    cell.iboSourceTitle.text = [NSLocalizedString( @"IDS_SOURCE", nil ) stringByAppendingString:@":"];
+    cell.iboSourceValue.text = [photo sourceFromNumber:photo.source];
+    cell.iboWhenTitle.text   = [NSLocalizedString( @"IDS_WHEN", nil ) stringByAppendingString:@":"];
+    cell.iboWhenValue.text   = [JMFUtility formattedStringFromDate:photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
+    cell.iboWhereTitle.text  = [NSLocalizedString( @"IDS_WHERE", nil ) stringByAppendingString:@":"];
+    cell.iboWhereValue.text  = photo.geoLocation;
     
     return cell;
 }
+
+
+
+
 
 #pragma mark - UITableViewDelegate
 /***************************************************************************/
@@ -571,6 +583,18 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:heightForRowAtIndexPath:                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return 70;
+}
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */

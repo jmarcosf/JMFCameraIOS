@@ -41,6 +41,8 @@
 		903E7F6E190F9AB000E1EF5F /* MapLocation.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F6D190F9AB000E1EF5F /* MapLocation.png */; };
 		903E7F72190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 903E7F70190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.m */; };
 		903E7F73190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F71190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib */; };
+		903E7F77190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 903E7F75190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m */; };
+		903E7F78190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F76190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib */; };
 		904930C6190905030024FAC1 /* _JMFFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930BF190905030024FAC1 /* _JMFFace.m */; };
 		904930C7190905030024FAC1 /* _JMFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C1190905030024FAC1 /* _JMFFilter.m */; };
 		904930C8190905030024FAC1 /* _JMFNamedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C3190905030024FAC1 /* _JMFNamedEntity.m */; };
@@ -60,11 +62,8 @@
 		9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */; };
 		9053C33719071E8300A13EEF /* GreenCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33519071E8300A13EEF /* GreenCheck.png */; };
 		9053C33819071E8300A13EEF /* GreenCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33619071E8300A13EEF /* GreenCheck@2x.png */; };
-		9053C33A19073D4D00A13EEF /* pareja.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9053C33919073D4D00A13EEF /* pareja.jpg */; };
 		905674B11909EFA300C9389D /* JMFCameraIOS_EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 905674AF1909EFA300C9389D /* JMFCameraIOS_EditViewController.m */; };
 		905674B21909EFA300C9389D /* JMFCameraIOS_EditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 905674B01909EFA300C9389D /* JMFCameraIOS_EditViewController.xib */; };
-		905AB5C119053AC7009B822F /* jennifer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5BF19053AC7009B822F /* jennifer.jpg */; };
-		905AB5C219053AC7009B822F /* rachel.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5C019053AC7009B822F /* rachel.jpg */; };
 		905AB5C519054215009B822F /* Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5C319054215009B822F /* Filter.png */; };
 		905AB5C619054215009B822F /* Filter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 905AB5C419054215009B822F /* Filter@2x.png */; };
 		905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 905AB5C81905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m */; };
@@ -104,7 +103,6 @@
 		90AD563C18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */; };
 		90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */; };
 		90AE9BF618FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */; };
-		90AE9BF918FDE18400AEF2DB /* connie.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90AE9BF818FDE18400AEF2DB /* connie.jpg */; };
 		90C40CC1190DBEFE00D6E78E /* NoImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90C40CC0190DBEFE00D6E78E /* NoImage.jpg */; };
 		90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4918FD80BE00CEA576 /* Checked.png */; };
 		90DFEF4C18FD80BE00CEA576 /* Checked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */; };
@@ -165,6 +163,9 @@
 		903E7F6F190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MapViewController.h; sourceTree = "<group>"; };
 		903E7F70190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MapViewController.m; sourceTree = "<group>"; };
 		903E7F71190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MapViewController.xib; sourceTree = "<group>"; };
+		903E7F74190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainTVCell.h; sourceTree = "<group>"; };
+		903E7F75190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainTVCell.m; sourceTree = "<group>"; };
+		903E7F76190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainTVCell.xib; sourceTree = "<group>"; };
 		904930BE190905030024FAC1 /* _JMFFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFace.h; sourceTree = "<group>"; };
 		904930BF190905030024FAC1 /* _JMFFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFFace.m; sourceTree = "<group>"; };
 		904930C0190905030024FAC1 /* _JMFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFilter.h; sourceTree = "<group>"; };
@@ -199,12 +200,9 @@
 		9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrPhoto.m; sourceTree = "<group>"; };
 		9053C33519071E8300A13EEF /* GreenCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GreenCheck.png; sourceTree = "<group>"; };
 		9053C33619071E8300A13EEF /* GreenCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GreenCheck@2x.png"; sourceTree = "<group>"; };
-		9053C33919073D4D00A13EEF /* pareja.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pareja.jpg; sourceTree = "<group>"; };
 		905674AE1909EFA300C9389D /* JMFCameraIOS_EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_EditViewController.h; sourceTree = "<group>"; };
 		905674AF1909EFA300C9389D /* JMFCameraIOS_EditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_EditViewController.m; sourceTree = "<group>"; };
 		905674B01909EFA300C9389D /* JMFCameraIOS_EditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_EditViewController.xib; sourceTree = "<group>"; };
-		905AB5BF19053AC7009B822F /* jennifer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = jennifer.jpg; sourceTree = "<group>"; };
-		905AB5C019053AC7009B822F /* rachel.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rachel.jpg; sourceTree = "<group>"; };
 		905AB5C319054215009B822F /* Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Filter.png; sourceTree = "<group>"; };
 		905AB5C419054215009B822F /* Filter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Filter@2x.png"; sourceTree = "<group>"; };
 		905AB5C71905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FilterTVPickerCell.h; sourceTree = "<group>"; };
@@ -256,7 +254,6 @@
 		90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FiltersViewController.h; sourceTree = "<group>"; };
 		90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_FiltersViewController.m; sourceTree = "<group>"; };
 		90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FiltersViewController.xib; sourceTree = "<group>"; };
-		90AE9BF818FDE18400AEF2DB /* connie.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = connie.jpg; sourceTree = "<group>"; };
 		90C40CC0190DBEFE00D6E78E /* NoImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = NoImage.jpg; sourceTree = "<group>"; };
 		90DFEF4918FD80BE00CEA576 /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
 		90DFEF4A18FD80BE00CEA576 /* Checked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checked@2x.png"; sourceTree = "<group>"; };
@@ -511,27 +508,27 @@
 				906E729818F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.h */,
 				906E729918F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m */,
 				906E729A18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib */,
-				905674AE1909EFA300C9389D /* JMFCameraIOS_EditViewController.h */,
-				905674AF1909EFA300C9389D /* JMFCameraIOS_EditViewController.m */,
-				905674B01909EFA300C9389D /* JMFCameraIOS_EditViewController.xib */,
 				901B1054190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.h */,
 				901B1055190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.m */,
 				901B1056190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.xib */,
-				90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.h */,
-				90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */,
-				90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */,
-				90AD563818FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.h */,
-				90AD563918FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m */,
-				90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */,
-				9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */,
-				9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */,
-				9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */,
+				905674AE1909EFA300C9389D /* JMFCameraIOS_EditViewController.h */,
+				905674AF1909EFA300C9389D /* JMFCameraIOS_EditViewController.m */,
+				905674B01909EFA300C9389D /* JMFCameraIOS_EditViewController.xib */,
 				901B1043190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.h */,
 				901B1044190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.m */,
 				901B1045190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib */,
 				903E7F6F190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.h */,
 				903E7F70190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.m */,
 				903E7F71190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib */,
+				9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */,
+				9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */,
+				9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */,
+				90AE9BF218FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.h */,
+				90AE9BF318FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m */,
+				90AE9BF418FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.xib */,
+				90AD563818FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.h */,
+				90AD563918FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.m */,
+				90AD563A18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -542,13 +539,16 @@
 				900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */,
 				900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */,
 				900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */,
+				903E7F74190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.h */,
+				903E7F75190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m */,
+				903E7F76190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib */,
+				90E58CBA190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.h */,
+				90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */,
+				90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */,
 				905AB5C71905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.h */,
 				905AB5C81905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m */,
 				901B1048190A873200AD1F7C /* JMFCameraIOS_ZoomableView.h */,
 				901B1049190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m */,
-				90E58CBA190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.h */,
-				90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */,
-				90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -557,10 +557,6 @@
 			isa = PBXGroup;
 			children = (
 				90C40CC0190DBEFE00D6E78E /* NoImage.jpg */,
-				905AB5BF19053AC7009B822F /* jennifer.jpg */,
-				905AB5C019053AC7009B822F /* rachel.jpg */,
-				90AE9BF818FDE18400AEF2DB /* connie.jpg */,
-				9053C33919073D4D00A13EEF /* pareja.jpg */,
 			);
 			name = Pictures;
 			sourceTree = "<group>";
@@ -662,12 +658,9 @@
 				903E7F73190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib in Resources */,
 				905AB5D01905D54C009B822F /* ArrowUp.png in Resources */,
 				9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */,
-				905AB5C119053AC7009B822F /* jennifer.jpg in Resources */,
 				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
-				905AB5C219053AC7009B822F /* rachel.jpg in Resources */,
 				90AD563C18FDFCA600C649FA /* JMFCameraIOS_EditFiltersViewController.xib in Resources */,
 				9053C33819071E8300A13EEF /* GreenCheck@2x.png in Resources */,
-				90AE9BF918FDE18400AEF2DB /* connie.jpg in Resources */,
 				9028F60818FC6DD6000956E7 /* Camera.png in Resources */,
 				905AB5CE1905D54C009B822F /* ArrowDown.png in Resources */,
 				9028F60F18FC6DD6000956E7 /* Flickr@2x.png in Resources */,
@@ -677,7 +670,6 @@
 				90AD563118FDFB6500C649FA /* Data@2x.png in Resources */,
 				903E7F6E190F9AB000E1EF5F /* MapLocation.png in Resources */,
 				905AB5D71905DA68009B822F /* Apply@2x.png in Resources */,
-				9053C33A19073D4D00A13EEF /* pareja.jpg in Resources */,
 				905AB5D11905D54C009B822F /* ArrowUp@2x.png in Resources */,
 				90AD563218FDFB6500C649FA /* Filters.png in Resources */,
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
@@ -688,6 +680,7 @@
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
 				901B104D190AB08400AD1F7C /* Search.png in Resources */,
 				905AB5CF1905D54C009B822F /* ArrowDown@2x.png in Resources */,
+				903E7F78190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.xib in Resources */,
 				9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */,
 				90E58CBE190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib in Resources */,
 				9028F61618FC6EB7000956E7 /* MosaicMode@2x.png in Resources */,
@@ -731,6 +724,7 @@
 				901F41A0190D51E60014EA24 /* JMFUtility.m in Sources */,
 				904930DB190944300024FAC1 /* JMFCoreDataViewController.m in Sources */,
 				905674B11909EFA300C9389D /* JMFCameraIOS_EditViewController.m in Sources */,
+				903E7F77190FACE500E1EF5F /* JMFCameraIOS_MainTVCell.m in Sources */,
 				9051D3EE18FB3A280066AB35 /* JMFCoreDataTableViewController.m in Sources */,
 				901B1057190B226800AD1F7C /* JMFCameraIOS_AlbumViewController.m in Sources */,
 				901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */,

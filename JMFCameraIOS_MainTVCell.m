@@ -1,52 +1,53 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_MainCVPhotoCell.m                                         */
+/*  JMFCameraIOS_MainTVCell.m                                              */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Main CollectionView Photo Cell Class implementation file  */
+/*               Main TableView Cell Class implementation file             */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFCameraIOS_MainCVPhotoCell.h"
+#import "JMFCameraIOS_MainTVCell.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_MainCVPhotoCell Class Implementation                      */
+/*  JMFCameraIOS_MainTVCell Class Implementation                           */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFCameraIOS_MainCVPhotoCell
+@implementation JMFCameraIOS_MainTVCell
 
-#pragma mark - UIView Methods
+#pragma mark - UITableViewCell Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIView Override Methods                                                */
+/*  UITableViewCell Override Methods                                       */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithFrame:                                                         */
+/*  initWithStyle:reuseIdentifier:                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString*)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if( self )
     {
     }
+    
     return self;
 }
 
@@ -57,16 +58,17 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)setSelected:(BOOL)selected
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    [super setSelected:selected];
-    
-    UICollectionView* collectionView = (UICollectionView*)[self superview];
-    if( [collectionView isKindOfClass:[UICollectionView class]] && collectionView.allowsMultipleSelection )
-    {
-        self.iboSelectedIcon.hidden = !selected;
-    }
+    [super setSelected:selected animated:animated];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.imageView.frame = CGRectMake( 1, 1, self.frame.size.height - 1, self.frame.size.height - 1 );
+    self.imageView.clipsToBounds = YES;
 }
 
 @end
-

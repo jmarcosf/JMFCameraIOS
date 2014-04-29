@@ -47,6 +47,8 @@
 "IDS_DETECTING" = "detecting";
 "IDS_SELECT" = "Select";
 "IDS_SELECT_ITEMS" = "Select Items";
+"IDS_WHEN" = "When";
+"IDS_WHERE" = "Where";
 
 "IDS_SOURCE" = "Source";
 "IDS_COLOR_MODEL" = "Color Model";
