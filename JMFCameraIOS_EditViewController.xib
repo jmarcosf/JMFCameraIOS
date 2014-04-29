@@ -9,6 +9,7 @@
                 <outlet property="iboCreatedTitle" destination="cNa-BE-QHy" id="JL7-1c-Io5"/>
                 <outlet property="iboCreatedValue" destination="mj3-AW-Lv3" id="Cwj-Sc-fVw"/>
                 <outlet property="iboFullScreenLabel" destination="o2W-mv-cLt" id="4ck-tv-TzN"/>
+                <outlet property="iboMapPoint" destination="oUd-Dx-q3d" id="Q9v-E9-v7b"/>
                 <outlet property="iboModifiedTitle" destination="iVp-Q2-jrd" id="aiP-a3-IdT"/>
                 <outlet property="iboModifiedValue" destination="DmA-6p-QCh" id="bZb-tY-PME"/>
                 <outlet property="iboNameTitle" destination="ZLG-fV-HeV" id="6Ka-1H-K46"/>
@@ -43,35 +44,35 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PPa-Mi-H6r">
-                    <rect key="frame" x="177" y="22" width="130" height="21"/>
+                    <rect key="frame" x="177" y="17" width="130" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cNa-BE-QHy">
-                    <rect key="frame" x="177" y="51" width="130" height="21"/>
+                    <rect key="frame" x="177" y="41" width="130" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mj3-AW-Lv3">
-                    <rect key="frame" x="177" y="67" width="130" height="20"/>
+                    <rect key="frame" x="177" y="54" width="130" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modified:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iVp-Q2-jrd">
-                    <rect key="frame" x="177" y="95" width="130" height="21"/>
+                    <rect key="frame" x="177" y="80" width="130" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DmA-6p-QCh">
-                    <rect key="frame" x="177" y="111" width="130" height="21"/>
+                    <rect key="frame" x="177" y="92" width="130" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -92,6 +93,10 @@
                         <tabBarItem tag="2" title="Filters" image="Filter.png" id="ZET-57-W5P"/>
                     </items>
                 </tabBar>
+                <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MapLocation.png" id="oUd-Dx-q3d">
+                    <rect key="frame" x="216" y="122" width="32" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -101,6 +106,7 @@
     </objects>
     <resources>
         <image name="Filter.png" width="25" height="25"/>
+        <image name="MapLocation.png" width="256" height="256"/>
         <image name="Share.png" width="19" height="27"/>
         <image name="Show.png" width="30" height="18"/>
     </resources>

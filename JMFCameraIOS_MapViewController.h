@@ -1,28 +1,28 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController.h                                      */
+/*  JMFCameraIOS_MapViewController.h                                       */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit View Controller Class definition file                */
+/*               Map View Controller Class definition file                 */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFPhoto.h"
+@import MapKit;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditViewController Class Interface                        */
+/*  JMFCameraIOS_MapViewController Class Interface                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate>
+@interface JMFCameraIOS_MapViewController : UIViewController
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,8 +31,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
-@property (nonatomic,strong) JMFPhoto*              photo;
+@property (nonatomic)        CLLocationCoordinate2D     location;
+@property (nonatomic,strong) NSString*                  geoPosition;
 
 /***************************************************************************/
 /*                                                                         */
@@ -41,17 +41,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSourceImageView;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFullScreenLabel;
-@property (weak, nonatomic) IBOutlet UITableView*   iboTableView;
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboCreatedTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboCreatedValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboModifiedTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboModifiedValue;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboMapPoint;
+@property (weak, nonatomic) IBOutlet MKMapView* iboMapView;
 
 /***************************************************************************/
 /*                                                                         */
@@ -60,9 +50,6 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo inModel:(JMFCoreDataStack*)model;
-- (void)onShareClicked;
-- (void)onFaceDetectionClicked;
-- (void)onFiltersClicked;
+- (id)initWithLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude andGeoPosition:(NSString*)geoPosition;
 
 @end

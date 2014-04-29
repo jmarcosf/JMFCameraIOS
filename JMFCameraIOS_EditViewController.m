@@ -15,6 +15,9 @@
 #import "JMFCameraIOS_FaceRecViewController.h"
 #import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_ShowViewController.h"
+#import "JMFCameraIOS_MapViewController.h"
+#import "JMFFace.h"
+#import "JMFFilter.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -44,11 +47,12 @@
 /***************************************************************************/
 @interface JMFCameraIOS_EditViewController ()
 {
-    NSArray*    headerStrings;
-    NSArray*    metadataTitleStrings;
-    NSArray*    metadataValues;
-    NSArray*    locationTitleStrings;
-    NSArray*    locationValues;
+    NSArray*                        headerStrings;
+    NSArray*                        metadataTitleStrings;
+    NSArray*                        metadataValues;
+    NSArray*                        locationTitleStrings;
+    NSArray*                        locationValues;
+    NSFetchedResultsController*     faceResultsController;
 }
 
 @end
@@ -137,6 +141,7 @@
     self.iboNameValue.text     = self.photo.name;
     self.iboCreatedValue.text  = [JMFUtility formattedStringFromDate:self.photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
     self.iboModifiedValue.text = [JMFUtility formattedStringFromDate:self.photo.modificationDate withFormat:@"IDS_DATETIME_FORMAT"];
+    self.iboMapPoint.hidden = ( [self.photo.longitude doubleValue] == 0 && [self.photo.latitude doubleValue] == 0 );
 
     //TableView
     [self.iboTableView registerNib:[UINib nibWithNibName:IDS_EDITTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
@@ -166,6 +171,20 @@
     self.iboSourceImageView.frame = CGRectMake( 2, 2, 150, 150 );
     [self.iboSourceImageView setClipsToBounds:YES];
     self.iboFullScreenLabel.frame = CGRectMake( 2, 150, 148, 20 );
+    
+    //Faces Query
+    faceResultsController = nil;    //Reset contents
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
+    faceResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                managedObjectContext:self.model.context
+                                                                  sectionNameKeyPath:nil
+                                                                           cacheName:nil];
+    NSError *error;
+    [faceResultsController performFetch:&error];
+    if( error && APPDEBUG ) NSLog( @"Fetch error: %@", error );
+    [self.iboTableView reloadData];
 }
 
 /***************************************************************************/
@@ -227,6 +246,7 @@
     int rows = 0;
     if( section == SECTION_METADATA ) rows = 6;
     else if( section == SECTION_LOCATION ) rows = 4;
+    else if( section == SECTION_FACE_DETECTION ) rows = [[faceResultsController fetchedObjects]count];
     return rows;
 }
 
@@ -243,7 +263,6 @@
 
     cell.iboDataTitle.text = nil;
     cell.iboDataValue.text = nil;
-    cell.iboDataIcon.image = nil;
     
     switch( indexPath.section )
     {
@@ -257,9 +276,14 @@
             cell.iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
             break;
             
-//        case SECTION_FACE_DETECTION:
-//            break;
-//            
+        case SECTION_FACE_DETECTION:
+        {
+            JMFFace* face = [faceResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
+            cell.iboDataTitle.text = face.name;
+            cell.iboDataValue.text = face.faceRect;
+            break;
+        }
+//
 //        case SECTION_FILTERS:
 //            break;
             
@@ -442,6 +466,13 @@
         image = self.iboSourceImageView.image;
         JMFCameraIOS_ShowViewController* showVC = [[JMFCameraIOS_ShowViewController alloc] initWithImage:image];
         [self.navigationController pushViewController:showVC animated:YES];
+    }
+    else if( touch.view == self.iboMapPoint )
+    {
+        JMFCameraIOS_MapViewController* mapVC = [[JMFCameraIOS_MapViewController alloc]initWithLongitude:self.photo.longitude
+                                                                                                latitude:self.photo.latitude
+                                                                                          andGeoPosition:self.photo.geoLocation];
+        [self.navigationController pushViewController:mapVC animated:YES];
     }
 }
 

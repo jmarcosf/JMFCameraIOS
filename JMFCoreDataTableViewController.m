@@ -293,17 +293,17 @@
         
         if( newFetchedResultsController )
         {
-            if( DEBUG ) NSLog( @"[%@ %@] %@",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ),
-                              oldFetchedResultsController ? @"updated" : @"set" );
+            if( APPDEBUG ) NSLog( @"[%@ %@] %@",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ),
+                           oldFetchedResultsController ? @"updated" : @"set" );
             [self performFetch];
         }
         else
         {
-            if( DEBUG ) NSLog( @"[%@ %@] reset to nil",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ) );
+            if( APPDEBUG ) NSLog( @"[%@ %@] reset to nil",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ) );
             [self.tableView reloadData];
         }
     }
@@ -322,11 +322,11 @@
     {
         if( self.fetchedResultsController.fetchRequest.predicate )
         {
-            if( DEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ),
-                              self.fetchedResultsController.fetchRequest.entityName,
-                              self.fetchedResultsController.fetchRequest.predicate );
+            if( APPDEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
+                           NSStringFromClass( [self class] ),
+                           NSStringFromSelector( _cmd ),
+                           self.fetchedResultsController.fetchRequest.entityName,
+                           self.fetchedResultsController.fetchRequest.predicate );
         }
         else
         {
@@ -338,17 +338,17 @@
         
         NSError *error;
         [self.fetchedResultsController performFetch:&error];
-        if( error && DEBUG ) NSLog( @"[%@ %@] %@ (%@)",
-                                   NSStringFromClass( [self class] ),
-                                   NSStringFromSelector( _cmd ),
-                                   [error localizedDescription],
-                                   [error localizedFailureReason] );
+        if( error && APPDEBUG ) NSLog( @"[%@ %@] %@ (%@)",
+                                NSStringFromClass( [self class] ),
+                                NSStringFromSelector( _cmd ),
+                                [error localizedDescription],
+                                [error localizedFailureReason] );
     }
     else
     {
-        if( DEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
-                          NSStringFromClass( [self class] ),
-                          NSStringFromSelector( _cmd ) );
+        if( APPDEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
+                       NSStringFromClass( [self class] ),
+                       NSStringFromSelector( _cmd ) );
     }
     [self.tableView reloadData];
 }

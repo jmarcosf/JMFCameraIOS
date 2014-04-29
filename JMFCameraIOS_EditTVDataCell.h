@@ -41,7 +41,6 @@
 /***************************************************************************/
 @property (weak, nonatomic) IBOutlet UILabel*       iboDataTitle;
 @property (weak, nonatomic) IBOutlet UILabel*       iboDataValue;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboDataIcon;
 
 /***************************************************************************/
 /*                                                                         */

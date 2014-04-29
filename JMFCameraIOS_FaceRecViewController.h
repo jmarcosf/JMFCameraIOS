@@ -56,10 +56,8 @@
 - (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
 - (void)drawFaces;
 - (void)drawFace:(JMFFace*)face;
-- (void)drawFeature:(UIView*)view;
-- (void)onDetectClicked;
 - (void)onClearClicked;
-- (void)onCancelClicked;
+- (void)onDetectClicked;
 - (void)onApplyClicked;
 
 @end

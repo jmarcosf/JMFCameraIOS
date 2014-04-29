@@ -13,7 +13,6 @@
 #import "JMFCameraIOS_FaceRecViewController.h"
 #import "UIImageView+GeometryConversion.h"
 #import "JMFFace.h"
-#import "JMFAppDelegate.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -22,31 +21,12 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define IDC_UITOOLBAR_BUTTON_DETECT_INDEX           0
-#define IDC_UITOOLBAR_BUTTON_CLEAR_INDEX            1
-#define IDC_UITOOLBAR_BUTTON_CANCEL_INDEX           2
-#define IDC_UITOOLBAR_BUTTON_APPLY_INDEX            3
+#define IDC_UITOOLBAR_BUTTON_CLEAR_INDEX            0
+#define IDC_UITOOLBAR_BUTTON_DETECT_INDEX           1
+#define IDC_UITOOLBAR_BUTTON_APPLY_INDEX            2
 
 #define EYE_SIZE_RATE                               0.3f
 #define MOUTH_SIZE_RATE                             0.4f
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  JMFFace Flags                                                          */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-#pragma pack( 1 )
-typedef struct _FACE_FEATURE_TAG_
-{
-    CGRect      faceRect;
-    CGPoint     leftEyePoint;
-    CGPoint     rightEyePoint;
-    CGPoint     mouthPoint;
-    int32_t     faceFlags;
-} FACE_FEATURE;
-#pragma pack()
 
 /***************************************************************************/
 /*                                                                         */
@@ -134,10 +114,9 @@ typedef struct _FACE_FEATURE_TAG_
     
     //TabBar
     self.iboTabBar.delegate = self;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX]     setTitle:NSLocalizedString( @"IDS_DETECT", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]      setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX]     setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]      setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setTitle:NSLocalizedString( @"IDS_DETECT", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
 
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
@@ -165,14 +144,14 @@ typedef struct _FACE_FEATURE_TAG_
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationItem.hidesBackButton = YES;
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
     
     int count = [[fetchedResultsController fetchedObjects]count];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( count <= 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( count > 0 )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setEnabled:( YES )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( NO )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( count <= 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( YES )];
 }
 
 /***************************************************************************/
@@ -209,9 +188,8 @@ typedef struct _FACE_FEATURE_TAG_
 {
     switch( item.tag )
     {
-        case IDC_UITOOLBAR_BUTTON_DETECT_INDEX:     [self onDetectClicked];     break;
         case IDC_UITOOLBAR_BUTTON_CLEAR_INDEX:      [self onClearClicked];      break;
-        case IDC_UITOOLBAR_BUTTON_CANCEL_INDEX:     [self onCancelClicked];     break;
+        case IDC_UITOOLBAR_BUTTON_DETECT_INDEX:     [self onDetectClicked];     break;
         case IDC_UITOOLBAR_BUTTON_APPLY_INDEX:      [self onApplyClicked];      break;
     }
 }
@@ -290,7 +268,7 @@ typedef struct _FACE_FEATURE_TAG_
     UIView* faceView = [[UIView alloc] initWithFrame:faceRect];
     faceView.layer.borderWidth = 1.5f;
     faceView.layer.borderColor = [[UIColor greenColor] CGColor];
-    [self drawFeature:faceView];
+    [self.iboImageView addSubview:faceView];
     CGFloat faceWidth = faceRect.size.width;
     
     //Draw Left Eye
@@ -302,7 +280,7 @@ typedef struct _FACE_FEATURE_TAG_
                                                                        faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
         leftEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
         leftEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5f;
-        [self drawFeature:leftEyeView];
+        [self.iboImageView addSubview:leftEyeView];
     }
     
     //Draw Right Eye
@@ -314,7 +292,7 @@ typedef struct _FACE_FEATURE_TAG_
                                                                         faceWidth * EYE_SIZE_RATE, faceWidth * EYE_SIZE_RATE )];
         rightEyeView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
         rightEyeView.layer.cornerRadius = faceWidth * EYE_SIZE_RATE * 0.5;
-        [self drawFeature:rightEyeView];
+        [self.iboImageView addSubview:rightEyeView];
     }
     
     //Draw Mouth
@@ -326,20 +304,8 @@ typedef struct _FACE_FEATURE_TAG_
                                                                      faceWidth * MOUTH_SIZE_RATE, faceWidth * MOUTH_SIZE_RATE)];
         mouthView.backgroundColor = [[UIColor cyanColor] colorWithAlphaComponent:0.3f];
         mouthView.layer.cornerRadius = faceWidth * MOUTH_SIZE_RATE * 0.5f;
-        [self drawFeature:mouthView];
+        [self.iboImageView addSubview:mouthView];
     }
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  drawFeature:                                                           */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)drawFeature:(UIView*)view
-{
-    [self.iboImageView addSubview:view];
 }
 
 /***************************************************************************/
@@ -363,9 +329,8 @@ typedef struct _FACE_FEATURE_TAG_
             dispatch_queue_t mainQueue = dispatch_get_main_queue();
             dispatch_async( mainQueue, ^
             {
-                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( !bDetected )];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( bDetected )];
-                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( bDetected )];
+                [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( !bDetected )];
                 self.iboActivityIndicator.hidden = YES;
                 [self.iboActivityIndicator stopAnimating];
             });
@@ -387,21 +352,14 @@ typedef struct _FACE_FEATURE_TAG_
     {
         [view removeFromSuperview];
     }
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( YES )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( NO )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( NO )];
-}
+    
+    fetchedResultsController.delegate = nil;
+    for( JMFFace* face in [fetchedResultsController fetchedObjects] ) [self.model.context deleteObject:face];
+    [self.model saveWithErrorBlock:nil];
+    fetchedResultsController.delegate = self;
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  onCancelClicked                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)onCancelClicked
-{
-    [self.navigationController popViewControllerAnimated:YES];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( NO )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( YES )];
 }
 
 /***************************************************************************/
@@ -430,18 +388,13 @@ typedef struct _FACE_FEATURE_TAG_
  	CIDetector*     detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
 	NSArray*        features = [detector featuresInImage:image];
 	
-    fetchedResultsController.delegate = nil;
-    for( JMFFace* face in [fetchedResultsController fetchedObjects] ) [self.model.context deleteObject:face];
-    [self.model saveWithErrorBlock:nil];
-    
-    fetchedResultsController.delegate = self;
     if( features.count != 0 )
     {
         int i = 0;
         for( CIFaceFeature* faceFeature in features )
         {
             JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature photo:self.photo inContext:self.model.context];
-            face.name = [NSString stringWithFormat:@"Face Feature #%d", ++i];
+            face.name = [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FACE", nil ), ++i];
         }
         [self.model saveWithErrorBlock:nil];
     }
