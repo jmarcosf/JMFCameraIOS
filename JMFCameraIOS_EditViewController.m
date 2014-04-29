@@ -135,8 +135,8 @@
     self.iboCreatedTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_CREATED",  nil )];
     self.iboModifiedTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MODIFIED", nil )];
     self.iboNameValue.text     = self.photo.name;
-    self.iboCreatedValue.text  = [self.photo.creationDate description];
-    self.iboModifiedValue.text = [self.photo.modificationDate description];
+    self.iboCreatedValue.text  = [JMFUtility formattedStringFromDate:self.photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
+    self.iboModifiedValue.text = [JMFUtility formattedStringFromDate:self.photo.modificationDate withFormat:@"IDS_DATETIME_FORMAT"];
 
     //TableView
     [self.iboTableView registerNib:[UINib nibWithNibName:IDS_EDITTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
@@ -394,7 +394,10 @@
 /***************************************************************************/
 - (void)onFaceDetectionClicked
 {
-    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc] initWithPhoto:self.photo andImage:self.iboSourceImageView.image];
+    JMFCameraIOS_FaceRecViewController* faceRecVC = [[JMFCameraIOS_FaceRecViewController alloc]
+                                                     initWithPhoto:self.photo
+                                                     andImage:self.iboSourceImageView.image
+                                                     inModel:self.model];
     [self.navigationController pushViewController:faceRecVC animated:YES];
 }
 

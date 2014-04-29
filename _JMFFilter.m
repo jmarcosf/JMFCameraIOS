@@ -8,7 +8,7 @@ const struct JMFFilterAttributes JMFFilterAttributes = {
 };
 
 const struct JMFFilterRelationships JMFFilterRelationships = {
-	.filter2photo = @"filter2photo",
+	.photo = @"photo",
 };
 
 const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
@@ -78,7 +78,7 @@ const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
 
 
 
-@dynamic filter2photo;
+@dynamic photo;
 
 	
 

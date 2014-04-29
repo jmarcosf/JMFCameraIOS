@@ -31,6 +31,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+#import "JMFUtility.h"
+#import "JMFCoreDataStack.h"
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>

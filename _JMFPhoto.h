@@ -22,8 +22,8 @@ extern const struct JMFPhotoAttributes {
 } JMFPhotoAttributes;
 
 extern const struct JMFPhotoRelationships {
-	__unsafe_unretained NSString *photo2faces;
-	__unsafe_unretained NSString *photo2filters;
+	__unsafe_unretained NSString *faces;
+	__unsafe_unretained NSString *filters;
 } JMFPhotoRelationships;
 
 extern const struct JMFPhotoFetchedProperties {
@@ -232,16 +232,16 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSSet *photo2faces;
+@property (nonatomic, strong) NSSet *faces;
 
-- (NSMutableSet*)photo2facesSet;
-
-
+- (NSMutableSet*)facesSet;
 
 
-@property (nonatomic, strong) NSSet *photo2filters;
 
-- (NSMutableSet*)photo2filtersSet;
+
+@property (nonatomic, strong) NSSet *filters;
+
+- (NSMutableSet*)filtersSet;
 
 
 
@@ -251,15 +251,15 @@ extern const struct JMFPhotoFetchedProperties {
 
 @interface _JMFPhoto (CoreDataGeneratedAccessors)
 
-- (void)addPhoto2faces:(NSSet*)value_;
-- (void)removePhoto2faces:(NSSet*)value_;
-- (void)addPhoto2facesObject:(JMFFace*)value_;
-- (void)removePhoto2facesObject:(JMFFace*)value_;
+- (void)addFaces:(NSSet*)value_;
+- (void)removeFaces:(NSSet*)value_;
+- (void)addFacesObject:(JMFFace*)value_;
+- (void)removeFacesObject:(JMFFace*)value_;
 
-- (void)addPhoto2filters:(NSSet*)value_;
-- (void)removePhoto2filters:(NSSet*)value_;
-- (void)addPhoto2filtersObject:(JMFFilter*)value_;
-- (void)removePhoto2filtersObject:(JMFFilter*)value_;
+- (void)addFilters:(NSSet*)value_;
+- (void)removeFilters:(NSSet*)value_;
+- (void)addFiltersObject:(JMFFilter*)value_;
+- (void)removeFiltersObject:(JMFFilter*)value_;
 
 @end
 
@@ -375,13 +375,13 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 
-- (NSMutableSet*)primitivePhoto2faces;
-- (void)setPrimitivePhoto2faces:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveFaces;
+- (void)setPrimitiveFaces:(NSMutableSet*)value;
 
 
 
-- (NSMutableSet*)primitivePhoto2filters;
-- (void)setPrimitivePhoto2filters:(NSMutableSet*)value;
+- (NSMutableSet*)primitiveFilters;
+- (void)setPrimitiveFilters:(NSMutableSet*)value;
 
 
 @end

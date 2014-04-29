@@ -53,7 +53,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (instancetype)faceWithName:(NSString*)name feature:(CIFaceFeature*)feature inContext:(NSManagedObjectContext*)context;
++ (instancetype)faceWithName:(NSString*)name feature:(CIFaceFeature*)feature photo:(JMFPhoto*)photo inContext:(NSManagedObjectContext*)context;
 
 /***************************************************************************/
 /*                                                                         */

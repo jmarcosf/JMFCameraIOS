@@ -12,7 +12,7 @@ const struct JMFFaceAttributes JMFFaceAttributes = {
 };
 
 const struct JMFFaceRelationships JMFFaceRelationships = {
-	.face2photo = @"face2photo",
+	.photo = @"photo",
 };
 
 const struct JMFFaceFetchedProperties JMFFaceFetchedProperties = {
@@ -110,7 +110,7 @@ const struct JMFFaceFetchedProperties JMFFaceFetchedProperties = {
 
 
 
-@dynamic face2photo;
+@dynamic photo;
 
 	
 

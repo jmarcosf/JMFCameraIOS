@@ -61,7 +61,7 @@
 /***************************************************************************/
 + (NSArray*)observableKeys
 {
-    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFFaceRelationships.face2photo];
+    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFFaceRelationships.photo];
 }
 
 #pragma mark - Initialization Methods
@@ -82,10 +82,11 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (instancetype)faceWithName:(NSString*)name feature:(CIFaceFeature*)feature inContext:(NSManagedObjectContext*)context
++ (instancetype)faceWithName:(NSString*)name feature:(CIFaceFeature*)feature photo:(JMFPhoto*)photo inContext:(NSManagedObjectContext*)context
 {
     JMFFace* face = [JMFFace insertInManagedObjectContext:context];
     
+    face.photo = photo;
     face.name = name;
     face.creationDate = face.modificationDate = [NSDate date];
     int flags = 0;

@@ -153,4 +153,18 @@
     return [thumbnailsDirectory stringByAppendingString:[NSString stringWithFormat:@"/%@", thumbnailFileName]];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  formattedStringFromDate:withFormat:                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:NSLocalizedString( format, nil )];
+    return [dateFormatter stringFromDate:date];
+}
+
 @end

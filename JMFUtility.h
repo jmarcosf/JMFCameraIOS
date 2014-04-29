@@ -38,6 +38,7 @@
 + (NSString*)generateNewImageFileName;
 + (NSString*)pathForImageFileName:(NSString*)imageFileName;
 + (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName;
++ (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format;
 @end
 
 

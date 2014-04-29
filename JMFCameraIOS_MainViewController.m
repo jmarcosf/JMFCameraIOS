@@ -10,7 +10,6 @@
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFCoreDataStack.h"
 #import "JMFCameraIOS_MainViewController.h"
 #import "JMFCameraIOS_MainCVPhotoCell.h"
 #import "JMFCameraIOS_AlbumViewController.h"
@@ -830,13 +829,16 @@
                  {
                      if( !error )
                      {
-                         for( JMFFlickrPhoto* photo in results )
+                         for( JMFFlickrPhoto* flickrPhoto in results )
                          {
-                             JMFPhoto* newPhoto = [JMFPhoto photoWithImage:photo.largeImage
-                                                                    source:JMFPhotoSourceFlickr
-                                                                 thumbnail:photo.thumbnail
-                                                                 inContext:self.model.context];
-                             [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
+                             if( flickrPhoto.largeImage != nil && flickrPhoto.thumbnail != nil )
+                             {
+                                 JMFPhoto* newPhoto = [JMFPhoto photoWithImage:flickrPhoto.largeImage
+                                                                        source:JMFPhotoSourceFlickr
+                                                                     thumbnail:flickrPhoto.thumbnail
+                                                                     inContext:self.model.context];
+                                 [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
+                             }
                          }
                          if( results.count > 0 ) [self.model saveWithErrorBlock:nil];
                      }

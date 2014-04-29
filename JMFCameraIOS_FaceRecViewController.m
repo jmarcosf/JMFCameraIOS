@@ -57,7 +57,7 @@ typedef struct _FACE_FEATURE_TAG_
 /***************************************************************************/
 @interface JMFCameraIOS_FaceRecViewController ()
 {
-    NSFetchedResultsController*     fetchResultsController;
+    NSFetchedResultsController*     fetchedResultsController;
 }
 
 @end
@@ -91,16 +91,17 @@ typedef struct _FACE_FEATURE_TAG_
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  initWithPhoto:andImage:                                                */
+/*  initWithPhoto:andImage:inModel:                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image
+- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack *)model
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
         self.photo = photo;
         self.image = image;
+        self.model = model;
     }
     return self;
 }
@@ -138,7 +139,20 @@ typedef struct _FACE_FEATURE_TAG_
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX]     setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]      setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
 
-    [self drawFaces];
+    //Query
+    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
+    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                   managedObjectContext:self.model.context
+                                                                     sectionNameKeyPath:nil
+                                                                              cacheName:nil];
+
+    fetchedResultsController.delegate = self;
+    NSError *error;
+    [fetchedResultsController performFetch:&error];
+    if( !error ) [self drawFaces];
+    else if( APPDEBUG ) NSLog( @"Fetch error: %@", error );
 }
 
 /***************************************************************************/
@@ -153,7 +167,12 @@ typedef struct _FACE_FEATURE_TAG_
     [super viewWillAppear:animated];
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
-    [self onClearClicked];
+    
+    int count = [[fetchedResultsController fetchedObjects]count];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( count <= 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setEnabled:( YES )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( NO )];
 }
 
 /***************************************************************************/
@@ -197,6 +216,29 @@ typedef struct _FACE_FEATURE_TAG_
     }
 }
 
+#pragma mark - NSFetchedResultsControllerDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  NSFetchedResultsControllerDelegate Methods                             */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  controllerDidChangeContent:                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self drawFaces];
+}
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -216,22 +258,15 @@ typedef struct _FACE_FEATURE_TAG_
 /***************************************************************************/
 - (void)drawFaces
 {
-    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.creationDate ascending:NO],
-                                [NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
-    request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
-    fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                 managedObjectContext:self.photo.managedObjectContext
-                                                                   sectionNameKeyPath:nil
-                                                                            cacheName:nil];
-    NSError *error;
-    [fetchResultsController performFetch:&error];
-    
-    int count = [[fetchResultsController fetchedObjects]count];;
+    int count = [[fetchedResultsController fetchedObjects]count];;
     for( int i = 0; i < count; i++ )
     {
-        JMFFace* face = [fetchResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        [self drawFace:face];
+        JMFFace* face = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        dispatch_queue_t mainQueue = dispatch_get_main_queue();
+        dispatch_async( mainQueue, ^
+        {
+            [self drawFace:face];
+        });
     }
 }
 
@@ -304,11 +339,6 @@ typedef struct _FACE_FEATURE_TAG_
 /***************************************************************************/
 - (void)drawFeature:(UIView*)view
 {
-//    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-//    dispatch_async( mainQueue, ^
-//                   {
-//                       [self.iboImageView addSubview:view];
-//                   });
     [self.iboImageView addSubview:view];
 }
 
@@ -333,7 +363,6 @@ typedef struct _FACE_FEATURE_TAG_
             dispatch_queue_t mainQueue = dispatch_get_main_queue();
             dispatch_async( mainQueue, ^
             {
-                [self drawFaces];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setEnabled:( !bDetected )];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX] setEnabled:( bDetected )];
                 [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX] setEnabled:( bDetected )];
@@ -401,12 +430,20 @@ typedef struct _FACE_FEATURE_TAG_
  	CIDetector*     detector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:options];
 	NSArray*        features = [detector featuresInImage:image];
 	
+    fetchedResultsController.delegate = nil;
+    for( JMFFace* face in [fetchedResultsController fetchedObjects] ) [self.model.context deleteObject:face];
+    [self.model saveWithErrorBlock:nil];
+    
+    fetchedResultsController.delegate = self;
     if( features.count != 0 )
     {
+        int i = 0;
         for( CIFaceFeature* faceFeature in features )
         {
-            JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature inContext:fetchResultsController.managedObjectContext];
+            JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature photo:self.photo inContext:self.model.context];
+            face.name = [NSString stringWithFormat:@"Face Feature #%d", ++i];
         }
+        [self.model saveWithErrorBlock:nil];
     }
     
     if( completionBlock ) completionBlock( features.count != 0 );

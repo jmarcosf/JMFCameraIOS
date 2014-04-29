@@ -67,7 +67,7 @@
 /***************************************************************************/
 + (NSArray*)observableKeys
 {
-    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFPhotoRelationships.photo2faces, JMFPhotoRelationships.photo2filters];
+    return @[JMFNamedEntityAttributes.name, JMFNamedEntityAttributes.creationDate, JMFPhotoRelationships.faces, JMFPhotoRelationships.filters];
 }
 
 #pragma mark - Initialization Methods

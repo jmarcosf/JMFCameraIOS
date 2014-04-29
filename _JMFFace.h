@@ -13,7 +13,7 @@ extern const struct JMFFaceAttributes {
 } JMFFaceAttributes;
 
 extern const struct JMFFaceRelationships {
-	__unsafe_unretained NSString *face2photo;
+	__unsafe_unretained NSString *photo;
 } JMFFaceRelationships;
 
 extern const struct JMFFaceFetchedProperties {
@@ -94,9 +94,9 @@ extern const struct JMFFaceFetchedProperties {
 
 
 
-@property (nonatomic, strong) JMFPhoto *face2photo;
+@property (nonatomic, strong) JMFPhoto *photo;
 
-//- (BOOL)validateFace2photo:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validatePhoto:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -145,8 +145,8 @@ extern const struct JMFFaceFetchedProperties {
 
 
 
-- (JMFPhoto*)primitiveFace2photo;
-- (void)setPrimitiveFace2photo:(JMFPhoto*)value;
+- (JMFPhoto*)primitivePhoto;
+- (void)setPrimitivePhoto:(JMFPhoto*)value;
 
 
 @end

@@ -22,7 +22,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FaceRecViewController : UIViewController <UITabBarDelegate>
+@interface JMFCameraIOS_FaceRecViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -31,8 +31,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFPhoto*  photo;
-@property (nonatomic,strong) UIImage*   image;
+@property (nonatomic,strong) JMFCoreDataStack*      model;
+@property (nonatomic,strong) JMFPhoto*              photo;
+@property (nonatomic,strong) UIImage*               image;
 
 /***************************************************************************/
 /*                                                                         */
@@ -52,7 +53,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image;
+- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
 - (void)drawFaces;
 - (void)drawFace:(JMFFace*)face;
 - (void)drawFeature:(UIView*)view;

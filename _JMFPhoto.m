@@ -21,8 +21,8 @@ const struct JMFPhotoAttributes JMFPhotoAttributes = {
 };
 
 const struct JMFPhotoRelationships JMFPhotoRelationships = {
-	.photo2faces = @"photo2faces",
-	.photo2filters = @"photo2filters",
+	.faces = @"faces",
+	.filters = @"filters",
 };
 
 const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
@@ -351,28 +351,28 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 
 
 
-@dynamic photo2faces;
+@dynamic faces;
 
 	
-- (NSMutableSet*)photo2facesSet {
-	[self willAccessValueForKey:@"photo2faces"];
+- (NSMutableSet*)facesSet {
+	[self willAccessValueForKey:@"faces"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"photo2faces"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"faces"];
   
-	[self didAccessValueForKey:@"photo2faces"];
+	[self didAccessValueForKey:@"faces"];
 	return result;
 }
 	
 
-@dynamic photo2filters;
+@dynamic filters;
 
 	
-- (NSMutableSet*)photo2filtersSet {
-	[self willAccessValueForKey:@"photo2filters"];
+- (NSMutableSet*)filtersSet {
+	[self willAccessValueForKey:@"filters"];
   
-	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"photo2filters"];
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"filters"];
   
-	[self didAccessValueForKey:@"photo2filters"];
+	[self didAccessValueForKey:@"filters"];
 	return result;
 }
 	
