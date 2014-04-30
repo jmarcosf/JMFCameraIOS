@@ -47,6 +47,8 @@
 		903E7F80190FD5B900E1EF5F /* Process@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7B190FD5B900E1EF5F /* Process@2x.png */; };
 		903E7F81190FD5B900E1EF5F /* Save.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7C190FD5B900E1EF5F /* Save.png */; };
 		903E7F82190FD5B900E1EF5F /* Save@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 903E7F7D190FD5B900E1EF5F /* Save@2x.png */; };
+		9044649B1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 904464991910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m */; };
+		9044649C1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9044649A1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib */; };
 		904930C6190905030024FAC1 /* _JMFFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930BF190905030024FAC1 /* _JMFFace.m */; };
 		904930C7190905030024FAC1 /* _JMFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C1190905030024FAC1 /* _JMFFilter.m */; };
 		904930C8190905030024FAC1 /* _JMFNamedEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 904930C3190905030024FAC1 /* _JMFNamedEntity.m */; };
@@ -172,6 +174,9 @@
 		903E7F7B190FD5B900E1EF5F /* Process@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Process@2x.png"; sourceTree = "<group>"; };
 		903E7F7C190FD5B900E1EF5F /* Save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Save.png; sourceTree = "<group>"; };
 		903E7F7D190FD5B900E1EF5F /* Save@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Save@2x.png"; sourceTree = "<group>"; };
+		904464981910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FilterTVCell.h; sourceTree = "<group>"; };
+		904464991910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_FilterTVCell.m; sourceTree = "<group>"; };
+		9044649A1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FilterTVCell.xib; sourceTree = "<group>"; };
 		904930BE190905030024FAC1 /* _JMFFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFace.h; sourceTree = "<group>"; };
 		904930BF190905030024FAC1 /* _JMFFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _JMFFace.m; sourceTree = "<group>"; };
 		904930C0190905030024FAC1 /* _JMFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JMFFilter.h; sourceTree = "<group>"; };
@@ -549,6 +554,9 @@
 				90E58CBA190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.h */,
 				90E58CBB190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m */,
 				90E58CBC190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.xib */,
+				904464981910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.h */,
+				904464991910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m */,
+				9044649A1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib */,
 				905AB5C71905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.h */,
 				905AB5C81905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m */,
 				901B1048190A873200AD1F7C /* JMFCameraIOS_ZoomableView.h */,
@@ -679,6 +687,7 @@
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
 				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
 				901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */,
+				9044649C1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib in Resources */,
 				9028F61018FC6DD6000956E7 /* ListMode.png in Resources */,
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,
 				906E729C18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.xib in Resources */,
@@ -724,6 +733,7 @@
 				900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */,
 				906E729B18F9FA1500D1CC63 /* JMFCameraIOS_MainViewController.m in Sources */,
 				901B104A190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m in Sources */,
+				9044649B1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m in Sources */,
 				90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */,
 				9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */,
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,

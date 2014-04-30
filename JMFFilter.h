@@ -56,6 +56,7 @@
 /***************************************************************************/
 - (BOOL)isActive;
 - (BOOL)isValidFilter;
+- (BOOL)isValidCIFilter:(CIFilter*)ciFilter;
 - (NSString*)activeToString;
 
 @end

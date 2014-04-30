@@ -88,7 +88,6 @@
     
     face.photo = photo;
     face.name = name;
-    face.creationDate = face.modificationDate = [NSDate date];
     int flags = 0;
     if( feature.hasLeftEyePosition    ) flags |= FACEFLAG_HAS_LEFT_EYE;
     if( feature.hasRightEyePosition   ) flags |= FACEFLAG_HAS_RIGHT_EYE;
@@ -106,6 +105,20 @@
     face.mouthPoint    = ( feature.hasMouthPosition    ) ? NSStringFromCGPoint( feature.mouthPosition    ) : nil;
     
     return face;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  awakeFromInsert                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void) awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self setCreationDate:[NSDate date]];
+    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Instance Methods

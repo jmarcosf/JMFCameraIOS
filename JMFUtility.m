@@ -156,6 +156,34 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  pathForFilteredImageFileName:imageFileName:                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)pathForFilteredImageFileName:(NSString*)imageFileName
+{
+    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSString* imageDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
+    return [NSString stringWithFormat:@"%@/FLT%@", imageDirectory, imageFileName];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  pathForFilteredThumbnailFileName:thumbnailFileName:                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)pathForFilteredThumbnailFileName:(NSString*)thumbnailFileName
+{
+    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
+    return [NSString stringWithFormat:@"%@/FLT%@", thumbnailsDirectory, thumbnailFileName];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  formattedStringFromDate:withFormat:                                    */
 /*                                                                         */
 /*                                                                         */

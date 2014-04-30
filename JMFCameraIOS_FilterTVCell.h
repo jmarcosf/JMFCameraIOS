@@ -1,34 +1,52 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_FilterTVCell.h                                            */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Filter Table View Cell Class definition file              */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFCameraIOS_FilterTVCell.h"
-#import "JMFCameraIOS_FilterTVPickerCell.h"
-#import "JMFPhoto.h"
-#import "JMFFilter.h"
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Class forwarding                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@class JMFCameraIOS_FilterTVCell;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*  JMFCameraIOS_FilterTVCell Protocol definition                          */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate,
-                                                                  UITableViewDataSource, UITableViewDelegate,
-                                                                  UIPickerViewDataSource, UIPickerViewDelegate,
-                                                                  JMFCameraIOS_FilterTVCellDelegate>
+@protocol JMFCameraIOS_FilterTVCellDelegate< NSObject >
+
+@optional
+- (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell forIndexPath:(NSIndexPath*)indexPath didChangeState:(BOOL)newState;
+
+@end
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFCameraIOS_FilterTVCell Class Interface                              */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@interface JMFCameraIOS_FilterTVCell : UITableViewCell
 
 /***************************************************************************/
 /*                                                                         */
@@ -37,9 +55,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
-@property (nonatomic,strong) JMFPhoto*              photo;
-@property (nonatomic,strong) UIImage*               image;
+@property (nonatomic,strong) NSIndexPath*           indexPath;
+@property (nonatomic,assign) id< JMFCameraIOS_FilterTVCellDelegate > delegate;
 
 /***************************************************************************/
 /*                                                                         */
@@ -48,25 +65,18 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboSourceImage;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboTargetImage;
-@property (weak, nonatomic) IBOutlet UITableView*               iboFilterTable;
-@property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
+@property (weak, nonatomic) IBOutlet UIImageView*   iboImageView;
+@property (weak, nonatomic) IBOutlet UILabel*       iboNameLabel;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboActiveSwitch;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Instance Methods                                                        */
+/* IBActions                                                               */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
-- (void)enableButtons;
-- (void)addFilter:(id)sender;
-- (void)onCancelClicked;
-- (void)onClearClicked;
-- (void)onApplyClicked;
-- (void)onSaveClicked;
+- (IBAction)onSwitchChanged:(id)sender;
 
 @end
+

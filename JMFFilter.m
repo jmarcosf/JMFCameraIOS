@@ -89,9 +89,23 @@
     
     filter.photo = photo;
     filter.name = name;
-    filter.creationDate = filter.modificationDate = [NSDate date];
     
     return filter;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  awakeFromInsert                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void) awakeFromInsert
+{
+    [super awakeFromInsert];
+    [self setActive:NO];
+    [self setCreationDate:[NSDate date]];
+    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Instance Methods
@@ -126,7 +140,32 @@
 /***************************************************************************/
 - (BOOL)isValidFilter
 {
-    return( ![self.name isEqualToString:@"CIFilterNone"] );
+    BOOL bValid = NO;
+    if( self.name != nil && ![self.name isEqualToString:@""] )
+    {
+        if( ![self.name isEqualToString:@"CIFilterNone"] )
+        {
+            bValid = YES;
+        }
+    }
+    return bValid;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  isValidCIFilter:                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)isValidCIFilter:(CIFilter*)ciFilter;
+{
+    BOOL bValid = NO;
+    if( [[ciFilter attributes] objectForKey:kCIInputImageKey] != nil )
+    {
+        bValid = YES;
+    }
+    return bValid;
 }
 
 /***************************************************************************/

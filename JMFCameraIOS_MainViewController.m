@@ -112,7 +112,6 @@
                                                                                              managedObjectContext:model.context
                                                                                                sectionNameKeyPath:nil
                                                                                                         cacheName:nil];
-    
     self = [super initWithFetchedResultsController:fetchResultsController
                                              frame:CGRectMake( 0, 0, 0, 0 )
                                              style:UITableViewStylePlain
@@ -121,6 +120,7 @@
     if( self )
     {
         self.model = model;
+        self.model.context.undoManager = [[NSUndoManager alloc]init];
     }
     return self;
 }

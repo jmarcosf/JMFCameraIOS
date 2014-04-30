@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_FiltersViewController">
             <connections>
+                <outlet property="iboActivityIndicator" destination="lk4-5A-w0j" id="Rjl-2d-g76"/>
                 <outlet property="iboFilterTable" destination="Ncd-Nm-AD0" id="qQ3-2w-Cnn"/>
                 <outlet property="iboSourceImage" destination="j69-0q-k5I" id="WAD-nL-hWw"/>
                 <outlet property="iboTabBar" destination="8FO-QH-gFN" id="fBf-g6-mqI"/>
@@ -18,11 +19,16 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="j69-0q-k5I" userLabel="SourceImage">
+                <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="lk4-5A-w0j">
+                    <rect key="frame" x="142" y="157" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="color" cocoaTouchSystemColor="darkTextColor"/>
+                </activityIndicatorView>
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="j69-0q-k5I" userLabel="SourceImage">
                     <rect key="frame" x="0.0" y="64" width="160" height="160"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="TWG-Mm-657" userLabel="TargetImage">
+                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="TWG-Mm-657" userLabel="TargetImage">
                     <rect key="frame" x="160" y="64" width="160" height="160"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </imageView>

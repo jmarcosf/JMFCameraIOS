@@ -1,72 +1,90 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_FilterTVCell.m                                            */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Filter Table View Cell Class implementation file          */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
 #import "JMFCameraIOS_FilterTVCell.h"
-#import "JMFCameraIOS_FilterTVPickerCell.h"
-#import "JMFPhoto.h"
-#import "JMFFilter.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*                                                                         */
+/*  JMFCameraIOS_FilterTVCell Class Implementation                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate,
-                                                                  UITableViewDataSource, UITableViewDelegate,
-                                                                  UIPickerViewDataSource, UIPickerViewDelegate,
-                                                                  JMFCameraIOS_FilterTVCellDelegate>
+@implementation JMFCameraIOS_FilterTVCell
+
+#pragma mark - UITableViewCell Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UITableViewCell Override Methods                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithStyle:reuseIdentifier:                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if( self )
+    {
+    }
+    
+    return self;
+}
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*  setSelected:                                                           */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
-@property (nonatomic,strong) JMFPhoto*              photo;
-@property (nonatomic,strong) UIImage*               image;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+}
 
+#pragma mark - IBAction Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
 /*                                                                         */
+/*  IBAction Methods                                                       */
 /*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboSourceImage;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboTargetImage;
-@property (weak, nonatomic) IBOutlet UITableView*               iboFilterTable;
-@property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
-- (void)enableButtons;
-- (void)addFilter:(id)sender;
-- (void)onCancelClicked;
-- (void)onClearClicked;
-- (void)onApplyClicked;
-- (void)onSaveClicked;
+/*                                                                         */
+/*                                                                         */
+/*  onSwitchChanged:                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onSwitchChanged:(id)sender
+{
+    if( self.delegate )
+    {
+        [self.delegate filterCell:self forIndexPath:self.indexPath didChangeState:self.iboActiveSwitch.on];
+    }
+}
 
 @end

@@ -60,6 +60,10 @@ typedef NS_ENUM( NSInteger, JMFPhotoSource )
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+- (void)setMetadataFromImage:(UIImage*)image;
+- (void)saveSourceImage:(UIImage*)image andTumbnail:(UIImage*)thumbnail;
+- (void)saveFilteredImage:(UIImage*)image andTumbnail:(UIImage*)thumbnail;
+- (void)saveImageFile:(UIImage*)image toImageFileName:(NSString*)imageFileName andTumbnail:(UIImage*)thumbnail toThumbnailFileName:(NSString*)thumbnailFileName;
 - (void)setLocationLongitude:(NSNumber*)longitude latitude:(NSNumber*)latitude altitude:(NSNumber*)altitude geoLocation:(NSString*)geoLocation;
 - (NSString*)sourceToString;
 - (NSString*)orientationToString;

@@ -20,20 +20,6 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  JMFPhoto Class Interface                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@interface JMFPhoto ()
-
-- (void)setMetadataFromImage:(UIImage*)image;
-- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail;
-
-@end
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -93,8 +79,6 @@
     JMFPhoto* photo = [JMFPhoto insertInManagedObjectContext:context];
     
     photo.name = [JMFUtility generateNewImageFileName];
-    photo.creationDate = photo.modificationDate = [NSDate date];
-    
     photo.source = [NSNumber numberWithInt:source];
     photo.sourceImageUrl = photo.sourceThumbnailUrl = nil;
     photo.filteredImageUrl = photo.filteredThumbnailUrl = @"";//nil;
@@ -104,9 +88,24 @@
     photo.pixelHeight = photo.pixelWidth = nil;
     
     [photo setMetadataFromImage:image];
-    [photo saveImageFile:image withTumbnail:thumbnail];
+    [photo saveSourceImage:image andTumbnail:thumbnail];
     
     return photo;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  awakeFromInsert                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void) awakeFromInsert
+{
+    [super awakeFromInsert];
+
+    [self setCreationDate:[NSDate date]];
+    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Class Methods
@@ -120,6 +119,92 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setMetadataFromImage:                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setMetadataFromImage:(UIImage*)image
+{
+    NSData* imageData = UIImageJPEGRepresentation( image, 0.8f );
+    if( imageData == nil ) return;
+    CGImageSourceRef imageSource = CGImageSourceCreateWithData( (__bridge CFMutableDataRef)imageData, NULL );
+    if( imageSource == nil ) return;
+    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString*)kCGImageSourceShouldCache, nil];
+    
+    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex( imageSource, 0, (__bridge CFDictionaryRef)options);
+    if( imageProperties )
+    {
+        self.colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
+        self.colorsPerPixel    = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
+        self.orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
+        self.pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
+        self.pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
+        CFRelease( imageProperties );
+    }
+    CFRelease( imageSource );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  saveSourceImage:andTumbnail:                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)saveSourceImage:(UIImage*)image andTumbnail:(UIImage*)thumbnail;
+{
+    if( image == nil ) return;
+    
+    self.sourceImageUrl     = [JMFUtility pathForImageFileName:self.name];
+    self.sourceThumbnailUrl = [JMFUtility pathForThumbnailFileName:self.name];
+
+    [self saveImageFile:image toImageFileName:self.sourceImageUrl andTumbnail:thumbnail toThumbnailFileName:self.sourceImageUrl];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  saveFilteredImage:andTumbnail:                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)saveFilteredImage:(UIImage*)image andTumbnail:(UIImage*)thumbnail;
+{
+    if( image == nil ) return;
+    
+    self.filteredImageUrl     = [JMFUtility pathForFilteredImageFileName:self.name];
+    self.filteredThumbnailUrl = [JMFUtility pathForFilteredThumbnailFileName:self.name];
+    
+    [self saveImageFile:image toImageFileName:self.filteredImageUrl andTumbnail:thumbnail toThumbnailFileName:self.filteredThumbnailUrl];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  saveImageFile:toImageFileName:andTumbnail:toThumbnailFileName:         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)saveImageFile:(UIImage*)image toImageFileName:(NSString*)imageFileName andTumbnail:(UIImage*)thumbnail toThumbnailFileName:(NSString*)thumbnailFileName;
+{
+    if( image == nil || imageFileName == nil || thumbnailFileName == nil ) return;
+    
+    if( thumbnail == nil )
+    {
+        CGSize destinationSize = CGSizeMake( [self.pixelWidth integerValue] / 4, [self.pixelHeight integerValue] / 4 );
+        UIGraphicsBeginImageContext( destinationSize );
+        [image drawInRect:CGRectMake( 0, 0, destinationSize.width, destinationSize.height ) ];
+        thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    
+    [UIImageJPEGRepresentation( image, 1.0 ) writeToFile:imageFileName options:NSAtomicWrite error:nil];
+    [UIImageJPEGRepresentation( thumbnail, 1.0 ) writeToFile:thumbnailFileName options:NSAtomicWrite error:nil];
+}
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -174,61 +259,6 @@
     }
     else orientationDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
     return orientationDescription;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  setMetadataFromImage:                                                  */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)setMetadataFromImage:(UIImage*)image
-{
-    NSData* imageData = UIImageJPEGRepresentation( image, 0.8f );
-    if( imageData == nil ) return;
-    CGImageSourceRef imageSource = CGImageSourceCreateWithData( (__bridge CFMutableDataRef)imageData, NULL );
-    if( imageSource == nil ) return;
-    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:NO], (NSString*)kCGImageSourceShouldCache, nil];
-    
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex( imageSource, 0, (__bridge CFDictionaryRef)options);
-    if( imageProperties )
-    {
-        self.colorModel        = (NSString*)CFDictionaryGetValue( imageProperties, kCGImagePropertyColorModel  );
-        self.colorsPerPixel    = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyDepth       );
-        self.orientation       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyOrientation );
-        self.pixelHeight       = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelHeight );
-        self.pixelWidth        = (NSNumber*)CFDictionaryGetValue( imageProperties, kCGImagePropertyPixelWidth  );
-        CFRelease( imageProperties );
-    }
-    CFRelease( imageSource );
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  saveImageFile:withTumbnail:                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)saveImageFile:(UIImage*)image withTumbnail:(UIImage*)thumbnail
-{
-    if( image == nil ) return;
-    
-    self.sourceImageUrl     = [JMFUtility pathForImageFileName:self.name];
-    self.sourceThumbnailUrl = [JMFUtility pathForThumbnailFileName:self.name];
-    
-    if( thumbnail == nil )
-    {
-        CGSize destinationSize = CGSizeMake( [self.pixelWidth integerValue] / 4, [self.pixelHeight integerValue] / 4 );
-        UIGraphicsBeginImageContext( destinationSize );
-        [image drawInRect:CGRectMake( 0, 0, destinationSize.width, destinationSize.height ) ];
-        thumbnail = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    }
-    
-    [UIImageJPEGRepresentation( image, 1.0 ) writeToFile:self.sourceImageUrl options:NSAtomicWrite error:nil];
-    [UIImageJPEGRepresentation( thumbnail, 1.0 ) writeToFile:self.sourceThumbnailUrl options:NSAtomicWrite error:nil];
 }
 
 @end
