@@ -184,13 +184,65 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  didReceiveMemoryWarning                                                */
+/*  viewDidAppear:                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)didReceiveMemoryWarning
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
+    [super viewDidAppear:animated];
+    [self becomeFirstResponder];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  viewWillDisappear                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [self resignFirstResponder];
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark - UIResponder Override Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIResponder Override Methods                                           */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  canBecomeFirstResponder                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  motionEnded:withEvent:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent*)event
+{
+    if( motion == UIEventSubtypeMotionShake )
+    {
+        [self onClearClicked];
+    }
 }
 
 #pragma mark - UITabBarDelegate

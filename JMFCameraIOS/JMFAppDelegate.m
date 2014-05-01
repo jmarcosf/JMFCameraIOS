@@ -58,11 +58,13 @@
     }
     
     //Model with CoreData
-    application.applicationSupportsShakeToEdit = YES;
     self.model = [JMFCoreDataStack coreDataStackWithModelName:@"JMFCameraIOS"];
     JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]initWithModel:self.model];
     self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
 //  [self performCoreDataAutoSave];
+
+    //Shake detection
+    application.applicationSupportsShakeToEdit = YES;
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

@@ -104,10 +104,8 @@
 /***************************************************************************/
 - (id)initWithModel:(JMFCoreDataStack*)model
 {
-
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFPhoto entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )],
-                                [NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.modificationDate ascending:NO]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
     NSFetchedResultsController* fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                                              managedObjectContext:model.context
                                                                                                sectionNameKeyPath:nil
@@ -166,7 +164,7 @@
     
     //TabBar
     self.iboTabBar.delegate = self;
-    self.iboTabBar.layer.zPosition = -10;
+    self.iboTabBar.layer.zPosition = 1000;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
