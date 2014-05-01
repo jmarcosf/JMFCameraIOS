@@ -33,11 +33,11 @@
 "IDS_MODIFIED" = "Modificada";
 "IDS_SHARE" = "Compartir";
 "IDS_FACE_DETECTION" = "Rec. Facial";
+"IDS_FULL_FACE_DETECTION" = "Reconocimiento Facial";
 "IDS_FILTERS" = "Filtros";
-"IDS_SHOW" = "Show";
+"IDS_SHOW" = "Mostrar";
 "IDS_METADATA" = "Metadata";
 "IDS_LOCATION" = "Localización";
-"IDS_FILTERS" = "Filters";
 "IDS_FACES" = "Faces";
 "IDS_FILTER" = "Filtro";
 "IDS_EDIT_FILTERS" = " Editar Filtros";

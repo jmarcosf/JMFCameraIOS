@@ -181,22 +181,6 @@
     [self enableButtons];
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    fetchedResultsController.delegate = nil;
-    fetchedResultsController = nil;
-}
-
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
-- (NSUndoManager*)undoManager
-{
-    return self.model.context.undoManager;
-}
-
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -319,7 +303,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    int iCount = [[fetchedResultsController fetchedObjects]count];
+    long iCount = [[fetchedResultsController fetchedObjects]count];
     if( iCount <= 0 ) self.iboTargetImage.image = [UIImage imageNamed:IDS_NO_IMAGE_FILE];
     return iCount;
 }
@@ -333,7 +317,7 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), section + 1];
+    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
 }
 
 /***************************************************************************/
@@ -367,7 +351,7 @@
         cell.pickerView.showsSelectionIndicator = YES;
     
         JMFCameraIOS_FilterTVCell* selectedCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
-        int pickerRow = [filtersArray indexOfObject:selectedCell.iboNameLabel.text];
+        long pickerRow = [filtersArray indexOfObject:selectedCell.iboNameLabel.text];
         [cell.pickerView selectRow:pickerRow inComponent:0 animated:YES];
 
         return cell;
@@ -377,7 +361,7 @@
         JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         JMFCameraIOS_FilterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
         cell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
-        cell.iboNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:11];
+        cell.iboNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         cell.iboNameLabel.text = filter.name;
         cell.iboActiveSwitch.enabled = [filter isValidFilter];
         cell.iboActiveSwitch.on = [filter isActive] && [filter isValidFilter];
@@ -433,7 +417,7 @@
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
-    headerView.text = [NSString stringWithFormat:@"   %@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), section + 1];
+    headerView.text = [NSString stringWithFormat:@"   %@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)(section + 1)];
     headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
     headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     headerView.textColor = [UIColor whiteColor];
@@ -640,7 +624,7 @@
 /***************************************************************************/
 - (void)enableButtons
 {
-    int count = [[fetchedResultsController fetchedObjects]count];
+    long count = [[fetchedResultsController fetchedObjects]count];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setEnabled:( iPickerViewSection == -1 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setEnabled:( count > 0 && iPickerViewSection == -1 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:( bModified && iPickerViewSection == -1 )];
@@ -715,7 +699,7 @@
                 CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
                 if( [filter isValidCIFilter:ciFilter] )
                 {
-                    [ciFilter setValue:ciImage forKey:kCIInputImageKey];
+                    [ciFilter setValue:resultImage forKey:kCIInputImageKey];
                     if( [[ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
                     {
                         [ciFilter setValue:@0.5f forKey:kCIInputIntensityKey];
@@ -724,7 +708,7 @@
                 }
             }
         }
-        CGImageRef cgiImage =  [context createCGImage:resultImage fromRect:[resultImage extent]];
+        CGImageRef cgiImage = [context createCGImage:resultImage fromRect:[resultImage extent]];
 
         dispatch_queue_t mainQueue = dispatch_get_main_queue();
         dispatch_async( mainQueue, ^

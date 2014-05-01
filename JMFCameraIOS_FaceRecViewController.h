@@ -22,7 +22,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FaceRecViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate>
+@interface JMFCameraIOS_FaceRecViewController : UIViewController <UITabBarDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -54,10 +54,12 @@
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
-- (void)drawFaces;
-- (void)drawFace:(JMFFace*)face;
+- (void)enableButtons:(BOOL)bDetecting;
+- (void)onCancelClicked;
 - (void)onClearClicked;
 - (void)onDetectClicked;
 - (void)onSaveClicked;
-
+- (void)detectFacesWithCompletionBlock:( void (^)() )completionBlock;
+- (void)drawFaces;
+- (void)drawFace:(JMFFace*)face;
 @end

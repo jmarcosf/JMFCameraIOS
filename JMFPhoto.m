@@ -161,7 +161,7 @@
     self.sourceImageUrl     = [JMFUtility pathForImageFileName:self.name];
     self.sourceThumbnailUrl = [JMFUtility pathForThumbnailFileName:self.name];
 
-    [self saveImageFile:image toImageFileName:self.sourceImageUrl andTumbnail:thumbnail toThumbnailFileName:self.sourceImageUrl];
+    [self saveImageFile:image toImageFileName:self.sourceImageUrl andTumbnail:thumbnail toThumbnailFileName:self.sourceThumbnailUrl];
 }
 
 /***************************************************************************/
@@ -259,6 +259,22 @@
     }
     else orientationDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
     return orientationDescription;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  removeFiles                                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)removeFiles
+{
+    NSError* error;
+    [[NSFileManager defaultManager]removeItemAtPath:self.sourceImageUrl error:&error];
+    [[NSFileManager defaultManager]removeItemAtPath:self.sourceThumbnailUrl error:&error];
+    [[NSFileManager defaultManager]removeItemAtPath:self.filteredImageUrl error:&error];
+    [[NSFileManager defaultManager]removeItemAtPath:self.filteredThumbnailUrl error:&error];
 }
 
 @end

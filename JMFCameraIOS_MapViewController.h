@@ -31,8 +31,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic)        CLLocationCoordinate2D     location;
-@property (nonatomic,strong) NSString*                  geoPosition;
+@property (nonatomic)        double     longitude;
+@property (nonatomic)        double     latitude;
+@property (nonatomic,strong) NSString*  geoPosition;
 
 /***************************************************************************/
 /*                                                                         */

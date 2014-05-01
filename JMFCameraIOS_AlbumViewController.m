@@ -31,7 +31,7 @@
 /***************************************************************************/
 @interface JMFCameraIOS_AlbumViewController ()
 {
-    int     albumCount;
+    long     albumCount;
 }
 
 @end

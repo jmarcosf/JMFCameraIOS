@@ -118,8 +118,8 @@
 + (NSString*)generateNewImageFileName
 {
     NSUserDefaults* defaultsDictionary = [NSUserDefaults standardUserDefaults];
-    int currentImageNumber = [[defaultsDictionary objectForKey:CURRENT_IMAGE_NUMBER_KEY] integerValue];
-    NSString* newFileName = [NSString stringWithFormat:@"IMG%05d.jpg", ++currentImageNumber];
+    long currentImageNumber = [[defaultsDictionary objectForKey:CURRENT_IMAGE_NUMBER_KEY] integerValue];
+    NSString* newFileName = [NSString stringWithFormat:@"IMG%05ld.jpg", ++currentImageNumber];
     [defaultsDictionary setObject:[NSNumber numberWithInteger:currentImageNumber] forKey:CURRENT_IMAGE_NUMBER_KEY];
     [defaultsDictionary synchronize];
     return newFileName;

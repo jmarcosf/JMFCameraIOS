@@ -49,7 +49,8 @@
 {
     if( self = [super initWithNibName:nil bundle:nil] )
     {
-        self.location = CLLocationCoordinate2DMake( [longitude doubleValue], [latitude doubleValue] );
+        self.longitude = [longitude doubleValue];
+        self.latitude  = [latitude doubleValue];
         self.geoPosition = geoPosition;
     }
     return self;
@@ -85,7 +86,8 @@
     self.iboMapView.showsBuildings = YES;
     self.iboMapView.showsUserLocation = YES;
     
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance( self.location, 5000000, 5000000 );
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake( self.latitude, self.longitude );
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance( coordinate, 3000, 3000 );
     MKCoordinateRegion adjustedRegion = [self.iboMapView regionThatFits:viewRegion];
     [self.iboMapView setRegion:adjustedRegion animated:YES];
     
@@ -95,7 +97,7 @@
     dispatch_after( popTime, dispatch_get_main_queue(), ^(void)
     {
         MKPointAnnotation* pinMark = [[MKPointAnnotation alloc]init];
-        pinMark.coordinate = self.location;
+        pinMark.coordinate = coordinate;
         pinMark.title = NSLocalizedString( @"IDS_PICTURE_LOCATION", nil );
         pinMark.subtitle = self.geoPosition;
         [weakMap addAnnotation:pinMark];

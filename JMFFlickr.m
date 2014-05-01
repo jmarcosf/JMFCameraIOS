@@ -74,8 +74,7 @@
 + (NSString*)flickrPhotoUrlForFlickrPhoto:(JMFFlickrPhoto*)flickrPhoto size:(NSString*)size
 {
     if( !size ) size = @"m";
-    
-    return [NSString stringWithFormat:IDS_FLICKR_PHOTO_URL, flickrPhoto.farm, flickrPhoto.server, flickrPhoto.photoID,flickrPhoto.secret, size];
+    return [NSString stringWithFormat:IDS_FLICKR_PHOTO_URL, (int)flickrPhoto.farm, (int)flickrPhoto.server, flickrPhoto.photoID, flickrPhoto.secret, size];
 }
 
 /***************************************************************************/

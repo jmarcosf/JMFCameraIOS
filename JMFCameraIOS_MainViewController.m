@@ -425,8 +425,8 @@
             for( UIView* subView in subViews ) [subView removeFromSuperview];
             CGRect frame = CGRectMake( 5, 0, reusableView.frame.size.width - 10, reusableView.frame.size.height );
             UILabel* header = [[UILabel alloc]initWithFrame:frame];
-            int picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects];
-            header.text = [NSString stringWithFormat:@"%d %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
+            long picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects];
+            header.text = [NSString stringWithFormat:@"%ld %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
             [reusableView addSubview:header];
         }
     }
@@ -536,8 +536,8 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    int picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
-    return [NSString stringWithFormat:@"%d %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
+    long picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [NSString stringWithFormat:@"%ld %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
 }
 
 /***************************************************************************/
@@ -592,7 +592,7 @@
 /***************************************************************************/
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return 70;
+    return 85;
 }
 
 /***************************************************************************/
@@ -648,7 +648,7 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons
 {
-    int count = [[self.fetchedResultsController fetchedObjects]count];
+    long count = [[self.fetchedResultsController fetchedObjects]count];
     
     if( bOnlyButtons == NO )
     {
@@ -790,7 +790,8 @@
 /***************************************************************************/
 - (void)onDeleteClicked
 {
-    NSArray*  selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
+    NSArray*        selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
+    NSMutableArray* objectsArray;
     
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
@@ -809,11 +810,17 @@
                  for( NSIndexPath* indexPath in selectedArray )
                  {
                      JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+                     [objectsArray addObject:photo];
+                 }
+                 for( JMFPhoto* photo in objectsArray )
+                 {
+                     [photo removeFiles];
                      [self.model.context deleteObject:photo];
                  }
+                 [objectsArray removeAllObjects];
+                 [self.model saveWithErrorBlock:nil];
                  iSelectedCount = 0;
                  [self redrawControls:YES];
-                 [self.model saveWithErrorBlock:nil];
              }
         }];
     }

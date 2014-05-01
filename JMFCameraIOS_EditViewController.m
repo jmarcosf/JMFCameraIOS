@@ -246,7 +246,7 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), section + 1];
+    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
 }
 
 /***************************************************************************/
@@ -258,7 +258,7 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    int rows = 0;
+    long rows = 0;
     if( section == SECTION_METADATA ) rows = 6;
     else if( section == SECTION_LOCATION ) rows = 4;
     else if( section == SECTION_FACE_DETECTION ) rows = [[faceResultsController fetchedObjects]count];
@@ -288,6 +288,7 @@
             break;
             
         case SECTION_LOCATION:
+            if( indexPath.row == 3 ) [cell.iboDataValue sizeToFit];
             cell.iboDataTitle.text = NSLocalizedString( [locationTitleStrings objectAtIndex:indexPath.row], nil );
             cell.iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
             break;
@@ -335,7 +336,7 @@
 /***************************************************************************/
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return 30;
+    return ( indexPath.section == 1 && indexPath.row == 3 ) ? 75 : 30;
 }
 
 /***************************************************************************/
