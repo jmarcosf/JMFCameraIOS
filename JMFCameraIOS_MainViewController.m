@@ -789,7 +789,7 @@
 - (void)onDeleteClicked
 {
     NSArray*        selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
-    NSMutableArray* objectsArray;
+    NSMutableArray* objectsArray = [[NSMutableArray alloc]init];
     
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
@@ -805,7 +805,7 @@
                                                   destructiveButtonTitle:IDS_OK
                                                        otherButtonTitles:nil];
         [actionSheet showFromTabBar:self.iboTabBar withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
-         {
+        {
              if( buttonIndex == 0 )
              {
                  for( NSIndexPath* indexPath in selectedArray )

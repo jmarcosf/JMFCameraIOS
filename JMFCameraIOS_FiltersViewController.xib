@@ -44,7 +44,7 @@
                     <items>
                         <tabBarItem title="Cancel" image="Cancel.png" id="bIh-sD-lrF"/>
                         <tabBarItem tag="1" title="Clear" image="Delete.png" id="0YJ-4G-HnC"/>
-                        <tabBarItem tag="2" title="Apply" image="Process.png" id="AFn-Oi-1II"/>
+                        <tabBarItem tag="2" title="Apply" image="Apply.png" id="AFn-Oi-1II"/>
                         <tabBarItem tag="3" title="Save" image="Save.png" id="m5u-I7-1eO"/>
                     </items>
                 </tabBar>
@@ -56,9 +56,9 @@
         </view>
     </objects>
     <resources>
+        <image name="Apply.png" width="22" height="22"/>
         <image name="Cancel.png" width="22" height="22"/>
         <image name="Delete.png" width="19" height="25"/>
-        <image name="Process.png" width="28" height="28"/>
         <image name="Save.png" width="23" height="24"/>
     </resources>
 </document>

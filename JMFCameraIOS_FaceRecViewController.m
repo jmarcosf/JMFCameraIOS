@@ -417,7 +417,7 @@
             //        });
         }
     }
-    else if( APPDEBUG ) NSLog( @"Fetch Faces error: %@", error );
+    else if( COREDATA_DEBUG ) NSLog( @"Fetch Faces error: %@", error );
 }
 
 /***************************************************************************/

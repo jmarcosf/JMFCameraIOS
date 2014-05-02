@@ -21,9 +21,9 @@
 /*                                                                         */
 /***************************************************************************/
 @interface JMFFilter ()
-
-// Private interface goes here.
-
+{
+    CIFilter*  _ciFilter;
+}
 @end
 
 /***************************************************************************/
@@ -40,7 +40,6 @@
 /*                                                                         */
 /***************************************************************************/
 @implementation JMFFilter
-
 
 #pragma mark - Key Value Observing Methods
 /***************************************************************************/
@@ -107,6 +106,18 @@
     [self setCreationDate:[NSDate date]];
     [self setModificationDate:[NSDate date]];
 }
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  ciFilter                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (CIFilter*)ciFilter
+{
+    if( _ciFilter == nil ) _ciFilter = [CIFilter filterWithName:self.name];
+    return _ciFilter;
+}
 
 #pragma mark - Instance Methods
 /***************************************************************************/
@@ -158,10 +169,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)isValidCIFilter:(CIFilter*)ciFilter;
+- (BOOL)isValidCIFilter
 {
     BOOL bValid = NO;
-    if( [[ciFilter attributes] objectForKey:kCIInputImageKey] != nil )
+    if( [[self.ciFilter attributes] objectForKey:kCIInputImageKey] != nil )
     {
         bValid = YES;
     }

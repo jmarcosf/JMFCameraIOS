@@ -189,7 +189,7 @@
                                                                            cacheName:nil];
     NSError *facesError;
     [faceResultsController performFetch:&facesError];
-    if( facesError && APPDEBUG ) NSLog( @"Fetch Faces error: %@", facesError );
+    if( facesError && COREDATA_DEBUG ) NSLog( @"Fetch Faces error: %@", facesError );
     
     //Filters Query
     filtersResultsController = nil;    //Reset contents
@@ -202,7 +202,7 @@
                                                                            cacheName:nil];
     NSError *filtersError;
     [filtersResultsController performFetch:&filtersError];
-    if( filtersError && APPDEBUG ) NSLog( @"Fetch Filters error: %@", filtersError );
+    if( filtersError && COREDATA_DEBUG ) NSLog( @"Fetch Filters error: %@", filtersError );
     
     [self.iboTableView reloadData];
 }

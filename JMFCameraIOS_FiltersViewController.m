@@ -118,6 +118,7 @@
     self.navigationItem.hidesBackButton = YES;
     self.title = NSLocalizedString( @"IDS_FILTERS", nil );
     bModified = bReloadData = NO;
+    iPickerViewSection = -1;
     
     self.iboActivityIndicator.layer.zPosition = 100;
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
@@ -140,12 +141,17 @@
     self.iboFilterTable.delegate = self;
     self.iboFilterTable.dataSource = self;
     
-    //Filters Array
+    //Filters Array. Remove those CIFilters not supporting kCIInputImageKey porperty
     filtersArray = [[CIFilter filterNamesInCategories:nil]mutableCopy];
+    NSMutableIndexSet* invalidFilters = [[NSMutableIndexSet alloc]init];
+    for( int i = 0; i < filtersArray.count; i++ )
+    {
+        CIFilter* ciFilter = [CIFilter filterWithName:[filtersArray objectAtIndex:i]];
+        if( [[ciFilter attributes] objectForKey:kCIInputImageKey] == nil ) [invalidFilters addIndex:i];
+    }
+    [filtersArray removeObjectsAtIndexes:invalidFilters];
     [filtersArray insertObject:IDS_FILTER_NONE atIndex:0];
 
-    iPickerViewSection = -1;
-    
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFilter entityName]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.creationDate ascending:YES]];
@@ -157,7 +163,7 @@
     fetchedResultsController.delegate = self;
     NSError *error;
     [fetchedResultsController performFetch:&error];
-    if( error && APPDEBUG ) NSLog( @"Fetch Filters error: %@", error );
+    if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters error: %@", error );
 }
 
 /***************************************************************************/
@@ -753,16 +759,15 @@
         {
             if( filter.isActive && filter.isValidFilter )
             {
-                CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
-                if( [filter isValidCIFilter:ciFilter] )
+                if( [filter isValidCIFilter] )
                 {
-                    [ciFilter setDefaults];
-                    [ciFilter setValue:resultImage forKey:kCIInputImageKey];
-                    if( [[ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
+                    [filter.ciFilter setDefaults];
+                    [filter.ciFilter setValue:resultImage forKey:kCIInputImageKey];
+                    if( [[filter.ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
                     {
-                        [ciFilter setValue:@0.7f forKey:kCIInputIntensityKey];
+                        [filter.ciFilter setValue:@0.7f forKey:kCIInputIntensityKey];
                     }
-                    resultImage = [ciFilter valueForKey:kCIOutputImageKey];
+                    resultImage = [filter.ciFilter valueForKey:kCIOutputImageKey];
                 }
             }
         }

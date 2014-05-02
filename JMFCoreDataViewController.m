@@ -383,17 +383,15 @@
         
         if( newFetchedResultsController )
         {
-            if( APPDEBUG ) NSLog( @"[%@ %@] %@",
-                           NSStringFromClass( [self class] ),
-                           NSStringFromSelector( _cmd ),
-                           oldFetchedResultsController ? @"updated" : @"set" );
+            if( COREDATA_DEBUG ) NSLog( @"[%@ %@] %@",
+                                 NSStringFromClass( [self class] ),
+                                 NSStringFromSelector( _cmd ),
+                                 oldFetchedResultsController ? @"updated" : @"set" );
             [self performFetch];
         }
         else
         {
-            if( APPDEBUG ) NSLog( @"[%@ %@] reset to nil",
-                              NSStringFromClass( [self class] ),
-                              NSStringFromSelector( _cmd ) );
+            if( COREDATA_DEBUG ) NSLog( @"[%@ %@] reset to nil", NSStringFromClass( [self class] ), NSStringFromSelector( _cmd ) );
             [self.tableView reloadData];
         }
     }
@@ -412,33 +410,33 @@
     {
         if( self.fetchedResultsController.fetchRequest.predicate )
         {
-            if( APPDEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
-                           NSStringFromClass( [self class] ),
-                           NSStringFromSelector( _cmd ),
-                           self.fetchedResultsController.fetchRequest.entityName,
-                           self.fetchedResultsController.fetchRequest.predicate );
+            if( COREDATA_DEBUG ) NSLog( @"[%@ %@] fetching %@ with predicate: %@",
+                                 NSStringFromClass( [self class] ),
+                                 NSStringFromSelector( _cmd ),
+                                 self.fetchedResultsController.fetchRequest.entityName,
+                                 self.fetchedResultsController.fetchRequest.predicate );
         }
         else
         {
-            if( APPDEBUG ) NSLog( @"[%@ %@] fetching all %@ (i.e., no predicate)",
-                           NSStringFromClass( [self class] ),
-                           NSStringFromSelector( _cmd ),
-                           self.fetchedResultsController.fetchRequest.entityName );
+            if( COREDATA_DEBUG ) NSLog( @"[%@ %@] fetching all %@ (i.e., no predicate)",
+                                 NSStringFromClass( [self class] ),
+                                 NSStringFromSelector( _cmd ),
+                                 self.fetchedResultsController.fetchRequest.entityName );
         }
         
         NSError *error;
         [self.fetchedResultsController performFetch:&error];
-        if( error && APPDEBUG ) NSLog( @"[%@ %@] %@ (%@)",
-                                NSStringFromClass( [self class] ),
-                                NSStringFromSelector( _cmd ),
-                                [error localizedDescription],
-                                [error localizedFailureReason] );
+        if( error && COREDATA_DEBUG ) NSLog( @"[%@ %@] %@ (%@)",
+                                      NSStringFromClass( [self class] ),
+                                      NSStringFromSelector( _cmd ),
+                                      [error localizedDescription],
+                                      [error localizedFailureReason] );
     }
     else
     {
-        if( APPDEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
-                       NSStringFromClass( [self class] ),
-                       NSStringFromSelector( _cmd ) );
+        if( COREDATA_DEBUG ) NSLog( @"[%@ %@] no NSFetchedResultsController (yet?)",
+                             NSStringFromClass( [self class] ),
+                             NSStringFromSelector( _cmd ) );
     }
     [self reloadData];
 }

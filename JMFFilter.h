@@ -34,9 +34,6 @@
 /*                                                                         */
 /***************************************************************************/
 @interface JMFFilter : _JMFFilter
-{
-    
-}
 
 /***************************************************************************/
 /*                                                                         */
@@ -54,9 +51,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+- (CIFilter*)ciFilter;
 - (BOOL)isActive;
 - (BOOL)isValidFilter;
-- (BOOL)isValidCIFilter:(CIFilter*)ciFilter;
+- (BOOL)isValidCIFilter;
 - (NSString*)activeToString;
 
 @end

@@ -20,6 +20,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  Macros                                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+#define isValidFile( x )        ( x != nil && ![x isEqualToString:@""] )
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -81,8 +90,8 @@
     photo.name = [JMFUtility generateNewImageFileName];
     photo.source = [NSNumber numberWithInt:source];
     photo.sourceImageUrl = photo.sourceThumbnailUrl = nil;
-    photo.filteredImageUrl = photo.filteredThumbnailUrl = @"";//nil;
-    photo.altitude = photo.longitude = photo.latitude = @0;//nil;
+    photo.filteredImageUrl = photo.filteredThumbnailUrl = @"";
+    photo.altitude = photo.longitude = photo.latitude = @0;
     photo.geoLocation = photo.colorModel = @"";
     photo.colorsPerPixel = photo.orientation = nil;
     photo.pixelHeight = photo.pixelWidth = nil;
@@ -271,10 +280,10 @@
 - (void)removeFiles
 {
     NSError* error;
-    [[NSFileManager defaultManager]removeItemAtPath:self.sourceImageUrl error:&error];
-    [[NSFileManager defaultManager]removeItemAtPath:self.sourceThumbnailUrl error:&error];
-    [[NSFileManager defaultManager]removeItemAtPath:self.filteredImageUrl error:&error];
-    [[NSFileManager defaultManager]removeItemAtPath:self.filteredThumbnailUrl error:&error];
+    if( isValidFile( self.sourceImageUrl       ) ) [[NSFileManager defaultManager]removeItemAtPath:self.sourceImageUrl error:&error];
+    if( isValidFile( self.sourceThumbnailUrl   ) ) [[NSFileManager defaultManager]removeItemAtPath:self.sourceThumbnailUrl error:&error];
+    if( isValidFile( self.filteredImageUrl     ) ) [[NSFileManager defaultManager]removeItemAtPath:self.filteredImageUrl error:&error];
+    if( isValidFile( self.filteredThumbnailUrl ) ) [[NSFileManager defaultManager]removeItemAtPath:self.filteredThumbnailUrl error:&error];
 }
 
 @end

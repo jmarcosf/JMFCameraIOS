@@ -91,7 +91,7 @@
                                     object:self
                                     userInfo:@{ @"Error" : error } ];
             [[NSNotificationCenter defaultCenter] postNotification:note];
-            if( APPDEBUG ) NSLog( @"Error while adding a Store: %@", error );
+            if( COREDATA_DEBUG ) NSLog( @"Error while adding a Store Coordinator: %@", error );
             return nil;
         }
     }
@@ -230,12 +230,12 @@
     {
         if( ![self.storeCoordinator removePersistentStore:store error:&error] )
         {
-            if( APPDEBUG ) NSLog(@"Error while removing store %@ from store coordinator %@", store, self.storeCoordinator);
+            if( COREDATA_DEBUG ) NSLog( @"Error while removing store %@ from store coordinator %@: %@", store, self.storeCoordinator, error );
         }
     }
     if( ![[NSFileManager defaultManager] removeItemAtURL:self.databaseUrl error:&error] )
     {
-        if( APPDEBUG ) NSLog( @"Error removing %@: %@", self.databaseUrl, error );
+        if( COREDATA_DEBUG ) NSLog( @"Error removing %@: %@", self.databaseUrl, error );
     }
     
     // The Core Data stack does not like you removing the file under it. If you want to delete the file
@@ -263,15 +263,14 @@
     if( !_context )
     {
         NSString* errorKey = @"Attempted to save a nil NSManagedObjectContext. This JMFCoreDataStack has no context - probably there was an earlier error trying to access the CoreData database file.";
-        error = [NSError errorWithDomain:@"JMFCoreDataStack"
-                                  code:1
-                              userInfo:@{ NSLocalizedDescriptionKey:errorKey }];
+        error = [NSError errorWithDomain:@"JMFCoreDataStack" code:1 userInfo:@{ NSLocalizedDescriptionKey:errorKey }];
         if( errorBlock != nil ) errorBlock( error );
     }
     else if( self.context.hasChanges )
     {
         if( ![self.context save:&error] )
         {
+            if( error && COREDATA_DEBUG ) NSLog( @"Error saving CoreData Context: %@", error );
             if( errorBlock != nil ) errorBlock( error );
         }
     }
