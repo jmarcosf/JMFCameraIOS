@@ -12,6 +12,7 @@
 /***************************************************************************/
 #import <Availability.h>
 #import "UIAlertView+CompletionBlock.h"
+#import "UIActionSheet+CompletionBlock.h"
 
 /***************************************************************************/
 /*                                                                         */

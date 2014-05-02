@@ -1,13 +1,14 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell.h                                          */
+/*  UIActionSheet+CompletionBlock.h                                        */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit TableView Photo Data Cell Class definition file      */
+/*               UIActionSheet Category Class definition file              */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
+/*         NOTE: Adapted from www.nscookbook.com recipe #22                */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
@@ -16,30 +17,32 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell Class Interface                            */
+/*  UIActionSheet+CompletionBlock Class Interface                          */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditTVDataCell : UITableViewCell
+@interface UIActionSheet( CompletionBlock )
+
+- (void)showFromToolbar:(UIToolbar*)toolbar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+- (void)showFromTabBar:(UITabBar*)tabBar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+- (void)showFromBarButtonItem:(UIBarButtonItem*)button animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+- (void)showFromRect:(CGRect)rect inView:(UIView*)view animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+- (void)showInView:(UIView*)view withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
+/*                                                                         */
+/*  JMFActionWrapper Class Interface                                       */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataValue;
+@interface JMFActionWrapper : NSObject <UIActionSheetDelegate>
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+@property (copy) void(^completionBlock)( UIActionSheet* alertView, NSInteger buttonIndex );
 
 @end

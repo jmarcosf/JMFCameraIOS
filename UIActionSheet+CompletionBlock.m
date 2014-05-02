@@ -1,18 +1,18 @@
 /***************************************************************************/
 /*                                                                         */
-/*  UIAlertView+CompletionBlock.h                                          */
+/*  UIActionSheet+CompletionBlock.h                                        */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               UIAlertView Category Class implementation file            */
+/*               UIActionSheet Category Class implementation file          */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*         NOTE: Adapted from www.nscookbook.com recipe #22                */
 /*                                                                         */
 /***************************************************************************/
 #import <objc/runtime.h>
-#import "UIAlertView+CompletionBlock.h"
+#import "UIActionSheet+CompletionBlock.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -21,7 +21,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-static const char kNSCBAlertWrapper;
+static const char kJMFActionWrapper;
 
 /***************************************************************************/
 /*                                                                         */
@@ -29,22 +29,22 @@ static const char kNSCBAlertWrapper;
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  NSCBAlertWrapper Class Implementation                                  */
+/*  JMFActionWrapper Class Implementation                                  */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation NSCBAlertWrapper
+@implementation JMFActionWrapper
 
-#pragma mark - UIAlertViewDelegate
+#pragma mark - UIActionSheetDelegate
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIAlertViewDelegate Methods                                            */
+/*  UIActionSheetDelegate Methods                                          */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
@@ -52,31 +52,31 @@ static const char kNSCBAlertWrapper;
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  alertView:clickedButtonAtIndex:                                        */
+/*  actionSheet:clickedButtonAtIndex:                                      */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet*)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     if( self.completionBlock )
     {
-        self.completionBlock( alertView, buttonIndex) ;
+        self.completionBlock( actionSheet, buttonIndex) ;
     }
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  alertViewCancel:                                                       */
+/*  actionSheetCancel:                                                     */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)alertViewCancel:(UIAlertView*)alertView
+- (void)actionSheetCancel:(UIActionSheet*)actionSheet
 {
-
+    
     if( self.completionBlock )
     {
-        self.completionBlock( alertView, alertView.cancelButtonIndex );
+        self.completionBlock( actionSheet, actionSheet.cancelButtonIndex );
     }
 }
 
@@ -88,14 +88,14 @@ static const char kNSCBAlertWrapper;
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  UIAlertView+CompletionBlock Class Implementation                       */
+/*  UIActionSheet+CompletionBlock Class Implementation                     */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation UIAlertView( CompletionBlock )
+@implementation UIActionSheet( CompletionBlock )
 
 /***************************************************************************/
 /*                                                                         */
@@ -108,35 +108,81 @@ static const char kNSCBAlertWrapper;
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  showWithCompletion:                                                    */
+/*  showFromToolbar:withCompletion:                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)showWithCompletion:(void(^)( UIAlertView* alertView, NSInteger buttonIndex ) )completion
+- (void)showFromToolbar:(UIToolbar*)toolbar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion
 {
-    NSCBAlertWrapper* alertWrapper = [[NSCBAlertWrapper alloc] init];
-    alertWrapper.completionBlock = completion;
-    self.delegate = alertWrapper;
-    objc_setAssociatedObject( self, &kNSCBAlertWrapper, alertWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
-    [self show];
+    JMFActionWrapper* actionWrapper = [[JMFActionWrapper alloc] init];
+    actionWrapper.completionBlock = completion;
+    self.delegate = actionWrapper;
+    objc_setAssociatedObject( self, &kJMFActionWrapper, actionWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    [self showFromToolbar:toolbar];
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  showWithActivityIndicator                                              */
+/*  showFromTabBar:withCompletion:                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)showWithActivityIndicatorWithColor:(UIColor*)color
+- (void)showFromTabBar:(UITabBar *)tabBar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion
 {
-    UIActivityIndicatorView* activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    activityIndicator.frame = CGRectMake( 0, 0, 36, 36 );
-    activityIndicator.color = color;
-    [activityIndicator startAnimating];
-    [self setValue:activityIndicator forKey:@"accessoryView"];
-    [self show];
+    JMFActionWrapper* actionWrapper = [[JMFActionWrapper alloc] init];
+    actionWrapper.completionBlock = completion;
+    self.delegate = actionWrapper;
+    objc_setAssociatedObject( self, &kJMFActionWrapper, actionWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    [self showFromTabBar:tabBar];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showFromBarButtonItem:animated:withCompletion:                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showFromBarButtonItem:(UIBarButtonItem*)button animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion
+{
+    JMFActionWrapper* actionWrapper = [[JMFActionWrapper alloc] init];
+    actionWrapper.completionBlock = completion;
+    self.delegate = actionWrapper;
+    objc_setAssociatedObject( self, &kJMFActionWrapper, actionWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    [self showFromBarButtonItem:button animated:animated];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showFromRect:inView:animated:withCompletion:                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showFromRect:(CGRect)rect inView:(UIView*)view animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion
+{
+    JMFActionWrapper* actionWrapper = [[JMFActionWrapper alloc] init];
+    actionWrapper.completionBlock = completion;
+    self.delegate = actionWrapper;
+    objc_setAssociatedObject( self, &kJMFActionWrapper, actionWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    [self showFromRect:rect inView:view animated:animated];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  showInView:withCompletion:                                             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)showInView:(UIView*)view withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion
+{
+    JMFActionWrapper* actionWrapper = [[JMFActionWrapper alloc] init];
+    actionWrapper.completionBlock = completion;
+    self.delegate = actionWrapper;
+    objc_setAssociatedObject( self, &kJMFActionWrapper, actionWrapper, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    [self showInView:view];
 }
 
 @end
-

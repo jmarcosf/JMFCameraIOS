@@ -1,45 +1,66 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell.h                                          */
+/*  JMFCameraIOS_EditTVGeoLocationCell.m                                   */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit TableView Photo Data Cell Class definition file      */
+/*               Edit TableView Photo GeoLocation Cell implementation file */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
+#import "JMFCameraIOS_EditTVGeoLocationCell.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell Class Interface                            */
+/*                                                                         */
+/*  JMFCameraIOS_EditTVGeoLocationCell Class Implementation                */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditTVDataCell : UITableViewCell
+@implementation JMFCameraIOS_EditTVGeoLocationCell
 
+#pragma mark - UITableViewCell Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
 /*                                                                         */
+/*  UITableViewCell Override Methods                                       */
 /*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataValue;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+/*                                                                         */
+/*                                                                         */
+/*  initWithStyle:reuseIdentifier:                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if( self )
+    {
+    }
+    
+    return self;
+}
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setSelected:                                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+}
 
 @end
+

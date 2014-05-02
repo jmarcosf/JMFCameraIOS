@@ -13,6 +13,7 @@
 #import <Social/Social.h>
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFCameraIOS_EditTVDataCell.h"
+#import "JMFCameraIOS_EditTVGeoLocationCell.h"
 #import "JMFCameraIOS_FaceRecViewController.h"
 #import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_ShowViewController.h"
@@ -29,6 +30,8 @@
 /***************************************************************************/
 #define IDS_EDITTV_NORMAL_CELL_IDENTIFIER       @"EditTVNormalCellIdentifier"
 #define IDS_EDITTV_NORMAL_CELL_XIBNAME          @"JMFCameraIOS_EditTVDataCell"
+#define IDS_EDITTV_GEOLOCATION_CELL_IDENTIFIER  @"EditTVGeoLocationCellIdentifier"
+#define IDS_EDITTV_GEOLOCATION_CELL_XIBNAME     @"JMFCameraIOS_EditTVGeoLocationCell"
 
 #define IDC_UITOOLBAR_BUTTON_SHARE_INDEX        0
 #define IDC_UITOOLBAR_BUTTON_FACEDET_INDEX      1
@@ -147,6 +150,7 @@
 
     //TableView
     [self.iboTableView registerNib:[UINib nibWithNibName:IDS_EDITTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER];
+    [self.iboTableView registerNib:[UINib nibWithNibName:IDS_EDITTV_GEOLOCATION_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_EDITTV_GEOLOCATION_CELL_IDENTIFIER];
     self.iboTableView.sectionHeaderHeight = 2.0;
     self.iboTableView.sectionFooterHeight = 20.0;
     self.iboTableView.dataSource = self;
@@ -276,37 +280,46 @@
 /***************************************************************************/
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    JMFCameraIOS_EditTVDataCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
-
-    cell.iboDataTitle.text = nil;
-    cell.iboDataValue.text = nil;
+    UITableViewCell* cell = nil;
+    
+    if( indexPath.section == SECTION_LOCATION && indexPath.row == 3 )
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:IDS_EDITTV_GEOLOCATION_CELL_IDENTIFIER forIndexPath:indexPath];
+        ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataTitle.text = nil;
+        ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataValue.text = nil;
+    }
+    else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:IDS_EDITTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
+        ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = nil;
+        ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = nil;
+    }
     
     switch( indexPath.section )
     {
         case SECTION_METADATA:
-            cell.iboDataTitle.text = NSLocalizedString( [metadataTitleStrings objectAtIndex:indexPath.row], nil );
-            cell.iboDataValue.text = [[metadataValues objectAtIndex:indexPath.row] description];
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = NSLocalizedString( [metadataTitleStrings objectAtIndex:indexPath.row], nil );
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[metadataValues objectAtIndex:indexPath.row] description];
             break;
             
         case SECTION_LOCATION:
-            if( indexPath.row == 3 ) [cell.iboDataValue sizeToFit];
-            cell.iboDataTitle.text = NSLocalizedString( [locationTitleStrings objectAtIndex:indexPath.row], nil );
-            cell.iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
+            ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataTitle.text = NSLocalizedString( [locationTitleStrings objectAtIndex:indexPath.row], nil );
+            ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
             break;
             
         case SECTION_FACE_DETECTION:
         {
             JMFFace* face = [faceResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
-            cell.iboDataTitle.text = face.name;
-            cell.iboDataValue.text = face.faceRect;
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = face.name;
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = face.faceRect;
             break;
         }
 
         case SECTION_FILTERS:
         {
             JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
-            cell.iboDataTitle.text = filter.name;
-            cell.iboDataValue.text = [[NSLocalizedString( @"IDS_ACTIVE", nil ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = filter.name;
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[NSLocalizedString( @"IDS_ACTIVE", nil ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
             break;
         }
             
@@ -362,8 +375,8 @@
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
-    headerView.text = [NSString stringWithFormat:@"   %@", NSLocalizedString( [headerStrings objectAtIndex:section], nil )];
-    headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:16];
+    headerView.text = [NSString stringWithFormat:@"  %@", NSLocalizedString( [headerStrings objectAtIndex:section], nil )];
+    headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
     headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     headerView.textColor = [UIColor whiteColor];
     return headerView;
@@ -428,34 +441,23 @@
 /***************************************************************************/
 - (void)onShareClicked
 {
-    NSString* IDS_APP_NAME                    = NSLocalizedString( @"IDS_APP_NAME", nil );
-    NSString* IDS_OK                          = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_FACEBOOK_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_FACEBOOK_DEFAULT_MESSAGE", nil );
-    NSString* IDS_FACEBOOK_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_FACEBOOK_MESSAGE_SENT_OK", nil );
-    NSString* IDS_FACEBOOK_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE", nil );
+    NSString* IDS_CANCEL              = NSLocalizedString( @"IDS_CANCEL", nil );
+    NSString* IDS_SHARE_IMAGE_MESSAGE = NSLocalizedString( @"IDS_SHARE_IMAGE_MESSAGE", nil );
     
-    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
+    UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_SHARE_IMAGE_MESSAGE
+                                                            delegate:nil
+                                                   cancelButtonTitle:IDS_CANCEL
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:@"Facebook", @"Twitter", nil];
+    [actionSheet showFromTabBar:self.iboTabBar withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
     {
-        SLComposeViewController* FacebookVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [FacebookVC setInitialText:IDS_FACEBOOK_DEFAULT_MESSAGE];
-        [FacebookVC addImage:self.iboSourceImageView.image];
-        
-        __block SLComposeViewController* weakFacebookVC = FacebookVC;
-        [FacebookVC setCompletionHandler:^(SLComposeViewControllerResult result)
-         {
-             if( result == SLComposeViewControllerResultDone )
-             {
-                 [[[UIAlertView alloc] initWithTitle:IDS_APP_NAME message:IDS_FACEBOOK_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil] show];
-             }
-             [weakFacebookVC dismissViewControllerAnimated:YES completion:nil];
-         }];
-        
-        [self presentViewController:FacebookVC animated:YES completion:nil];
-    }
-    else
-    {
-        [[[UIAlertView alloc] initWithTitle:@"Error" message:IDS_FACEBOOK_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil] show];
-    }
+        switch( buttonIndex )
+        {
+            case 0: [self publishToFacebook]; break;
+            case 1: [self publishToTwitter];  break;
+            default: break;
+        }
+    }];
 }
 
 /***************************************************************************/
@@ -488,6 +490,78 @@
                                                     andImage:self.iboSourceImageView.image
                                                     inModel:self.model];
     [self.navigationController pushViewController:filtersVC animated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  publishToFacebook                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)publishToFacebook
+{
+    NSString* IDS_APP_NAME                    = NSLocalizedString( @"IDS_APP_NAME", nil );
+    NSString* IDS_OK                          = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_FACEBOOK_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_FACEBOOK_DEFAULT_MESSAGE", nil );
+    NSString* IDS_FACEBOOK_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_FACEBOOK_MESSAGE_SENT_OK", nil );
+    NSString* IDS_FACEBOOK_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE", nil );
+    
+    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
+    {
+        SLComposeViewController* FacebookVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [FacebookVC setInitialText:IDS_FACEBOOK_DEFAULT_MESSAGE];
+        [FacebookVC addImage:self.iboSourceImageView.image];
+        
+        __block SLComposeViewController* weakFacebookVC = FacebookVC;
+        [FacebookVC setCompletionHandler:^( SLComposeViewControllerResult result )
+         {
+             if( result == SLComposeViewControllerResultDone )
+             {
+                 [[[UIAlertView alloc]initWithTitle:IDS_APP_NAME message:IDS_FACEBOOK_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
+             }
+             [weakFacebookVC dismissViewControllerAnimated:YES completion:nil];
+         }];
+        
+        [self presentViewController:FacebookVC animated:YES completion:nil];
+    }
+    else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_FACEBOOK_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  publishToTwitter                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)publishToTwitter
+{
+    NSString* IDS_APP_NAME                   = NSLocalizedString( @"IDS_APP_NAME", nil );
+    NSString* IDS_OK                         = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_TWITTER_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_TWITTER_DEFAULT_MESSAGE", nil );
+    NSString* IDS_TWITTER_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_TWITTER_MESSAGE_SENT_OK", nil );
+    NSString* IDS_TWITTER_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_TWITTER_NO_ACCOUNT_MESSAGE", nil );
+    
+    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
+    {
+        SLComposeViewController* TwitterVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+        [TwitterVC setInitialText:IDS_TWITTER_DEFAULT_MESSAGE];
+        [TwitterVC addImage:self.iboSourceImageView.image];
+        
+        __block SLComposeViewController* weakTwitterVC = TwitterVC;
+        [TwitterVC setCompletionHandler:^( SLComposeViewControllerResult result )
+         {
+             if( result == SLComposeViewControllerResultDone )
+             {
+                 [[[UIAlertView alloc]initWithTitle:IDS_APP_NAME message:IDS_TWITTER_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
+             }
+             [weakTwitterVC dismissViewControllerAnimated:YES completion:nil];
+         }];
+        
+        [self presentViewController:TwitterVC animated:YES completion:nil];
+    }
+    else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_TWITTER_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
 }
 
 #pragma mark - UIResponder Methods

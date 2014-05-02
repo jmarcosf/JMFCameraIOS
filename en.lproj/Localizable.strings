@@ -97,7 +97,11 @@
 "IDS_CONFIRM_SINGLE_DELETION_MESSAGE" = "Do you really want to delete this picture?";
 "IDS_CONFIRM_MULTI_DELETION_MESSAGE" = "Do you really want to delete these %d pictures?";
 "IDS_FULL_SCREEN_MESSAGE" = "click the picture to switch to full screen";
+"IDS_SHARE_IMAGE_MESSAGE" = "Post this image to Social Networks";
 
 "IDS_FACEBOOK_DEFAULT_MESSAGE" = "Facebook message: sent from JMFCameraIOS App";
 "IDS_FACEBOOK_MESSAGE_SENT_OK" = "Facebook message sent successfully";
 "IDS_FACEBOOK_NO_ACCOUNT_MESSAGE" = "No Facebook account has been found";
+"IDS_TWITTER_DEFAULT_MESSAGE" = "Twitter message: sent from JMFCameraIOS App";
+"IDS_TWITTER_MESSAGE_SENT_OK" = "Twitter message sent successfully";
+"IDS_TWITTER_NO_ACCOUNT_MESSAGE" = "No Twitter account has been found";

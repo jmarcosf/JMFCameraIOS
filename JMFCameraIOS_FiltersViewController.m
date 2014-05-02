@@ -756,10 +756,11 @@
                 CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
                 if( [filter isValidCIFilter:ciFilter] )
                 {
+                    [ciFilter setDefaults];
                     [ciFilter setValue:resultImage forKey:kCIInputImageKey];
                     if( [[ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
                     {
-                        [ciFilter setValue:@0.5f forKey:kCIInputIntensityKey];
+                        [ciFilter setValue:@0.7f forKey:kCIInputIntensityKey];
                     }
                     resultImage = [ciFilter valueForKey:kCIOutputImageKey];
                 }

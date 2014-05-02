@@ -793,17 +793,20 @@
     
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DELETE", nil );
     NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_SINGLE_DELETION_MESSAGE", nil );
     
     if( selectedArray.count )
     {
         if( selectedArray.count > 1 ) IDS_MESSAGE = [NSString stringWithFormat:NSLocalizedString( @"IDS_CONFIRM_MULTI_DELETION_MESSAGE", nil ), selectedArray.count ];
-
-        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:IDS_TITLE message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_CANCEL otherButtonTitles:IDS_OK, nil];
-        [alertView showWithCompletion:^( UIAlertView* alertView, NSInteger buttonIndex )
-        {
-             if( buttonIndex == 1 )
+        
+        UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
+                                                                delegate:nil
+                                                       cancelButtonTitle:IDS_CANCEL
+                                                  destructiveButtonTitle:IDS_OK
+                                                       otherButtonTitles:nil];
+        [actionSheet showFromTabBar:self.iboTabBar withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
+         {
+             if( buttonIndex == 0 )
              {
                  for( NSIndexPath* indexPath in selectedArray )
                  {

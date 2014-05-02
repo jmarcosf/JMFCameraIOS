@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell.h                                          */
+/*  JMFCameraIOS_EditTVGeoLocationCell.h                                   */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Edit TableView Photo Data Cell Class definition file      */
+/*               Edit TableView Photo GeoLocation Cell definition file     */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
@@ -16,12 +16,12 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_EditTVDataCell Class Interface                            */
+/*  JMFCameraIOS_EditTVGeoLocationCell Class Interface                     */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_EditTVDataCell : UITableViewCell
+@interface JMFCameraIOS_EditTVGeoLocationCell : UITableViewCell
 
 /***************************************************************************/
 /*                                                                         */
@@ -30,8 +30,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDataValue;
+@property (weak, nonatomic) IBOutlet UILabel*   iboDataTitle;
+@property (weak, nonatomic) IBOutlet UILabel*   iboDataValue;
+
 
 /***************************************************************************/
 /*                                                                         */

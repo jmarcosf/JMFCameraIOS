@@ -146,7 +146,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.iboImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iboImageView.frame = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.iboImageView.clipsToBounds = YES;
     

@@ -22,9 +22,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface UIAlertView (CompletionBlock)
+@interface UIAlertView( CompletionBlock )
 
-- (void)showWithCompletion:(void(^)(UIAlertView* alertView, NSInteger buttonIndex))completion;
+- (void)showWithCompletion:(void(^)( UIAlertView* alertView, NSInteger buttonIndex ))completion;
 - (void)showWithActivityIndicatorWithColor:(UIColor*)color;
 
 @end
@@ -40,6 +40,6 @@
 /***************************************************************************/
 @interface NSCBAlertWrapper : NSObject
 
-@property (copy) void(^completionBlock)(UIAlertView* alertView, NSInteger buttonIndex);
+@property (copy) void(^completionBlock)( UIAlertView* alertView, NSInteger buttonIndex );
 
 @end
