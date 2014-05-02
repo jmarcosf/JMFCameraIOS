@@ -145,6 +145,8 @@
     CGRect Rect = CGRectMake( 0, 0, 0, 0 );
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     bFromCamera = NO;
+    self.iboActivityIndicator.hidden = YES;
+    [self.iboActivityIndicator stopAnimating];
     
     //Navigation Bar Select Button
     bMultiSelectMode = NO;
@@ -343,6 +345,9 @@
 /***************************************************************************/
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
+    self.iboActivityIndicator.hidden = NO;
+    [self.iboActivityIndicator startAnimating];
+
     UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
     JMFPhoto* newPhoto = [JMFPhoto photoWithImage:image
                                            source:JMFPhotoSourceCamera
@@ -352,6 +357,9 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
     bFromCamera = YES;
     [self.model saveWithErrorBlock:nil];
+    
+    self.iboActivityIndicator.hidden = YES;
+    [self.iboActivityIndicator stopAnimating];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -622,6 +630,25 @@
     if( bMultiSelectMode )
     {
         iSelectedCount--;
+        [self redrawControls:YES];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:commitEditingStyle:forRowAtIndexPath:                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if( editingStyle == UITableViewCellEditingStyleDelete )
+    {
+        JMFPhoto* photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [photo removeFiles];
+        [self.model.context deleteObject:photo];
+        [self.model saveWithErrorBlock:nil];
         [self redrawControls:YES];
     }
 }

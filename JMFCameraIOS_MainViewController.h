@@ -45,7 +45,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UITabBar*      iboTabBar;
+@property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
 
 /***************************************************************************/
 /*                                                                         */

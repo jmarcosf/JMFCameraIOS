@@ -393,6 +393,48 @@
 {
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:canEditRowAtIndexPath:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ( indexPath.section == SECTION_FACE_DETECTION || indexPath.section == SECTION_FILTERS );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:commitEditingStyle:forRowAtIndexPath:                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    if( editingStyle == UITableViewCellEditingStyleDelete )
+    {
+        if( indexPath.section == SECTION_FACE_DETECTION )
+        {
+            JMFFace* face = [faceResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
+            [self.model.context deleteObject:face];
+            [self.model saveWithErrorBlock:nil];
+            [faceResultsController performFetch:nil];
+            [tableView reloadData];
+        }
+        else if( indexPath.section == SECTION_FILTERS )
+        {
+            JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
+            [self.model.context deleteObject:filter];
+            [self.model saveWithErrorBlock:nil];
+            [filtersResultsController performFetch:nil];
+            [tableView reloadData];
+        }
+    }
+}
+
 #pragma mark - UITabBarDelegate
 /***************************************************************************/
 /*                                                                         */

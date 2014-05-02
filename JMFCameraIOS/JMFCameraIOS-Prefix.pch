@@ -48,7 +48,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define COREDATA_DEBUG                                      YES
+#define COREDATA_DEBUG                                      NO
 #define COREDATA_AUTOSAVE                                   YES
 #define COREDATA_AUTOSAVE_DELAY                             5      //Seconds
 
