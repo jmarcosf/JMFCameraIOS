@@ -10,6 +10,7 @@
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
+#import <Social/Social.h>
 #import "JMFCameraIOS_EditViewController.h"
 #import "JMFCameraIOS_EditTVDataCell.h"
 #import "JMFCameraIOS_FaceRecViewController.h"
@@ -427,6 +428,34 @@
 /***************************************************************************/
 - (void)onShareClicked
 {
+    NSString* IDS_APP_NAME                    = NSLocalizedString( @"IDS_APP_NAME", nil );
+    NSString* IDS_OK                          = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_FACEBOOK_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_FACEBOOK_DEFAULT_MESSAGE", nil );
+    NSString* IDS_FACEBOOK_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_FACEBOOK_MESSAGE_SENT_OK", nil );
+    NSString* IDS_FACEBOOK_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE", nil );
+    
+    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
+    {
+        SLComposeViewController* FacebookVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        [FacebookVC setInitialText:IDS_FACEBOOK_DEFAULT_MESSAGE];
+        [FacebookVC addImage:self.iboSourceImageView.image];
+        
+        __block SLComposeViewController* weakFacebookVC = FacebookVC;
+        [FacebookVC setCompletionHandler:^(SLComposeViewControllerResult result)
+         {
+             if( result == SLComposeViewControllerResultDone )
+             {
+                 [[[UIAlertView alloc] initWithTitle:IDS_APP_NAME message:IDS_FACEBOOK_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil] show];
+             }
+             [weakFacebookVC dismissViewControllerAnimated:YES completion:nil];
+         }];
+        
+        [self presentViewController:FacebookVC animated:YES completion:nil];
+    }
+    else
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:IDS_FACEBOOK_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil] show];
+    }
 }
 
 /***************************************************************************/

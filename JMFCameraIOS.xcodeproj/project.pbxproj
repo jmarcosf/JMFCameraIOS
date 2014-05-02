@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		900002F719130B6E0084664C /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900002F619130B6E0084664C /* Social.framework */; };
 		900660F41908028A00F249AA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900660F31908028A00F249AA /* CoreImage.framework */; };
 		900660F6190804F700F249AA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900660F5190804F700F249AA /* ImageIO.framework */; };
 		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
@@ -125,6 +126,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		900002F619130B6E0084664C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		900660F31908028A00F249AA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		900660F5190804F700F249AA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainCVPhotoCell.h; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900002F719130B6E0084664C /* Social.framework in Frameworks */,
 				901F419C190D40E90014EA24 /* MapKit.framework in Frameworks */,
 				901F419A190D3DF40014EA24 /* CoreLocation.framework in Frameworks */,
 				900660F6190804F700F249AA /* ImageIO.framework in Frameworks */,
@@ -435,6 +438,7 @@
 		906E720618F9D4CF00D1CC63 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				900002F619130B6E0084664C /* Social.framework */,
 				901F419B190D40E90014EA24 /* MapKit.framework */,
 				901F4199190D3DF40014EA24 /* CoreLocation.framework */,
 				900660F5190804F700F249AA /* ImageIO.framework */,

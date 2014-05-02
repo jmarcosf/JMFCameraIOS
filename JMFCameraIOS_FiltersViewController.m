@@ -43,6 +43,7 @@
     long                        iPickerViewSection;
     BOOL                        bModified;
     BOOL                        bReloadData;
+    BOOL                        bNoFilteredImage;
 }
 @end
 
@@ -121,9 +122,9 @@
     self.iboActivityIndicator.layer.zPosition = 100;
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboSourceImage.image = self.image;
-    self.iboTargetImage.image = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] )
-                                ? [UIImage imageNamed:IDS_NO_IMAGE_FILE]
-                                : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
+    bNoFilteredImage = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] );
+    self.iboTargetImage.image = ( bNoFilteredImage ) ? [UIImage imageNamed:IDS_NO_IMAGE_FILE] : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
+    
     //TabBar
     self.iboTabBar.delegate = self;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
@@ -682,6 +683,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:( bModified && iPickerViewSection == -1 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:( bModified && iPickerViewSection == -1 )];
     self.navigationItem.rightBarButtonItem.enabled = ( iPickerViewSection == -1 );
+    if( count == 0 ) bNoFilteredImage = YES;
 }
 
 /***************************************************************************/
@@ -723,6 +725,7 @@
     for( JMFFilter* filter in [fetchedResultsController fetchedObjects] ) [self.model.context deleteObject:filter];
     [self.iboFilterTable reloadData];
     self.iboTargetImage.image = [UIImage imageNamed:IDS_NO_IMAGE_FILE];
+    bNoFilteredImage = YES;
 }
 
 /***************************************************************************/
@@ -737,6 +740,8 @@
     self.iboActivityIndicator.hidden = NO;
     [self.iboActivityIndicator startAnimating];
 
+    if( [[fetchedResultsController fetchedObjects]count] == 0 ) bNoFilteredImage = YES;
+    
     CIContext* context = [CIContext contextWithOptions:nil];
     CIImage* ciImage = [CIImage imageWithCGImage:self.iboSourceImage.image.CGImage];
     
@@ -813,7 +818,7 @@
     UITouch* touch = [touches anyObject];
     
     if( touch.view == self.iboSourceImage )      image = self.iboSourceImage.image;
-    else if( touch.view == self.iboTargetImage ) image = self.iboTargetImage.image;
+    else if( touch.view == self.iboTargetImage ) image = ( bNoFilteredImage ) ? nil : self.iboTargetImage.image;
     if( image != nil )
     {
         JMFCameraIOS_ShowViewController* showVC = [[JMFCameraIOS_ShowViewController alloc] initWithImage:image];

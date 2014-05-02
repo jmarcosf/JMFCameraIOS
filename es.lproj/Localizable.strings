@@ -90,10 +90,14 @@
 "IDS_INIT_ERROR_MESSAGE" = "Los directorios de la aplicación no han podido crearse!";
 "IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener fotos de Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";
-"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Descargar 5 fotos de Flickr\nTeclee el término de búsqueda:";
+"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Descargar fotos de Flickr\nTeclee el término de búsqueda:";
 "IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Teclee el término de búsqueda";
 "IDS_DOWNLOADING_PICTURES" = "Descargando imágenes\nPor favor espere...";
 "IDS_DOWNLOADING_PICTURES_ERROR" = "Se ha producido un error al descargar las imágenes.";
 "IDS_CONFIRM_SINGLE_DELETION_MESSAGE" = "¿Seguro que desea eliminar esta fotografía?";
 "IDS_CONFIRM_MULTI_DELETION_MESSAGE" = "¿Seguro que desea eliminar estas %d fotografías?";
 "IDS_FULL_SCREEN_MESSAGE" = "pulse sobre la fotografía para verla a pantalla completa";
+
+"IDS_FACEBOOK_DEFAULT_MESSAGE" = "Mensaje a Facebook: enviado desde la App JMFCameraIOS";
+"IDS_FACEBOOK_MESSAGE_SENT_OK" = "Mensaje a Facebook enviado correctamente";
+"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE" = "No se ha encontrado ninguna cuenta de Facebook";
