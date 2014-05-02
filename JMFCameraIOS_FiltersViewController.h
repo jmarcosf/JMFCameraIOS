@@ -68,5 +68,6 @@
 - (void)onClearClicked;
 - (void)onApplyClicked;
 - (void)onSaveClicked;
+- (void)setTargetImage;
 
 @end

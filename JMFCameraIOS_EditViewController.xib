@@ -94,7 +94,7 @@
                     </items>
                 </tabBar>
                 <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MapLocation.png" id="oUd-Dx-q3d">
-                    <rect key="frame" x="216" y="125" width="32" height="32"/>
+                    <rect key="frame" x="216" y="125" width="25" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>
@@ -106,7 +106,7 @@
     </objects>
     <resources>
         <image name="Filter.png" width="25" height="25"/>
-        <image name="MapLocation.png" width="256" height="256"/>
+        <image name="MapLocation.png" width="16" height="23"/>
         <image name="Share.png" width="19" height="27"/>
         <image name="Show.png" width="30" height="18"/>
     </resources>

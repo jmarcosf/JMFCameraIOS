@@ -66,7 +66,8 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons;
 - (void)editPhoto;
-
+- (void)onSettingsClicked:(id)sender;
+- (void)onSelectClicked:(id)sender;
 - (void)onCameraClicked;
 - (void)onModeClicked;
 - (void)onDeleteClicked;

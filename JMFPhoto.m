@@ -182,12 +182,19 @@
 /***************************************************************************/
 - (void)saveFilteredImage:(UIImage*)image andTumbnail:(UIImage*)thumbnail;
 {
-    if( image == nil ) return;
-    
     self.filteredImageUrl     = [JMFUtility pathForFilteredImageFileName:self.name];
     self.filteredThumbnailUrl = [JMFUtility pathForFilteredThumbnailFileName:self.name];
-    
-    [self saveImageFile:image toImageFileName:self.filteredImageUrl andTumbnail:thumbnail toThumbnailFileName:self.filteredThumbnailUrl];
+    if( image != nil )
+    {
+        [self saveImageFile:image toImageFileName:self.filteredImageUrl andTumbnail:thumbnail toThumbnailFileName:self.filteredThumbnailUrl];
+    }
+    else
+    {
+        NSError* error;
+        if( isValidFile( self.filteredImageUrl     ) ) [[NSFileManager defaultManager]removeItemAtPath:self.filteredImageUrl error:&error];
+        if( isValidFile( self.filteredThumbnailUrl ) ) [[NSFileManager defaultManager]removeItemAtPath:self.filteredThumbnailUrl error:&error];
+        self.filteredImageUrl = self.filteredThumbnailUrl = @"";
+    }
 }
 
 /***************************************************************************/

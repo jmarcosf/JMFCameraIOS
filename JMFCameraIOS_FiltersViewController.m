@@ -44,6 +44,7 @@
     BOOL                        bModified;
     BOOL                        bReloadData;
     BOOL                        bNoFilteredImage;
+    UIImage*                    targetImage;
 }
 @end
 
@@ -123,8 +124,8 @@
     self.iboActivityIndicator.layer.zPosition = 100;
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboSourceImage.image = self.image;
-    bNoFilteredImage = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] );
-    self.iboTargetImage.image = ( bNoFilteredImage ) ? [UIImage imageNamed:IDS_NO_IMAGE_FILE] : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
+    targetImage = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] )
+                  ? nil : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
     
     //TabBar
     self.iboTabBar.delegate = self;
@@ -185,6 +186,7 @@
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
     
+    [self setTargetImage];
     [self enableButtons];
 }
 
@@ -362,9 +364,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    long iCount = [[fetchedResultsController fetchedObjects]count];
-    if( iCount <= 0 ) self.iboTargetImage.image = [UIImage imageNamed:IDS_NO_IMAGE_FILE];
-    return iCount;
+    return [[fetchedResultsController fetchedObjects]count];
 }
 
 /***************************************************************************/
@@ -540,6 +540,7 @@
         JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         [self.model.context deleteObject:filter];
         [self.iboFilterTable reloadData];
+        [self enableButtons];
     }
 }
 
@@ -689,7 +690,6 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:( bModified && iPickerViewSection == -1 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:( bModified && iPickerViewSection == -1 )];
     self.navigationItem.rightBarButtonItem.enabled = ( iPickerViewSection == -1 );
-    if( count == 0 ) bNoFilteredImage = YES;
 }
 
 /***************************************************************************/
@@ -703,6 +703,7 @@
 {
     [JMFFilter filterWithName:IDS_FILTER_NONE photo:(JMFPhoto*)self.photo inContext:self.model.context];
     [self.iboFilterTable reloadData];
+    bModified = YES;
 }
 
 /***************************************************************************/
@@ -730,8 +731,7 @@
 {
     for( JMFFilter* filter in [fetchedResultsController fetchedObjects] ) [self.model.context deleteObject:filter];
     [self.iboFilterTable reloadData];
-    self.iboTargetImage.image = [UIImage imageNamed:IDS_NO_IMAGE_FILE];
-    bNoFilteredImage = YES;
+    bModified = YES;
 }
 
 /***************************************************************************/
@@ -746,8 +746,6 @@
     self.iboActivityIndicator.hidden = NO;
     [self.iboActivityIndicator startAnimating];
 
-    if( [[fetchedResultsController fetchedObjects]count] == 0 ) bNoFilteredImage = YES;
-    
     CIContext* context = [CIContext contextWithOptions:nil];
     CIImage* ciImage = [CIImage imageWithCGImage:self.iboSourceImage.image.CGImage];
     
@@ -776,8 +774,10 @@
         dispatch_queue_t mainQueue = dispatch_get_main_queue();
         dispatch_async( mainQueue, ^
         {
-            self.iboTargetImage.image = [UIImage imageWithCGImage:cgiImage];
             bModified = YES;
+            targetImage = [UIImage imageWithCGImage:cgiImage];
+            [self setTargetImage];
+            [self enableButtons];
             self.iboActivityIndicator.hidden = YES;
             [self.iboActivityIndicator stopAnimating];
         });
@@ -793,11 +793,29 @@
 /***************************************************************************/
 - (void)onSaveClicked
 {
+    if( bNoFilteredImage ) self.iboTargetImage.image = nil;
     [self.photo saveFilteredImage:self.iboTargetImage.image andTumbnail:nil];
     [[self.model.context undoManager] endUndoGrouping];
     [[self.model.context undoManager] setActionName:@"Filter edit"];
     [self.model saveWithErrorBlock:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setTargetImage                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setTargetImage
+{
+    bNoFilteredImage = YES;
+    for( JMFFilter* filter in [fetchedResultsController fetchedObjects] )
+    {
+        if( filter.isActive ) { bNoFilteredImage = NO; break; }
+    }
+    self.iboTargetImage.image = ( bNoFilteredImage || targetImage == nil ) ? [UIImage imageNamed:IDS_NO_IMAGE_FILE] : targetImage;
 }
 
 #pragma mark - UIResponder Methods

@@ -148,7 +148,11 @@
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
     
-    //Navigation Bar Select Button
+    //Navigation Bar Buttons
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Settings.png"]
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector( onSettingsClicked: )];
     bMultiSelectMode = NO;
     iboSelectButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"IDS_SELECT", nil )
                                                        style:UIBarButtonItemStylePlain
@@ -730,6 +734,18 @@
         JMFCameraIOS_EditViewController* editVC = [[JMFCameraIOS_EditViewController alloc] initWithPhoto:photo inModel:self.model];
         [self.navigationController pushViewController:editVC animated:YES];
     }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onSettingsClicked:                                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onSettingsClicked:(id)sender
+{
+    
 }
 
 /***************************************************************************/
