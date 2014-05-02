@@ -483,23 +483,23 @@
 /***************************************************************************/
 - (void)onShareClicked
 {
-    NSString* IDS_CANCEL              = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_SHARE_IMAGE_MESSAGE = NSLocalizedString( @"IDS_SHARE_IMAGE_MESSAGE", nil );
-    
-    UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_SHARE_IMAGE_MESSAGE
-                                                            delegate:nil
-                                                   cancelButtonTitle:IDS_CANCEL
-                                              destructiveButtonTitle:nil
-                                                   otherButtonTitles:@"Facebook", @"Twitter", nil];
-    [actionSheet showFromTabBar:self.iboTabBar withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
+    NSString* IDS_APP_NAME               = NSLocalizedString( @"IDS_APP_NAME", nil );
+    NSString* IDS_OK                     = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_SOCIAL_DEFAULT_MESSAGE = NSLocalizedString( @"IDS_SOCIAL_DEFAULT_MESSAGE", nil );
+    NSString* IDS_SOCIAL_MESSAGE_SENT_OK = NSLocalizedString( @"IDS_SOCIAL_MESSAGE_SENT_OK", nil );
+
+    UIActivityViewController* activityVC = [[UIActivityViewController alloc]initWithActivityItems:@[IDS_SOCIAL_DEFAULT_MESSAGE, @"", self.iboSourceImageView.image]applicationActivities:nil];
+    activityVC.excludedActivityTypes = @[UIActivityTypePostToWeibo, UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList,
+                                         UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+    activityVC.completionHandler = ^( NSString* activityType, BOOL completed )
     {
-        switch( buttonIndex )
+        if( completed )
         {
-            case 0: [self publishToFacebook]; break;
-            case 1: [self publishToTwitter];  break;
-            default: break;
+            [[[UIAlertView alloc]initWithTitle:IDS_APP_NAME message:IDS_SOCIAL_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
         }
-    }];
+    };
+    [self presentViewController:activityVC animated:YES completion:nil];
+
 }
 
 /***************************************************************************/
@@ -532,78 +532,6 @@
                                                     andImage:self.iboSourceImageView.image
                                                     inModel:self.model];
     [self.navigationController pushViewController:filtersVC animated:YES];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  publishToFacebook                                                      */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)publishToFacebook
-{
-    NSString* IDS_APP_NAME                    = NSLocalizedString( @"IDS_APP_NAME", nil );
-    NSString* IDS_OK                          = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_FACEBOOK_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_FACEBOOK_DEFAULT_MESSAGE", nil );
-    NSString* IDS_FACEBOOK_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_FACEBOOK_MESSAGE_SENT_OK", nil );
-    NSString* IDS_FACEBOOK_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE", nil );
-    
-    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook] )
-    {
-        SLComposeViewController* FacebookVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-        [FacebookVC setInitialText:IDS_FACEBOOK_DEFAULT_MESSAGE];
-        [FacebookVC addImage:self.iboSourceImageView.image];
-        
-        __block SLComposeViewController* weakFacebookVC = FacebookVC;
-        [FacebookVC setCompletionHandler:^( SLComposeViewControllerResult result )
-         {
-             if( result == SLComposeViewControllerResultDone )
-             {
-                 [[[UIAlertView alloc]initWithTitle:IDS_APP_NAME message:IDS_FACEBOOK_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
-             }
-             [weakFacebookVC dismissViewControllerAnimated:YES completion:nil];
-         }];
-        
-        [self presentViewController:FacebookVC animated:YES completion:nil];
-    }
-    else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_FACEBOOK_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  publishToTwitter                                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)publishToTwitter
-{
-    NSString* IDS_APP_NAME                   = NSLocalizedString( @"IDS_APP_NAME", nil );
-    NSString* IDS_OK                         = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_TWITTER_DEFAULT_MESSAGE    = NSLocalizedString( @"IDS_TWITTER_DEFAULT_MESSAGE", nil );
-    NSString* IDS_TWITTER_MESSAGE_SENT_OK    = NSLocalizedString( @"IDS_TWITTER_MESSAGE_SENT_OK", nil );
-    NSString* IDS_TWITTER_NO_ACCOUNT_MESSAGE = NSLocalizedString( @"IDS_TWITTER_NO_ACCOUNT_MESSAGE", nil );
-    
-    if( [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter] )
-    {
-        SLComposeViewController* TwitterVC = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [TwitterVC setInitialText:IDS_TWITTER_DEFAULT_MESSAGE];
-        [TwitterVC addImage:self.iboSourceImageView.image];
-        
-        __block SLComposeViewController* weakTwitterVC = TwitterVC;
-        [TwitterVC setCompletionHandler:^( SLComposeViewControllerResult result )
-         {
-             if( result == SLComposeViewControllerResultDone )
-             {
-                 [[[UIAlertView alloc]initWithTitle:IDS_APP_NAME message:IDS_TWITTER_MESSAGE_SENT_OK delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
-             }
-             [weakTwitterVC dismissViewControllerAnimated:YES completion:nil];
-         }];
-        
-        [self presentViewController:TwitterVC animated:YES completion:nil];
-    }
-    else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_TWITTER_NO_ACCOUNT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles: nil]show];
 }
 
 #pragma mark - UIResponder Methods

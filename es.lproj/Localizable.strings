@@ -99,10 +99,7 @@
 "IDS_FULL_SCREEN_MESSAGE" = "pulse sobre la fotografía para verla a pantalla completa";
 "IDS_SHARE_IMAGE_MESSAGE" = "Compartir esta imagen con las Redes Sociales";
 
-"IDS_FACEBOOK_DEFAULT_MESSAGE" = "Mensaje a Facebook: enviado desde la App JMFCameraIOS";
-"IDS_FACEBOOK_MESSAGE_SENT_OK" = "Mensaje a Facebook enviado correctamente";
-"IDS_FACEBOOK_NO_ACCOUNT_MESSAGE" = "No se ha encontrado ninguna cuenta de Facebook";
-"IDS_TWITTER_DEFAULT_MESSAGE" = "Mensaje a Twitter: enviado desde la App JMFCameraIOS";
-"IDS_TWITTER_MESSAGE_SENT_OK" = "Mensaje a Twitter enviado correctamente";
-"IDS_TWITTER_NO_ACCOUNT_MESSAGE" = "No se ha encontrado ninguna cuenta de Twitter";
+"IDS_SOCIAL_DEFAULT_MESSAGE" = "Mensaje enviado desde la App JMFCameraIOS";
+"IDS_SOCIAL_MESSAGE_SENT_OK" = "Mensaje enviado correctamente";
+
 

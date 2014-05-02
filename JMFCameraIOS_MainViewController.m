@@ -883,7 +883,7 @@
             
             JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
             [flickrEngine searchFlickrForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
-             {
+            {
                  dispatch_async(dispatch_get_main_queue(), ^
                  {
                      if( !error )
@@ -906,7 +906,7 @@
                      if( !error ) [self redrawControls:NO];
                      else [[[UIAlertView alloc]initWithTitle:@"Error" message:IDS_DOWNLOADING_ERROR delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
                  });
-             }];
+            }];
         }
     }];
 }

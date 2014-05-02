@@ -64,7 +64,5 @@
 - (void)onShareClicked;
 - (void)onFaceDetectionClicked;
 - (void)onFiltersClicked;
-- (void)publishToFacebook;
-- (void)publishToTwitter;
 
 @end
