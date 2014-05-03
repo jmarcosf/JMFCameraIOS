@@ -17,9 +17,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="nm2-nR-B7W">
-                    <rect key="frame" x="142" y="265" width="37" height="37"/>
+                    <rect key="frame" x="142" y="202" width="37" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
                 <tabBar contentMode="scaleToFill" id="RoP-z2-vLb">
                     <rect key="frame" x="0.0" y="519" width="320" height="49"/>

@@ -148,6 +148,7 @@
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     bFromCamera = NO;
     self.iboActivityIndicator.hidden = YES;
+    self.iboActivityIndicator.layer.zPosition = 100;
     [self.iboActivityIndicator stopAnimating];
     
     //Navigation Bar Buttons
@@ -172,7 +173,7 @@
     
     //TabBar
     self.iboTabBar.delegate = self;
-    self.iboTabBar.layer.zPosition = 1000;
+    self.iboTabBar.layer.zPosition = 10;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
@@ -227,11 +228,15 @@
     CGRect Rect = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height );
     Rect.size.height -= tabBarHeight;
     [iboEmptyAlbumLabel setFrame:Rect];
-    if( bFromCamera ) Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC
-    bFromCamera = NO;
+    if( bFromCamera )
+    {
+        self.iboActivityIndicator.hidden = NO;
+        [self.iboActivityIndicator startAnimating];
+        Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC ¿?
+        bFromCamera = NO;
+    }
     [self setFrame:Rect];
     
-//     [self.view bringSubviewToFront:iboEmptyAlbumLabel];
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
   
     //Refresh fetchedResultsController when Database has been re-built
@@ -241,6 +246,8 @@
                                                                               managedObjectContext:self.model.context
                                                                                 sectionNameKeyPath:nil
                                                                                          cacheName:nil]];
+        self.iboActivityIndicator.hidden = YES;
+        [self.iboActivityIndicator stopAnimating];
         self.model.bDroppedData = NO;
     }
     [self redrawControls:NO];
@@ -361,21 +368,29 @@
 /***************************************************************************/
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-    self.iboActivityIndicator.hidden = NO;
-    [self.iboActivityIndicator startAnimating];
-
-    UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    JMFPhoto* newPhoto = [JMFPhoto photoWithImage:image
-                                           source:JMFPhotoSourceCamera
-                                        thumbnail:nil
-                                        inContext:self.model.context];
-    [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
     [picker dismissViewControllerAnimated:YES completion:nil];
     bFromCamera = YES;
-    [self.model saveWithErrorBlock:nil];
     
-    self.iboActivityIndicator.hidden = YES;
-    [self.iboActivityIndicator stopAnimating];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async( queue, ^
+    {
+        UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        JMFPhoto* newPhoto = [JMFPhoto photoWithImage:image
+                                               source:JMFPhotoSourceCamera
+                                            thumbnail:nil
+                                            inContext:self.model.context];
+        [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
+        [self.model saveWithErrorBlock:nil];
+        [self performFetch];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            [self reloadData];
+            [self redrawControls:NO];
+            bFromCamera = NO;
+            self.iboActivityIndicator.hidden = YES;
+            [self.iboActivityIndicator stopAnimating];
+        });
+    });
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -485,7 +500,7 @@
     cell.bImageOK = ( image != nil );
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = !cell.isSelected;
-    cell.iboSelectedIcon.layer.zPosition = 100;
+    cell.iboSelectedIcon.layer.zPosition = 10;
     return cell;
 }
 

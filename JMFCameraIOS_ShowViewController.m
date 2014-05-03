@@ -21,6 +21,9 @@
 /***************************************************************************/
 @interface JMFCameraIOS_ShowViewController ()
 {
+    UIImageView*    imageView;
+    BOOL            bFullScreen;
+    CGRect          previousFrame;
 }
 
 @end
@@ -96,11 +99,12 @@
     self.iboScrollView.contentMode = UIViewContentModeScaleAspectFit;
     self.iboScrollView.delegate = self;
     
-    UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
     imageView.image = self.image;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFit;
     [self.iboZoomableView addSubview:imageView];
+    bFullScreen = NO;
     
     UITapGestureRecognizer* tapRecognizer =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector( onPictureClicked: )];
     [self.iboZoomableView addGestureRecognizer:tapRecognizer];
@@ -174,7 +178,21 @@
 /***************************************************************************/
 - (void)onPictureClicked:(UITapGestureRecognizer*)tapRecognizer
 {
-    //Pending to add show picture in full screen with animation
+    if( !bFullScreen )
+    {
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^
+        {
+             previousFrame = imageView.frame;
+             [self.iboScrollView setFrame:[[UIScreen mainScreen] bounds]];
+        } completion:^( BOOL finished ) { bFullScreen = YES; } ];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^
+        {
+            [imageView setFrame:previousFrame];
+        } completion:^( BOOL finished ) {bFullScreen = NO; } ];
+    }
 }
 
 @end

@@ -212,7 +212,7 @@
 {
     NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
     NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DROP_DATABASE", nil );
+    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DATABASE", nil );
     NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_DROP_DATABASE", nil );
     
     UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE

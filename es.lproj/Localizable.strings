@@ -106,7 +106,7 @@
 "IDS_DATABASE_DROPPED_WITH_ERROR" = "There was an error emptying database. Check app log.";
 "IDS_SOCIAL_DEFAULT_MESSAGE" = "Mensaje enviado desde la App JMFCameraIOS";
 "IDS_SOCIAL_MESSAGE_SENT_OK" = "Mensaje enviado correctamente";
-"IDS_DATABASE_DROPPED_SUCCESSFULLY" = "Base de Datos vaciada correctamente";
+"IDS_DATABASE_DROPPED_SUCCESSFULLY" = "La Base de Datos se ha vaciado correctamente";
 "IDS_DATABASE_DROPPED_WITH_ERROR" = "Ha habido un error al vaciar la Base de Datos. Compruebe el log de la aplicación.";
 
 "IDS_FLICKR_SYNC" = "Sincronizar con Flickr";
@@ -114,5 +114,4 @@
 "IDS_FLICKR_SYNC_PICTURES" = "Sincronizar fotos con Flickr";
 "IDS_FREQUENCY" = "Frequencia";
 "IDS_DROP_DATABASE" = "Vaciar la Base de Datos";
-
 
