@@ -51,10 +51,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (CIFilter*)ciFilter;
 - (BOOL)isActive;
 - (BOOL)isValidFilter;
-- (BOOL)isValidCIFilter;
+- (BOOL)isValidCIFilter:(CIFilter*)filter;
 - (NSString*)activeToString;
 
 @end

@@ -320,6 +320,8 @@
             JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
             ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = filter.name;
             ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[NSLocalizedString( @"IDS_ACTIVE", nil ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
+            CGRect Rect = ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.frame;
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.frame = CGRectMake( Rect.origin.x, Rect.origin.y, Rect.size.width + 85, Rect.size.height );
             break;
         }
             

@@ -745,37 +745,35 @@
 {
     self.iboActivityIndicator.hidden = NO;
     [self.iboActivityIndicator startAnimating];
-
-    CIContext* context = [CIContext contextWithOptions:nil];
-    CIImage* ciImage = [CIImage imageWithCGImage:self.iboSourceImage.image.CGImage];
+    targetImage = nil;
+    [self setTargetImage];
     
     dispatch_queue_t filterQueue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0 );
     dispatch_async( filterQueue, ^
     {
-        CIImage* resultImage = ciImage;
+        CIContext* context = [CIContext contextWithOptions:nil];
+        CIImage* resultImage = [CIImage imageWithCGImage:self.iboSourceImage.image.CGImage];
         for( JMFFilter* filter in [fetchedResultsController fetchedObjects] )
         {
-            if( filter.isActive && filter.isValidFilter )
+            CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
+            if( [filter isActive] && [filter isValidFilter] && [filter isValidCIFilter:ciFilter] )
             {
-                if( [filter isValidCIFilter] )
+                [ciFilter setDefaults];
+                [ciFilter setValue:resultImage forKey:kCIInputImageKey];
+                if( [[ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
                 {
-                    [filter.ciFilter setDefaults];
-                    [filter.ciFilter setValue:resultImage forKey:kCIInputImageKey];
-                    if( [[filter.ciFilter attributes] objectForKey:kCIInputIntensityKey] != nil )
-                    {
-                        [filter.ciFilter setValue:@0.7f forKey:kCIInputIntensityKey];
-                    }
-                    resultImage = [filter.ciFilter valueForKey:kCIOutputImageKey];
+                    [ciFilter setValue:@0.7f forKey:kCIInputIntensityKey];
                 }
+                resultImage = [ciFilter valueForKey:kCIOutputImageKey];
+                [ciFilter setValue:nil forKey:kCIInputImageKey];
             }
         }
-        CGImageRef cgiImage = [context createCGImage:resultImage fromRect:[resultImage extent]];
+        targetImage = [UIImage imageWithCGImage:[context createCGImage:resultImage fromRect:[resultImage extent]]];
 
         dispatch_queue_t mainQueue = dispatch_get_main_queue();
         dispatch_async( mainQueue, ^
         {
             bModified = YES;
-            targetImage = [UIImage imageWithCGImage:cgiImage];
             [self setTargetImage];
             [self enableButtons];
             self.iboActivityIndicator.hidden = YES;

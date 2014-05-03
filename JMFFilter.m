@@ -22,7 +22,6 @@
 /***************************************************************************/
 @interface JMFFilter ()
 {
-    CIFilter*  _ciFilter;
 }
 @end
 
@@ -106,18 +105,6 @@
     [self setCreationDate:[NSDate date]];
     [self setModificationDate:[NSDate date]];
 }
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  ciFilter                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (CIFilter*)ciFilter
-{
-    if( _ciFilter == nil ) _ciFilter = [CIFilter filterWithName:self.name];
-    return _ciFilter;
-}
 
 #pragma mark - Instance Methods
 /***************************************************************************/
@@ -139,7 +126,7 @@
 /***************************************************************************/
 - (BOOL)isActive
 {
-    return( self.activeValue );
+    return self.activeValue;
 }
 
 /***************************************************************************/
@@ -169,10 +156,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (BOOL)isValidCIFilter
+- (BOOL)isValidCIFilter:(CIFilter*)filter
 {
     BOOL bValid = NO;
-    if( [[self.ciFilter attributes] objectForKey:kCIInputImageKey] != nil )
+    if( [[filter attributes] objectForKey:kCIInputImageKey] != nil )
     {
         bValid = YES;
     }
