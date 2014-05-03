@@ -12,6 +12,7 @@
 /***************************************************************************/
 
 "IDS_APP_NAME" = "JMFCameraIOS";
+"IDS_SETTINGS" = "Preferencias";
 "IDS_ERROR" = "Error";
 "IDS_OK" = "Aceptar";
 "IDS_CANCEL" = "Cancelar";
@@ -36,7 +37,7 @@
 "IDS_FULL_FACE_DETECTION" = "Reconocimiento Facial";
 "IDS_FILTERS" = "Filtros";
 "IDS_SHOW" = "Mostrar";
-"IDS_METADATA" = "Metadata";
+"IDS_METADATA" = "Meta-Datos";
 "IDS_LOCATION" = "Localización";
 "IDS_FACES" = "Faces";
 "IDS_FILTER" = "Filtro";
@@ -54,6 +55,8 @@
 "IDS_ACTIVE" = "Activo";
 "IDS_SAVE" = "Guardar";
 "IDS_PROCESS" = "Procesar";
+"IDS_MINUTE" = "minuto";
+"IDS_CAMEL_MINUTE" = "Minuto";
 
 "IDS_SOURCE" = "Origen";
 "IDS_COLOR_MODEL" = "Modelo de Color";
@@ -88,7 +91,7 @@
 "IDS_PICTURE_LOCATION" = "Ubicación de la Foto";
 
 "IDS_INIT_ERROR_MESSAGE" = "Los directorios de la aplicación no han podido crearse!";
-"IDS_EMPTY_ALBUM_MESSAGE" = "Bienvenido a JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener fotos de Flickr";
+"IDS_EMPTY_ALBUM_MESSAGE" = "JMFCameraIOS\n\nNo tienes ninguna foto en el álbum\n\nPulsa sobre la cámara para obtener una foto con el dispositivo o pulsa en el botón \“Flickr\” para obtener fotos de Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No se ha encontrado ninguna camara. ¿Estás usando el simulador?";
 "IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Descargar fotos de Flickr\nTeclee el término de búsqueda:";
 "IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Teclee el término de búsqueda";
@@ -98,8 +101,18 @@
 "IDS_CONFIRM_MULTI_DELETION_MESSAGE" = "¿Seguro que desea eliminar estas %d fotografías?";
 "IDS_FULL_SCREEN_MESSAGE" = "pulse sobre la fotografía para verla a pantalla completa";
 "IDS_SHARE_IMAGE_MESSAGE" = "Compartir esta imagen con las Redes Sociales";
-
+"IDS_CONFIRM_DROP_DATABASE" = "¿Esta seguro de borrar la Base de Datos de fotografías?";
+"IDS_DATABASE_DROPPED_SUCCESSFULLY" = "Database emptied successfully";
+"IDS_DATABASE_DROPPED_WITH_ERROR" = "There was an error emptying database. Check app log.";
 "IDS_SOCIAL_DEFAULT_MESSAGE" = "Mensaje enviado desde la App JMFCameraIOS";
 "IDS_SOCIAL_MESSAGE_SENT_OK" = "Mensaje enviado correctamente";
+"IDS_DATABASE_DROPPED_SUCCESSFULLY" = "Base de Datos vaciada correctamente";
+"IDS_DATABASE_DROPPED_WITH_ERROR" = "Ha habido un error al vaciar la Base de Datos. Compruebe el log de la aplicación.";
+
+"IDS_FLICKR_SYNC" = "Sincronizar con Flickr";
+"IDS_DATABASE" = "Base de Datos";
+"IDS_FLICKR_SYNC_PICTURES" = "Sincronizar fotos con Flickr";
+"IDS_FREQUENCY" = "Frequencia";
+"IDS_DROP_DATABASE" = "Vaciar la Base de Datos";
 
 

@@ -15,6 +15,7 @@
 #import "JMFCameraIOS_MainTVCell.h"
 #import "JMFCameraIOS_AlbumViewController.h"
 #import "JMFCameraIOS_EditViewController.h"
+#import "JMFCameraIOS_SettingsViewController.h"
 #import "JMFFlickr.h"
 @import AddressBook;
 
@@ -232,6 +233,8 @@
     [self redrawControls:NO];
     [self.view bringSubviewToFront:iboEmptyAlbumLabel];
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
+    
+    [self redrawControls:NO];
 }
 
 /***************************************************************************/
@@ -677,6 +680,7 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons
 {
+    if( bOnlyButtons == NO ) [self performFetch];
     long count = [[self.fetchedResultsController fetchedObjects]count];
     
     if( bOnlyButtons == NO )
@@ -745,7 +749,8 @@
 /***************************************************************************/
 - (void)onSettingsClicked:(id)sender
 {
-    
+    JMFCameraIOS_SettingsViewController* settingsVC = [[JMFCameraIOS_SettingsViewController alloc] initWithModel:self.model];
+    [self.navigationController pushViewController:settingsVC animated:YES];
 }
 
 /***************************************************************************/

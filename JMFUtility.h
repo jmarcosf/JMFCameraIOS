@@ -34,7 +34,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (BOOL)createApplicationDirectories;
++ (NSError*)createApplicationDirectories;
++ (NSError*)removeApplicationDirectories;
++ (NSError*)emptyApplicationDirectories;
 + (NSString*)generateNewImageFileName;
 + (NSString*)pathForImageFileName:(NSString*)imageFileName;
 + (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName;

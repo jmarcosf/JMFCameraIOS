@@ -1,16 +1,16 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFUtility.m                                                           */
+/*  JMFCameraIOS_SettingsViewController.m                                  */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               JMFUtility Class implementation File                      */
+/*               Settings View Controller Class implementation file        */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFUtility.h"
+#import "JMFCameraIOS_SettingsViewController.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -19,243 +19,223 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define APPLICATION_IMAGES_SUBDIRECTORY                     @"/Images"
-#define APPLICATION_THUMBNAILS_SUB_DIRECTORY                @"/Thumbnails"
-#define CURRENT_IMAGE_NUMBER_KEY                            @"CurrentImageNumber"
+#define PREFERENCE_SYNC_TO_FLKR_KEY             @"PreferenceSyncToFlickrKey"
+#define PREFERENCE_SYNC_FREQUENCY               @"PreferenceSyncFrequencyKey"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  JMFUtility Class Implementation                                        */
-/*                                                                         */
-/*                                                                         */
+/*  JMFCameraIOS_SettingsViewController Class Interface                    */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFUtility
-
-#pragma mark - Class Methods
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  JMFUtility Class Methods                                               */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDocumentsDirectory                                          */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)applicationDocumentsDirectory
+@interface JMFCameraIOS_SettingsViewController ()
 {
-    return [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSArray*            frequencyStrings;
+    NSArray*            frecuencyValues;
+    NSUserDefaults*     appPreferences;
+    BOOL                bSyncToFlickr;
+    int                 iSyncFrequency;
 }
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  imagesDirectory                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)imagesDirectory
-{
-    return [[JMFUtility applicationDocumentsDirectory] stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
-}
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  thumbnailsDirectory                                                    */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFCameraIOS_SettingsViewController Class Implemantation               */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSString*)thumbnailsDirectory
-{
-    return [[JMFUtility applicationDocumentsDirectory] stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
-}
+@implementation JMFCameraIOS_SettingsViewController
 
+#pragma mark - Initialization Methods
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  createApplicationDirectories                                           */
+/*                                                                         */
+/*                                                                         */
+/*  Initialization Methods                                                 */
+/*                                                                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSError*)createApplicationDirectories
+/*                                                                         */
+/*                                                                         */
+/*  initWithModel:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithModel:(JMFCoreDataStack *)model
 {
-    NSString* imagesDirectory = [JMFUtility imagesDirectory];
-    NSString* thumbnailsDirectory = [JMFUtility thumbnailsDirectory];
-    NSError* error = nil;
-
-    if( ![[NSFileManager defaultManager] fileExistsAtPath:imagesDirectory] )
+    self = [super initWithNibName:nil bundle:nil];
+    if( self )
     {
-        [[NSFileManager defaultManager] createDirectoryAtPath:imagesDirectory withIntermediateDirectories:NO attributes:nil error:&error];
-        if( error != nil ) return error;
+        self.model = model;
     }
+    return self;
+}
+
+#pragma mark - UIViewController Override Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UIViewController Override Methods                                      */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  viewDidLoad                                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationController.navigationBar.translucent = NO;
+    self.title = NSLocalizedString( @"IDS_SETTINGS", nil );
     
-    if( ![[NSFileManager defaultManager] fileExistsAtPath:thumbnailsDirectory] )
-    {
-        [[NSFileManager defaultManager] createDirectoryAtPath:thumbnailsDirectory withIntermediateDirectories:NO attributes:nil error:&error];
-    }
+    //Containers
+    self.iboFlickrSyncContainer.layer.borderWidth = self.iboFrequencyContainer.layer.borderWidth = self.iboDropContainer.layer.borderWidth = 1;
+    self.iboFlickrSyncContainer.layer.borderColor = self.iboFrequencyContainer.layer.borderColor = self.iboDropContainer.layer.borderColor = [Rgb2UIColor( 200, 200, 200 ) CGColor];
+
+    //Titles
+    self.iboFlickrSyncTitle.text = NSLocalizedString( @"IDS_FLICKR_SYNC", nil );
+    self.iboDatabaseTitle.text   = NSLocalizedString( @"IDS_DATABASE", nil );
+
+    //Labels
+    self.iboFlickrSyncLabel.text = NSLocalizedString( @"IDS_FLICKR_SYNC_PICTURES", nil );
+    self.iboFrequencyLabel.text  = NSLocalizedString( @"IDS_FREQUENCY", nil );
+    self.iboDropLabel.text       = NSLocalizedString( @"IDS_DROP_DATABASE", nil );
+
+    //Frecuency
+    NSString* minute = NSLocalizedString( @"IDS_MINUTE", nil );
+    frequencyStrings = [NSArray arrayWithObjects:[NSString stringWithFormat:@"15 %@s",  minute],
+                                                 [NSString stringWithFormat:@"30 %@s",  minute],
+                                                 [NSString stringWithFormat:@"45 %@s",  minute],
+                                                 [NSString stringWithFormat:@"60 %@s",  minute],
+                                                 [NSString stringWithFormat:@"90 %@s",  minute],
+                                                 [NSString stringWithFormat:@"120 %@s", minute],
+                                                 nil];
+    frecuencyValues = [NSArray arrayWithObjects:@15, @30, @45, @60, @90, @120, nil];
+    self.iboFrequencySetepper.maximumValue = 5;
+
+    //Database
+    self.iboDropSwitch.on = NO;
     
-    if( COREDATA_DEBUG && error ) NSLog( @"Error creating App Directories: %@", error );
-    return error;
+    //Read Defaults
+    appPreferences = [NSUserDefaults standardUserDefaults];
+    bSyncToFlickr  = NO;
+    bSyncToFlickr  = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
+    iSyncFrequency = 0;
+    iSyncFrequency = [[appPreferences objectForKey:PREFERENCE_SYNC_FREQUENCY] intValue];
+    self.iboFrequencySetepper.value = (double)iSyncFrequency;
+
+    self.iboFlickrsyncSwitch.on = bSyncToFlickr;
+    self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];
+    self.iboFrequencySetepper.enabled = bSyncToFlickr;
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  removeApplicationDirectories                                           */
+/*  didReceiveMemoryWarning                                                */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSError*)removeApplicationDirectories
+- (void)didReceiveMemoryWarning
 {
-    NSString* imagesDirectory = [JMFUtility imagesDirectory];
-    NSString* thumbnailsDirectory = [JMFUtility thumbnailsDirectory];
-    NSError* error = nil;
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - IBAction Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  IBAction Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onSyncPicturesChanged:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onSyncPicturesChanged:(id)sender
+{
+    bSyncToFlickr = self.iboFlickrsyncSwitch.on;
+    self.iboFrequencySetepper.enabled = bSyncToFlickr;
+    [appPreferences setObject:[NSNumber numberWithBool:bSyncToFlickr] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
+    [appPreferences synchronize];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onFrequencyValueChanged:                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onFrequencyValueChanged:(id)sender
+{
+    iSyncFrequency = (double)self.iboFrequencySetepper.value;
+    [appPreferences setObject:[NSNumber numberWithInt:iSyncFrequency] forKey:PREFERENCE_SYNC_FREQUENCY];
+    [appPreferences synchronize];
+    self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];    
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onDropDatabaseChanged:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onDropDatabaseChanged:(id)sender
+{
+    NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
+    NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
+    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DROP_DATABASE", nil );
+    NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_DROP_DATABASE", nil );
     
-    if( [[NSFileManager defaultManager] fileExistsAtPath:imagesDirectory] )
+    UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
+                                                            delegate:nil
+                                                   cancelButtonTitle:IDS_CANCEL
+                                              destructiveButtonTitle:IDS_OK
+                                                   otherButtonTitles:nil];
+    [actionSheet showInView:self.view withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
     {
-        [[NSFileManager defaultManager] removeItemAtPath:imagesDirectory error:&error];
-        if( error != nil ) return error;
-    }
-    
-    if( [[NSFileManager defaultManager] fileExistsAtPath:thumbnailsDirectory] )
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:thumbnailsDirectory error:&error];
-    }
-    
-    if( COREDATA_DEBUG && error ) NSLog( @"Error deleting App Directories: %@", error );
-    return error;
-}
+        if( buttonIndex == 0 )
+        {
+            NSError* error = nil;
+            if( ( error = [JMFUtility emptyApplicationDirectories ] ) == nil )
+            {
+                error = [self.model dropDatabaseData];
+                [UIApplication sharedApplication]ex
+            }
+            NSString* IDS_RESULT_MESSAGE = ( error == nil ) ? NSLocalizedString( @"IDS_DATABASE_DROPPED_SUCCESSFULLY", nil )
+                                                            : NSLocalizedString( @"IDS_DATABASE_DROPPED_WITH_ERROR", nil );
+            [[[UIAlertView alloc]initWithTitle:IDS_TITLE message:IDS_RESULT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
+        }
+        self.iboDropSwitch.on = NO;
+    }];
 
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  emptyApplicationDirectories                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSError*)emptyApplicationDirectories
-{
-    NSError* error = nil;
-    if( ( error = [self removeApplicationDirectories] ) == nil )
-    {
-        error = [self createApplicationDirectories];
-    }
-    return error;
 }
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  generateNewImageFileName                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)generateNewImageFileName
-{
-    NSUserDefaults* defaultsDictionary = [NSUserDefaults standardUserDefaults];
-    long currentImageNumber = [[defaultsDictionary objectForKey:CURRENT_IMAGE_NUMBER_KEY] integerValue];
-    NSString* newFileName = [NSString stringWithFormat:@"IMG%05ld.jpg", ++currentImageNumber];
-    [defaultsDictionary setObject:[NSNumber numberWithInteger:currentImageNumber] forKey:CURRENT_IMAGE_NUMBER_KEY];
-    [defaultsDictionary synchronize];
-    return newFileName;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  pathForImageFileName:imageFileName:                                    */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)pathForImageFileName:(NSString*)imageFileName
-{
-    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
-    NSString* imageDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
-    return [imageDirectory stringByAppendingString:[NSString stringWithFormat:@"/%@", imageFileName]];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  pathForThumbnailFileName:thumbnailFileName:                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName
-{
-    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
-    NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
-    return [thumbnailsDirectory stringByAppendingString:[NSString stringWithFormat:@"/%@", thumbnailFileName]];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  pathForFilteredImageFileName:imageFileName:                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)pathForFilteredImageFileName:(NSString*)imageFileName
-{
-    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
-    NSString* imageDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_IMAGES_SUBDIRECTORY];
-    return [NSString stringWithFormat:@"%@/FLT%@", imageDirectory, imageFileName];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  pathForFilteredThumbnailFileName:thumbnailFileName:                    */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)pathForFilteredThumbnailFileName:(NSString*)thumbnailFileName
-{
-    NSString* documentsDirectory = [NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
-    NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:APPLICATION_THUMBNAILS_SUB_DIRECTORY];
-    return [NSString stringWithFormat:@"%@/FLT%@", thumbnailsDirectory, thumbnailFileName];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  formattedStringFromDate:withFormat:                                    */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format
-{
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:NSLocalizedString( format, nil )];
-    return [dateFormatter stringFromDate:date];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  indexPathForCellSubview:inTableView:                                   */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSIndexPath*)indexPathForCellSubview:(UIView*)view inTableView:(UITableView*)tableView
-{
-    while( view != nil )
-    {
-        if ([view isKindOfClass:[UITableViewCell class]]) return [tableView indexPathForCell:(UITableViewCell*)view];
-        else view = [view superview];
-    }
-    return nil;
-}
-
 @end

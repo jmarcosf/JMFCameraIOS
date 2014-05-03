@@ -48,7 +48,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    if( ![JMFUtility createApplicationDirectories] )
+    if( [JMFUtility createApplicationDirectories] )
     {
         NSString* IDS_OK      = NSLocalizedString( @"IDS_OK", nil );
         NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_INIT_ERROR_MESSAGE", nil );

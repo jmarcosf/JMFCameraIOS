@@ -1,70 +1,76 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCoreDataStack.h                                                     */
+/*  JMFCameraIOS_SettingsViewController.h                                  */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Core Data Stack Class definition file                     */
+/*               Settings View Controller Class definition file            */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: Modified from AGTCoreDataStack.h                          */
 /*                                                                         */
 /***************************************************************************/
-#import <Foundation/Foundation.h>
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  Class forwarding                                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@class NSManagedObjectContext;
+#import <UIKit/UIKit.h>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  JMFCoreDataStack Class Interface                                       */
-/*                                                                         */
+/*  JMFCameraIOS_SettingsViewController Class Interface                    */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCoreDataStack : NSObject
+@interface JMFCameraIOS_SettingsViewController : UIViewController
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Properties                                                             */
+/* Properties                                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (strong, nonatomic, readonly) NSManagedObjectContext* context;
+@property (nonatomic,strong) JMFCoreDataStack*      model;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Class Methods                                                          */
+/* IBOutlets                                                               */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSString*)persistentStoreCoordinatorErrorNotificationName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName databaseFileName:(NSString*)databaseFileName;
-+ (JMFCoreDataStack*)coreDataStackWithModelName:(NSString*)modelName databaseUrl:(NSURL*)databseUrl;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncTitle;
+@property (weak, nonatomic) IBOutlet UIView*        iboFlickrSyncContainer;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncLabel;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboFlickrsyncSwitch;
+@property (weak, nonatomic) IBOutlet UIView*        iboFrequencyContainer;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyLabel;
+@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyValue;
+@property (weak, nonatomic) IBOutlet UIStepper*     iboFrequencySetepper;
+@property (weak, nonatomic) IBOutlet UILabel*       iboDatabaseTitle;
+@property (weak, nonatomic) IBOutlet UIView*        iboDropContainer;
+@property (weak, nonatomic) IBOutlet UILabel*       iboDropLabel;
+@property (weak, nonatomic) IBOutlet UISwitch*      iboDropSwitch;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Instance Methods                                                       */
+/* Instance Methods                                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModelName:(NSString*)modelName databaseUrl:(NSURL*)databaseUrl;
-- (NSError*)dropDatabaseData;
-- (void)saveWithErrorBlock:(void(^)(NSError* error))errorBlock;
+- (id)initWithModel:(JMFCoreDataStack*)model;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* IBActions                                                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onSyncPicturesChanged:(id)sender;
+- (IBAction)onFrequencyValueChanged:(id)sender;
+- (IBAction)onDropDatabaseChanged:(id)sender;
+
 
 @end

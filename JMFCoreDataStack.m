@@ -223,7 +223,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)dropDatabaseData
+- (NSError*)dropDatabaseData
 {
     NSError* error = nil;
     for( NSPersistentStore* store in self.storeCoordinator.persistentStores )
@@ -246,6 +246,7 @@
     _context = nil;
     _storeCoordinator = nil;
     [self context]; // this will rebuild the stack
+    return error;
 }
 
 /***************************************************************************/
