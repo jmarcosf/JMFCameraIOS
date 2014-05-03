@@ -228,7 +228,6 @@
             if( ( error = [JMFUtility emptyApplicationDirectories ] ) == nil )
             {
                 error = [self.model dropDatabaseData];
-                [UIApplication sharedApplication]ex
             }
             NSString* IDS_RESULT_MESSAGE = ( error == nil ) ? NSLocalizedString( @"IDS_DATABASE_DROPPED_SUCCESSFULLY", nil )
                                                             : NSLocalizedString( @"IDS_DATABASE_DROPPED_WITH_ERROR", nil );

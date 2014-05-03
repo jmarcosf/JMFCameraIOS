@@ -211,6 +211,7 @@
     {
         self.modelUrl = [[NSBundle mainBundle] URLForResource:modelName withExtension:@"momd"];
         self.databaseUrl = databaseUrl;
+        self.bDroppedData = NO;
     }
     
     return self;
@@ -246,6 +247,7 @@
     _context = nil;
     _storeCoordinator = nil;
     [self context]; // this will rebuild the stack
+    self.bDroppedData = YES;
     return error;
 }
 

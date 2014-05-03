@@ -47,6 +47,7 @@
 /***************************************************************************/
 @interface JMFCameraIOS_MainViewController ()
 {
+    NSFetchRequest*         fetchRequest;
     CGFloat                 statusBarHeight;
     CGFloat                 navigationBarHeight;
     CGFloat                 tabBarHeight;
@@ -105,9 +106,9 @@
 /***************************************************************************/
 - (id)initWithModel:(JMFCoreDataStack*)model
 {
-    NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFPhoto entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
-    NSFetchedResultsController* fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+    fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[JMFPhoto entityName]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES selector:@selector( caseInsensitiveCompare: )]];
+    NSFetchedResultsController* fetchResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                                              managedObjectContext:model.context
                                                                                                sectionNameKeyPath:nil
                                                                                                         cacheName:nil];
@@ -230,10 +231,18 @@
     bFromCamera = NO;
     [self setFrame:Rect];
     
-    [self redrawControls:NO];
-    [self.view bringSubviewToFront:iboEmptyAlbumLabel];
+//     [self.view bringSubviewToFront:iboEmptyAlbumLabel];
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
-    
+  
+    //Refresh fetchedResultsController when Database has been re-built
+    if( self.model.bDroppedData )
+    {
+        [self setFetchedResultsController:[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                              managedObjectContext:self.model.context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:nil]];
+        self.model.bDroppedData = NO;
+    }
     [self redrawControls:NO];
 }
 
@@ -680,7 +689,6 @@
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons
 {
-    if( bOnlyButtons == NO ) [self performFetch];
     long count = [[self.fetchedResultsController fetchedObjects]count];
     
     if( bOnlyButtons == NO )
