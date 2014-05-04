@@ -65,6 +65,7 @@
 /*                                                                         */
 /***************************************************************************/
 - (void)redrawControls:(BOOL)bOnlyButtons;
+- (void)animateModeChange;
 - (void)editPhoto;
 - (void)onSettingsClicked:(id)sender;
 - (void)onSelectClicked:(id)sender;

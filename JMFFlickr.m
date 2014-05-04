@@ -21,7 +21,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-#define kFlickrAPIKey               @"f886542ef1da27324037337a59dee61a"
+//#define kFlickrAPIKey               @"f886542ef1da27324037337a59dee61a"
+#define kFlickrAPIKey               @"594def730d7175eea7deb139366585e1"
+#define kFlickrAPISecret            @"e3e3593531b25d4c"
 #define IDS_FLICKR_SEARCH_URL       @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=10&format=json&nojsoncallback=1"
 #define IDS_FLICKR_PHOTO_URL        @"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg"
 

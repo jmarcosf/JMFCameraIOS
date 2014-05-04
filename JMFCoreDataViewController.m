@@ -86,26 +86,12 @@
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
-                                 frame:(CGRect)frame
-                                 style:(UITableViewStyle)style
-                  collectionViewLayout:(UICollectionViewLayout*)layout
                               viewMode:(JMFCoreDataViewMode)viewMode
 {
     if( self = [super init] )
     {
         self.fetchedResultsController   = fetchedResultsController;
-        self.tableView                  = [[UITableView alloc] initWithFrame:frame style:style];
-        self.layout                     = layout;
-        self.collectionView             = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:layout];
         _viewMode                       = viewMode;
-        
-        self.tableView.dataSource       = self;
-        self.tableView.delegate         = self;
-        self.collectionView.dataSource  = self;
-        self.collectionView.delegate    = self;
-        
-        [self.view addSubview:self.tableView];
-        [self.view addSubview:self.collectionView];
     }
     return self;
 }

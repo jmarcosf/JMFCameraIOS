@@ -55,9 +55,8 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 /*                                                                         */
 /***************************************************************************/
 @property (nonatomic, strong) NSFetchedResultsController*   fetchedResultsController;
-@property (nonatomic, retain) UITableView*                  tableView;
 @property (nonatomic, retain) UICollectionView*             collectionView;
-@property (nonatomic, retain) UICollectionViewLayout*       layout;
+@property (nonatomic, retain) UITableView*                  tableView;
 @property (nonatomic)         JMFCoreDataViewMode           viewMode;
 @property (nonatomic)         JMFCoreDataViewMode           oldViewMode;
 
@@ -69,9 +68,6 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController
-                                  frame:(CGRect)frame
-                                 style:(UITableViewStyle)style
-                  collectionViewLayout:(UICollectionViewLayout*)layout
                               viewMode:(JMFCoreDataViewMode)viewMode;
 - (void)setFetchedResultsController:(NSFetchedResultsController*)newFetchedResultsController;
 - (void)performFetch;

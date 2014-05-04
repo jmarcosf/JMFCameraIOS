@@ -53,6 +53,7 @@
     CGFloat                 tabBarHeight;
     
     UIBarButtonItem*        iboSelectButton;
+    UIView*                 iboContainer;
     UILabel*                iboEmptyAlbumLabel;
     
     NSMutableArray*         tbiaMosaicMode;
@@ -112,12 +113,8 @@
                                                                                              managedObjectContext:model.context
                                                                                                sectionNameKeyPath:nil
                                                                                                         cacheName:nil];
-    self = [super initWithFetchedResultsController:fetchResultsController
-                                             frame:CGRectMake( 0, 0, 0, 0 )
-                                             style:UITableViewStylePlain
-                              collectionViewLayout:[[UICollectionViewFlowLayout alloc]init]
-                                          viewMode:JMFCoreDataViewModeMosaic];
-    if( self )
+
+    if( self = [super initWithFetchedResultsController:fetchResultsController viewMode:JMFCoreDataViewModeMosaic] )
     {
         self.model = model;
         self.model.context.undoManager = [[NSUndoManager alloc]init];
@@ -135,7 +132,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.title = NSLocalizedString( @"IDS_APP_NAME", nil );
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     self.navigationController.navigationBar.translucent = NO;
@@ -144,7 +141,6 @@
     navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
     tabBarHeight = self.iboTabBar.frame.size.height;
     
-    CGRect Rect = CGRectMake( 0, 0, 0, 0 );
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     bFromCamera = NO;
     self.iboActivityIndicator.hidden = YES;
@@ -187,7 +183,15 @@
     tbiaMosaicMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
     tbiaListMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
     [tbiaListMode replaceObjectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX withObject:tbiMosaicMode];
-    
+
+    //Container
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect Rect = CGRectMake( 0, 0, screenRect.size.width, screenRect.size.height - statusBarHeight - navigationBarHeight - tabBarHeight );
+    iboContainer = [[UIView alloc]initWithFrame:Rect];
+    iboContainer.layer.zPosition = -5;
+    iboContainer.clipsToBounds = YES;
+    [self.view addSubview:iboContainer];
+
     //UILabel
     iboEmptyAlbumLabel = [[UILabel alloc]initWithFrame:Rect];
     iboEmptyAlbumLabel.backgroundColor = [UIColor groupTableViewBackgroundColor];
@@ -196,22 +200,32 @@
     iboEmptyAlbumLabel.numberOfLines = 10;
     iboEmptyAlbumLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
     iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", nil );
-    [self.view addSubview:iboEmptyAlbumLabel];
+    iboEmptyAlbumLabel.layer.zPosition = 5;
+    [iboContainer addSubview:iboEmptyAlbumLabel];
     
     // Collection View
-    UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout*)self.layout;
+
+    UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.collectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
     self.collectionView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.collectionView.allowsMultipleSelection = bMultiSelectMode;
     [self.collectionView registerClass:[UICollectionViewCell class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:IDS_MAINCV_HEADER_CELL_IDENTIFIER];
     [self.collectionView registerNib:[UINib nibWithNibName:IDS_MAINCV_PHOTO_CELL_XIBNAME bundle:nil] forCellWithReuseIdentifier:IDS_MAINCV_PHOTO_CELL_IDENTIFIER];
+    self.collectionView.layer.zPosition = 4;
+    self.collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    [iboContainer addSubview:self.collectionView];
     
     //Table View
+    self.tableView = [[UITableView alloc]initWithFrame:Rect style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.tableView.allowsMultipleSelection = bMultiSelectMode;
     [self.tableView registerNib:[UINib nibWithNibName:IDS_MAINTV_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_MAINTV_CELL_IDENTIFIER];
-
-    [self setFrame:Rect];
+    self.tableView.layer.zPosition = 4;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [iboContainer addSubview:self.tableView];
 }
 
 /***************************************************************************/
@@ -225,9 +239,11 @@
 {
     [super viewWillAppear:animated];
     
-    CGRect Rect = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height );
-    Rect.size.height -= tabBarHeight;
-    [iboEmptyAlbumLabel setFrame:Rect];
+//    statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+//    navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+//    tabBarHeight = self.iboTabBar.frame.size.height;
+    
+    CGRect Rect = CGRectMake( 0, statusBarHeight + navigationBarHeight, self.view.frame.size.width, self.view.frame.size.height - statusBarHeight - navigationBarHeight - tabBarHeight );
     if( bFromCamera )
     {
         self.iboActivityIndicator.hidden = NO;
@@ -235,7 +251,10 @@
         Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC ¿?
         bFromCamera = NO;
     }
-    [self setFrame:Rect];
+//    [iboContainer setFrame:Rect];
+//    [self.collectionView setFrame:Rect];
+//    [self.tableView setFrame:Rect];
+//    [iboEmptyAlbumLabel setFrame:Rect];
     
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
   
@@ -704,8 +723,7 @@
     
     if( bOnlyButtons == NO )
     {
-//        iboEmptyAlbumLabel.hidden = self.collectionView.hidden = self.tableView.hidden = YES;
-        iboEmptyAlbumLabel.hidden = YES;// self.collectionView.hidden = self.tableView.hidden = YES;
+        iboEmptyAlbumLabel.hidden = YES;
         if( count <= 0 ) self.viewMode = JMFCoreDataViewModeNone;
         else if( self.viewMode == JMFCoreDataViewModeNone ) self.viewMode = JMFCoreDataViewModeMosaic;
         
@@ -720,8 +738,6 @@
 
             case JMFCoreDataViewModeMosaic:
             case JMFCoreDataViewModeList:
-//                self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
-//                self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
                 [self animateModeChange];
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
                 iboSelectButton.enabled = YES;
@@ -740,6 +756,13 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  animateModeChange                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
 - (void)animateModeChange
 {
     if( self.oldViewMode == JMFCoreDataViewModeNone || self.oldViewMode == JMFCoreDataViewModeUnknown ||
@@ -754,12 +777,11 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.75];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationTransition:animationTrnasition forView:self.view cache:YES];
+    [UIView setAnimationTransition:animationTrnasition forView:iboContainer cache:YES];
     self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
     self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
     [UIView commitAnimations];
 }
-
 
 /***************************************************************************/
 /*                                                                         */
