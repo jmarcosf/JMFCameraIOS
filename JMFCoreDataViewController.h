@@ -59,6 +59,7 @@ typedef NS_ENUM( NSInteger, JMFCoreDataViewMode )
 @property (nonatomic, retain) UICollectionView*             collectionView;
 @property (nonatomic, retain) UICollectionViewLayout*       layout;
 @property (nonatomic)         JMFCoreDataViewMode           viewMode;
+@property (nonatomic)         JMFCoreDataViewMode           oldViewMode;
 
 /***************************************************************************/
 /*                                                                         */

@@ -605,10 +605,6 @@
     return cell;
 }
 
-
-
-
-
 #pragma mark - UITableViewDelegate
 /***************************************************************************/
 /*                                                                         */
@@ -708,7 +704,8 @@
     
     if( bOnlyButtons == NO )
     {
-        iboEmptyAlbumLabel.hidden = self.collectionView.hidden = self.tableView.hidden = YES;
+//        iboEmptyAlbumLabel.hidden = self.collectionView.hidden = self.tableView.hidden = YES;
+        iboEmptyAlbumLabel.hidden = YES;// self.collectionView.hidden = self.tableView.hidden = YES;
         if( count <= 0 ) self.viewMode = JMFCoreDataViewModeNone;
         else if( self.viewMode == JMFCoreDataViewModeNone ) self.viewMode = JMFCoreDataViewModeMosaic;
         
@@ -723,8 +720,9 @@
 
             case JMFCoreDataViewModeMosaic:
             case JMFCoreDataViewModeList:
-                self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
-                self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
+//                self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
+//                self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
+                [self animateModeChange];
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
                 iboSelectButton.enabled = YES;
                 iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
@@ -742,6 +740,27 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];
 }
 
+- (void)animateModeChange
+{
+    if( self.oldViewMode == JMFCoreDataViewModeNone || self.oldViewMode == JMFCoreDataViewModeUnknown ||
+        self.viewMode == JMFCoreDataViewModeNone || self.viewMode == self.oldViewMode )
+    {
+        self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
+        self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
+        return;
+    }
+    
+    UIViewAnimationTransition animationTrnasition = ( self.oldViewMode == JMFCoreDataViewModeList ) ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.75];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationTransition:animationTrnasition forView:self.view cache:YES];
+    self.collectionView.hidden = ( self.viewMode == JMFCoreDataViewModeList );
+    self.tableView.hidden = ( self.viewMode == JMFCoreDataViewModeMosaic );
+    [UIView commitAnimations];
+}
+
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -751,6 +770,8 @@
 /***************************************************************************/
 - (void)editPhoto
 {
+    self.oldViewMode = self.viewMode;
+    
     NSArray* selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     
     if( selectedArray.count == 1 )
@@ -772,6 +793,8 @@
 /***************************************************************************/
 - (void)onSettingsClicked:(id)sender
 {
+    self.oldViewMode = self.viewMode;
+    
     JMFCameraIOS_SettingsViewController* settingsVC = [[JMFCameraIOS_SettingsViewController alloc] initWithModel:self.model];
     [self.navigationController pushViewController:settingsVC animated:YES];
 }
@@ -814,6 +837,8 @@
 /***************************************************************************/
 - (void)onCameraClicked
 {
+    self.oldViewMode = self.viewMode;
+    
     if( [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] )
     {
         UIImagePickerController* imagePicker = [[UIImagePickerController alloc]init];
@@ -843,6 +868,8 @@
 /***************************************************************************/
 - (void)onModeClicked
 {
+    self.oldViewMode = self.viewMode;
+
     iSelectedCount = 0;
     self.viewMode = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? JMFCoreDataViewModeList : JMFCoreDataViewModeMosaic;
     [self redrawControls:NO];
@@ -914,6 +941,8 @@
     NSString* IDS_DOWNLOADING       = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES", nil );
     NSString* IDS_DOWNLOADING_ERROR = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES_ERROR", nil );
     
+    self.oldViewMode = self.viewMode;
+    
     UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_CANCEL otherButtonTitles:IDS_OK, nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alertView textFieldAtIndex:0].placeholder = IDS_PLACEHOLDER;
@@ -964,6 +993,8 @@
 /***************************************************************************/
 - (void)onAlbumClicked
 {
+    self.oldViewMode = self.viewMode;
+    
     JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithFetchedResultsController:self.fetchedResultsController];
     [self.navigationController pushViewController:albumVC animated:YES];
 }
