@@ -51,5 +51,7 @@
 /*                                                                         */
 /***************************************************************************/
 - (id)initWithImage:(UIImage*)image;
+- (BOOL)prefersStatusBarHidden;
+- (void)adjustViews;
 
 @end

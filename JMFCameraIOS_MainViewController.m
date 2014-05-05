@@ -48,9 +48,6 @@
 @interface JMFCameraIOS_MainViewController ()
 {
     NSFetchRequest*         fetchRequest;
-    CGFloat                 statusBarHeight;
-    CGFloat                 navigationBarHeight;
-    CGFloat                 tabBarHeight;
     
     UIBarButtonItem*        iboSelectButton;
     UIView*                 iboContainer;
@@ -137,9 +134,9 @@
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     self.navigationController.navigationBar.translucent = NO;
     
-    statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-    tabBarHeight = self.iboTabBar.frame.size.height;
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     bFromCamera = NO;

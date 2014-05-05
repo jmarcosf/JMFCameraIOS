@@ -23,7 +23,7 @@
 {
     UIImageView*    imageView;
     BOOL            bFullScreen;
-    CGRect          previousFrame;
+    CGRect          originalFrame;
 }
 
 @end
@@ -91,27 +91,43 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.navigationController.navigationBar.translucent = NO;
     self.title = NSLocalizedString( @"IDS_SHOW", nil );
     
     self.iboScrollView.minimumZoomScale = 1.0;
     self.iboScrollView.maximumZoomScale = 6.0;
-    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iboScrollView.clipsToBounds = YES;
+    self.iboScrollView.contentMode = UIViewContentModeScaleAspectFill;
     self.iboScrollView.delegate = self;
     
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake( 0, 0, 320, 416 ) ];
+    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFill;
+
+    imageView = [[UIImageView alloc]init];
     imageView.image = self.image;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.clipsToBounds = YES;
-    self.iboZoomableView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iboZoomableView.clipsToBounds = YES;
+    imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     [self.iboZoomableView addSubview:imageView];
+    
     bFullScreen = NO;
+    originalFrame = self.view.frame;
+    [self adjustViews];
     
     UITapGestureRecognizer* tapRecognizer =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector( onPictureClicked: )];
     [self.iboZoomableView addGestureRecognizer:tapRecognizer];
     [tapRecognizer setDelegate:self];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  prefersStatusBarHidden                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)prefersStatusBarHidden
+{
+    return bFullScreen;
 }
 
 /***************************************************************************/
@@ -181,21 +197,39 @@
 /***************************************************************************/
 - (void)onPictureClicked:(UITapGestureRecognizer*)tapRecognizer
 {
-    if( !bFullScreen )
+    [UIView animateWithDuration:0.5 animations:^
     {
-        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^
-        {
-             previousFrame = imageView.frame;
-             [self.iboScrollView setFrame:[[UIScreen mainScreen] bounds]];
-        } completion:^( BOOL finished ) { bFullScreen = YES; } ];
-    }
-    else
-    {
-        [UIView animateWithDuration:0.5 delay:0 options:0 animations:^
-        {
-            [imageView setFrame:previousFrame];
-        } completion:^( BOOL finished ) {bFullScreen = NO; } ];
-    }
+        bFullScreen = !bFullScreen;
+        [self adjustViews];
+    }];
+}
+
+#pragma mark - Class Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Instance Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  adjustViews                                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)adjustViews
+{
+    [[self navigationController] setNavigationBarHidden:bFullScreen animated:bFullScreen];
+    CGRect Rect = ( bFullScreen ) ? [[UIScreen mainScreen]bounds] : originalFrame;
+    self.view.frame = Rect;
+    self.iboScrollView.frame = Rect;
+    self.iboZoomableView.frame = Rect;
+    imageView.frame = Rect;
 }
 
 @end

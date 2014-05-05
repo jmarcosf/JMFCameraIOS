@@ -115,8 +115,18 @@
     self.title = NSLocalizedString( @"IDS_FULL_FACE_DETECTION", nil );
     bModified = NO;
 
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
+    
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGRect Rect = CGRectMake( 0, 0, screenRect.size.width, screenRect.size.height - statusBarHeight - navigationBarHeight - tabBarHeight );
+
     //ImgageView
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
+    self.iboImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.iboImageView.frame = Rect;
+//    self.iboImageView.clipsToBounds = YES;
     self.iboImageView.image = self.image;
     
     //TabBar
@@ -146,10 +156,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.iboImageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iboImageView.frame = CGRectMake( 0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    self.iboImageView.clipsToBounds = YES;
-    
+
     self.iboActivityIndicator.hidden = NO;
     [self.iboActivityIndicator startAnimating];
     
@@ -387,7 +394,6 @@
             JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature photo:self.photo inContext:self.model.context];
             face.name = [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FACE", nil ), ++i];
         }
-        [self.model saveWithErrorBlock:nil];
     }
     
     if( completionBlock ) completionBlock();
