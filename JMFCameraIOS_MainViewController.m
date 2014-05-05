@@ -239,22 +239,12 @@
 {
     [super viewWillAppear:animated];
     
-//    statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-//    navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-//    tabBarHeight = self.iboTabBar.frame.size.height;
-    
-    CGRect Rect = CGRectMake( 0, statusBarHeight + navigationBarHeight, self.view.frame.size.width, self.view.frame.size.height - statusBarHeight - navigationBarHeight - tabBarHeight );
     if( bFromCamera )
     {
         self.iboActivityIndicator.hidden = NO;
         [self.iboActivityIndicator startAnimating];
-        Rect.size.height -= statusBarHeight; //This is to fix when it comes back from camera VC ¿?
         bFromCamera = NO;
     }
-//    [iboContainer setFrame:Rect];
-//    [self.collectionView setFrame:Rect];
-//    [self.tableView setFrame:Rect];
-//    [iboEmptyAlbumLabel setFrame:Rect];
     
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
   
@@ -410,6 +400,18 @@
             [self.iboActivityIndicator stopAnimating];
         });
     });
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  imagePickerControllerDidCancel:                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -740,7 +742,7 @@
             case JMFCoreDataViewModeList:
                 [self animateModeChange];
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
-                iboSelectButton.enabled = YES;
+                iboSelectButton.enabled = ( count > 0 );
                 iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
                 break;
                 
@@ -861,24 +863,45 @@
 {
     self.oldViewMode = self.viewMode;
     
-    if( [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] )
+    NSString* IDS_CANCEL        = NSLocalizedString( @"IDS_CANCEL", nil );
+    NSString* IDS_CAMERA        = NSLocalizedString( @"IDS_CAMERA", nil );
+    NSString* IDS_PHOTO_LIBRARY = NSLocalizedString( @"IDS_PHOTO_LIBRARY", nil );
+    NSString* IDS_MESSAGE       = NSLocalizedString( @"IDS_CHOOSE_IMAGE_SOURCE", nil );
+    
+    
+    UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
+                                                            delegate:nil
+                                                   cancelButtonTitle:IDS_CANCEL
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:IDS_CAMERA, IDS_PHOTO_LIBRARY, nil];
+    [actionSheet showFromTabBar:self.iboTabBar withCompletion:^( UIActionSheet* actionSheet, NSInteger buttonIndex )
     {
-        UIImagePickerController* imagePicker = [[UIImagePickerController alloc]init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
-        imagePicker.showsCameraControls = YES;
-        imagePicker.allowsEditing = YES;
-        imagePicker.delegate = self;
-        bFromCamera = YES;
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
-    else
-    {
-        NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", nil );
-        NSString* IDS_OK = NSLocalizedString( @"IDS_OK", nil );
-        NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", nil );
-        [[[UIAlertView alloc]initWithTitle:IDS_ERROR message:IDS_NO_CAMERA_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
-    }
+        UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+        if( buttonIndex == 1 ) sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        if( buttonIndex != 2 )
+        {
+            if( sourceType == UIImagePickerControllerSourceTypePhotoLibrary || [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] )
+            {
+                UIImagePickerController* imagePicker = [[UIImagePickerController alloc]init];
+                imagePicker.sourceType = sourceType;
+                imagePicker.allowsEditing = NO;
+                imagePicker.delegate = self;
+                if( sourceType == UIImagePickerControllerSourceTypeCamera )
+                {
+                    imagePicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+                    imagePicker.showsCameraControls = YES;
+                }
+                [self presentViewController:imagePicker animated:YES completion:nil];
+            }
+            else
+            {
+                NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", nil );
+                NSString* IDS_OK = NSLocalizedString( @"IDS_OK", nil );
+                NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", nil );
+                [[[UIAlertView alloc]initWithTitle:IDS_ERROR message:IDS_NO_CAMERA_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
+            }
+        }
+    }];
 }
 
 /***************************************************************************/
@@ -941,7 +964,8 @@
                  [objectsArray removeAllObjects];
                  [self.model saveWithErrorBlock:nil];
                  iSelectedCount = 0;
-                 [self redrawControls:YES];
+                 if( [self.fetchedResultsController fetchedObjects].count == 0 ) [self onSelectClicked:self];
+                 [self redrawControls:NO];
              }
         }];
     }

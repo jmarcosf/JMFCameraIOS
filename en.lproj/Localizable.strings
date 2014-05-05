@@ -21,6 +21,7 @@
 "IDS_APPLY" = "Apply";
 "IDS_CLEAR" = "Clear";
 "IDS_CAMERA" = "Camera";
+"IDS_PHOTO_LIBRARY" = "Photo Library";
 "IDS_MODE" = "Mode";
 "IDS_MOSAIC_MODE" = "Mosaic Mode";
 "IDS_LIST_MODE" = "List Mode";
@@ -93,6 +94,7 @@
 "IDS_INIT_ERROR_MESSAGE" = "Application directories couldn't be created!";
 "IDS_EMPTY_ALBUM_MESSAGE" = "JMFCameraIOS\n\nYour photo album is empty\n\nClick camera button to take a picture with the device or click \"Flickr\" button to download pictures from Flickr";
 "IDS_NO_CAMERA_MESSAGE" = "No camera found!\nAre you using simulator?";
+"IDS_CHOOSE_IMAGE_SOURCE" = "Choose image source";
 "IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" = "Download pictures from Flickr\nType your term search:";
 "IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" = "Type the search term";
 "IDS_DOWNLOADING_PICTURES" = "Downloading pictures\nPlease wait...";
