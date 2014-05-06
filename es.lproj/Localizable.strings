@@ -58,6 +58,7 @@
 "IDS_PROCESS" = "Procesar";
 "IDS_MINUTE" = "minuto";
 "IDS_CAMEL_MINUTE" = "Minuto";
+"IDS_DONE" = "Hecho";
 
 "IDS_SOURCE" = "Origen";
 "IDS_COLOR_MODEL" = "Modelo de Color";

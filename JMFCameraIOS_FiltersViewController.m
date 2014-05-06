@@ -12,6 +12,8 @@
 /***************************************************************************/
 #import "JMFCameraIOS_FiltersViewController.h"
 #import "JMFCameraIOS_ShowViewController.h"
+#import "JMFCameraIOS_FilterPropertyTVCell.h"
+#import <objc/runtime.h>
 
 /***************************************************************************/
 /*                                                                         */
@@ -22,12 +24,23 @@
 /***************************************************************************/
 #define IDS_FILTERTV_NORMAL_CELL_IDENTIFIER         @"FilterTVNormalCellIdentifier"
 #define IDS_FILTERTV_PICKER_CELL_IDENTIFIER         @"FilterTVPickerCellIdentifier"
+#define IDS_PROPERTYTV_NORMAL_CELL_IDENTIFIER       @"PropertyTVNormalCellIdentifier"
+#define IDS_PROPERTYTV_NORMAL_CELL_XIBNAME          @"JMFCameraIOS_FilterPropertyTVCell"
 #define IDS_NO_IMAGE_FILE                           @"NoImage.jpg"
 
 #define IDC_UITOOLBAR_BUTTON_CANCEL_INDEX           0
 #define IDC_UITOOLBAR_BUTTON_CLEAR_INDEX            1
 #define IDC_UITOOLBAR_BUTTON_APPLY_INDEX            2
 #define IDC_UITOOLBAR_BUTTON_SAVE_INDEX             3
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Associative Reference Key to JMFFilter object for Property TableView   */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+const void *objectTagKey = "JMFFilterObject";
 
 /***************************************************************************/
 /*                                                                         */
@@ -40,6 +53,7 @@
 {
     NSFetchedResultsController* fetchedResultsController;
     NSMutableArray*             filtersArray;
+    NSArray*                    filterProperties;
     long                        iPickerViewSection;
     BOOL                        bModified;
     BOOL                        bReloadData;
@@ -127,6 +141,8 @@
     targetImage = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] )
                   ? nil : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
     
+    [self setupFilterList];
+    
     //TabBar
     self.iboTabBar.delegate = self;
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
@@ -134,7 +150,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:NSLocalizedString( @"IDS_SAVE",  nil )];
     
-    //TableView
+    //Filter Table
     [self.iboFilterTable registerNib:[UINib nibWithNibName:@"JMFCameraIOS_FilterTVCell" bundle:nil] forCellReuseIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER];
     [self.iboFilterTable registerClass:[JMFCameraIOS_FilterTVPickerCell class] forCellReuseIdentifier:IDS_FILTERTV_PICKER_CELL_IDENTIFIER];
     self.iboFilterTable.sectionHeaderHeight = 2.0;
@@ -142,17 +158,18 @@
     self.iboFilterTable.delegate = self;
     self.iboFilterTable.dataSource = self;
     
-    //Filters Array. Remove those CIFilters not supporting kCIInputImageKey porperty
-    filtersArray = [[CIFilter filterNamesInCategories:nil]mutableCopy];
-    NSMutableIndexSet* invalidFilters = [[NSMutableIndexSet alloc]init];
-    for( int i = 0; i < filtersArray.count; i++ )
-    {
-        CIFilter* ciFilter = [CIFilter filterWithName:[filtersArray objectAtIndex:i]];
-        if( [[ciFilter attributes] objectForKey:kCIInputImageKey] == nil ) [invalidFilters addIndex:i];
-    }
-    [filtersArray removeObjectsAtIndexes:invalidFilters];
-    [filtersArray insertObject:IDS_FILTER_NONE atIndex:0];
-
+    //Property Table
+    CGRect rect = CGRectMake(self.iboFilterTable.frame.origin.x, self.iboFilterTable.frame.origin.y, self.iboFilterTable.frame.size.width, 184 );
+    self.iboPropertyTable = [[UITableView alloc]initWithFrame:rect style:self.iboFilterTable.style];
+    [self.iboPropertyTable registerNib:[UINib nibWithNibName:IDS_PROPERTYTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_PROPERTYTV_NORMAL_CELL_IDENTIFIER];
+    self.iboPropertyTable.sectionHeaderHeight = 2.0;
+    self.iboPropertyTable.sectionFooterHeight = 20.0;
+    self.iboPropertyTable.delegate = self;
+    self.iboPropertyTable.dataSource = self;
+    self.iboPropertyTable.hidden = YES;
+    self.iboPropertyTable.tag = -1;
+    [[self.iboFilterTable superview]addSubview:self.iboPropertyTable];
+    
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFilter entityName]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.creationDate ascending:YES]];
@@ -364,7 +381,7 @@
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    return [[fetchedResultsController fetchedObjects]count];
+    return (tableView == self.iboFilterTable ) ? [[fetchedResultsController fetchedObjects]count] : 1;
 }
 
 /***************************************************************************/
@@ -376,7 +393,12 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
+    if( tableView == self.iboPropertyTable )
+    {
+        JMFFilter* filter = (JMFFilter*)objc_getAssociatedObject( self.iboPropertyTable, objectTagKey );
+        return [NSString stringWithFormat:@"%@ - %@", NSLocalizedString( @"IDS_FILTER", nil ), filter ];
+    }
+    else return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
 }
 
 /***************************************************************************/
@@ -388,8 +410,8 @@
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger rows = ( iPickerViewSection != -1 && section == iPickerViewSection ) ? 2 : 1;
-    return rows;
+    if( tableView == self.iboPropertyTable ) return filterProperties.count;
+    else return ( iPickerViewSection != -1 && section == iPickerViewSection ) ? 2 : 1;
 }
 
 /***************************************************************************/
@@ -401,6 +423,16 @@
 /***************************************************************************/
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    if( tableView == self.iboPropertyTable )
+    {
+        JMFCameraIOS_FilterPropertyTVCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_PROPERTYTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
+        cell.iboPropertyName.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
+        cell.iboPropertyName.text = [filterProperties objectAtIndex:indexPath.row];
+        cell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", 0.0f ];
+
+        return cell;
+    }
+
     if( iPickerViewSection != -1 && indexPath.section == iPickerViewSection && indexPath.row == 1 )
     {
         JMFCameraIOS_FilterTVPickerCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_PICKER_CELL_IDENTIFIER forIndexPath:indexPath];
@@ -420,9 +452,10 @@
         JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         JMFCameraIOS_FilterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
         cell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
+        [cell.iboInfoButton setImage:[UIImage imageNamed:@"Data.png"]forState:UIControlStateNormal];
         cell.iboNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         cell.iboNameLabel.text = filter.name;
-        cell.iboActiveSwitch.enabled = [filter isValidFilter];
+        cell.iboActiveSwitch.enabled = cell.iboInfoButton.enabled = [filter isValidFilter];
         cell.iboActiveSwitch.on = [filter isActive] && [filter isValidFilter];
         cell.indexPath = indexPath;
         cell.delegate = self;
@@ -451,7 +484,8 @@
 /***************************************************************************/
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return ( indexPath.section == iPickerViewSection && indexPath.row == 1 ) ? 160 : 33;
+    if( tableView == self.iboPropertyTable ) return 40;
+    else return ( indexPath.section == iPickerViewSection && indexPath.row == 1 ) ? 160 : 33;
 }
 
 /***************************************************************************/
@@ -475,12 +509,45 @@
 /***************************************************************************/
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
-    headerView.text = [NSString stringWithFormat:@"   %@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)(section + 1)];
-    headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
-    headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
-    headerView.textColor = [UIColor whiteColor];
-    return headerView;
+    NSString* headerTitle;
+    if( tableView == self.iboPropertyTable )
+    {
+        if( self.iboPropertyTable.hidden == NO ) self.title = [NSString stringWithFormat:@"%@ %d", NSLocalizedString( @"IDS_FILTER", nil ), self.iboPropertyTable.tag];
+        JMFFilter* filter = (JMFFilter*)objc_getAssociatedObject( self.iboPropertyTable, objectTagKey );
+        headerTitle = [NSString stringWithFormat:@" %@", filter.name];
+        
+        UIView* headerContainer = [[UIView alloc]initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 )];
+        
+        UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, headerContainer.frame.size.width - 60, headerContainer.frame.size.height ) ];
+        headerLabel.text = headerTitle;
+        headerLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+        headerLabel.backgroundColor = Rgb2UIColor( 245, 200, 35 );
+        headerLabel.textColor = [UIColor whiteColor];
+        headerLabel.adjustsFontSizeToFitWidth = YES;
+        headerLabel.minimumScaleFactor = 10.0;
+        
+        UIButton* doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [doneButton addTarget:self action:@selector( onDoneClicked: ) forControlEvents:UIControlEventTouchUpInside];
+        doneButton.frame = CGRectMake( headerContainer.frame.size.width - 60, 0, 60, 30 );
+        [doneButton setTitle:NSLocalizedString( @"IDS_DONE", nil ) forState:UIControlStateNormal];
+        doneButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+        doneButton.backgroundColor = Rgb2UIColor( 245, 200, 35 );
+        doneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        
+        [headerContainer addSubview:headerLabel];
+        [headerContainer addSubview:doneButton];
+        return headerContainer;
+    }
+    else
+    {
+        headerTitle = [NSString stringWithFormat:@"   %@ %d", NSLocalizedString( @"IDS_FILTER", nil ), (int)(section + 1)];
+        UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
+        headerView.text = headerTitle;
+        headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
+        headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
+        headerView.textColor = [UIColor whiteColor];
+        return headerView;
+    }
 }
 
 /***************************************************************************/
@@ -492,6 +559,11 @@
 /***************************************************************************/
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    if( tableView == self.iboPropertyTable )
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        return;
+    }
     if( indexPath.row == 1 ) return;
     
     BOOL bOtherSectionSelected = ( indexPath.section != iPickerViewSection );
@@ -529,12 +601,25 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  tableView:canEditRowAtIndexPath:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return ( tableView != self.iboPropertyTable );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  tableView:commitEditingStyle:forRowAtIndexPath:                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 -(void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    if( tableView == self.iboPropertyTable ) return;
     if( editingStyle == UITableViewCellEditingStyleDelete )
     {
         JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
@@ -566,6 +651,36 @@
 {
     JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
     filter.active = [NSNumber numberWithBool:newState];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  filterCell:forIndexPath:didChangeState:                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)filterCell:(JMFCameraIOS_FilterTVCell *)filterCell onInfoClickedforIndexPath:(NSIndexPath *)indexPath
+{
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setEnabled:NO];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setEnabled:NO];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:NO];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:NO];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
+
+//    UIViewAnimationTransition animationTrnasition = UIViewAnimationTransitionFlipFromLeft;
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.75];
+//    [UIView setAnimationDelegate:self];
+//    [UIView setAnimationTransition:animationTrnasition forView:iboContainer cache:YES];
+    objc_setAssociatedObject( self.iboPropertyTable, objectTagKey, filter, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    self.iboPropertyTable.tag = ( indexPath.section + 1 );
+    self.iboFilterTable.hidden = YES;
+    self.iboPropertyTable.hidden = NO;
+//    [UIView commitAnimations];
+    [self.iboPropertyTable reloadData];
 }
 
 #pragma mark - UIPickerViewDataSource Methods
@@ -642,7 +757,7 @@
     JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:iPickerViewSection inSection:0]];
     filter.name = [filtersArray objectAtIndex:row];
 
-    cell.iboActiveSwitch.enabled = [filter isValidFilter];
+    cell.iboActiveSwitch.enabled = cell.iboInfoButton.enabled = [filter isValidFilter];
 }
 
 /***************************************************************************/
@@ -678,6 +793,47 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  setupFilterList                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setupFilterList
+{
+    //For this practice only NSNumber generic Properties al supported
+    filterProperties = @[kCIInputScaleKey, kCIInputAspectRatioKey, kCIInputRadiusKey, kCIInputAngleKey, kCIInputWidthKey,
+                         kCIInputSharpnessKey, kCIInputIntensityKey, kCIInputEVKey, kCIInputSaturationKey, kCIInputBrightnessKey, kCIInputContrastKey];
+    
+    //Filters Array. Remove those CIFilters not supporting kCIInputImageKey porperty
+    filtersArray = [[CIFilter filterNamesInCategories:nil]mutableCopy];
+    NSMutableIndexSet* invalidFilters = [[NSMutableIndexSet alloc]init];
+    for( int i = 0; i < filtersArray.count; i++ )
+    {
+        CIFilter* ciFilter = [CIFilter filterWithName:[filtersArray objectAtIndex:i]];
+        if( [[ciFilter attributes] objectForKey:kCIInputImageKey] == nil ) [invalidFilters addIndex:i];
+    }
+    [filtersArray removeObjectsAtIndexes:invalidFilters];
+    
+    //Filters Array. Remove those CIFilters not supporting any of default filter properties
+    [invalidFilters removeAllIndexes];;
+    for( int i = 0; i < filtersArray.count; i++ )
+    {
+        bool bFilterOK = NO;
+        CIFilter* ciFilter = [CIFilter filterWithName:[filtersArray objectAtIndex:i]];
+        for( NSString* property in filterProperties )
+        {
+            if( [[ciFilter attributes] objectForKey:property] != nil ) { bFilterOK = YES; break; }
+        }
+        if( !bFilterOK )[invalidFilters addIndex:i];
+    }
+    [filtersArray removeObjectsAtIndexes:invalidFilters];
+    
+    //Inser default Filter
+    [filtersArray insertObject:IDS_FILTER_NONE atIndex:0];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  enableButtons                                                          */
 /*                                                                         */
 /*                                                                         */
@@ -703,7 +859,6 @@
 {
     [JMFFilter filterWithName:IDS_FILTER_NONE photo:(JMFPhoto*)self.photo inContext:self.model.context];
     [self.iboFilterTable reloadData];
-    bModified = YES;
 }
 
 /***************************************************************************/
@@ -756,7 +911,7 @@
         for( JMFFilter* filter in [fetchedResultsController fetchedObjects] )
         {
             CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
-            if( [filter isActive] && [filter isValidFilter] && [filter isValidCIFilter:ciFilter] )
+            if( [filter isActive] && [filter isValidFilter] )
             {
                 [ciFilter setDefaults];
                 [ciFilter setValue:resultImage forKey:kCIInputImageKey];
@@ -797,6 +952,24 @@
     [[self.model.context undoManager] setActionName:@"Filter edit"];
     [self.model saveWithErrorBlock:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onDoneClicked:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onDoneClicked:(id)sender
+{
+    self.title = NSLocalizedString( @"IDS_FILTERS", nil );
+    objc_setAssociatedObject( self.iboPropertyTable, objectTagKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
+    self.iboPropertyTable.tag = -1;
+    self.iboFilterTable.hidden = NO;
+    self.iboPropertyTable.hidden = YES;
+    [self.iboFilterTable reloadData];
+    [self enableButtons];
 }
 
 /***************************************************************************/

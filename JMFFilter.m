@@ -152,23 +152,6 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  isValidCIFilter:                                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (BOOL)isValidCIFilter:(CIFilter*)filter
-{
-    BOOL bValid = NO;
-    if( [[filter attributes] objectForKey:kCIInputImageKey] != nil )
-    {
-        bValid = YES;
-    }
-    return bValid;
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*  activeToString                                                         */
 /*                                                                         */
 /*                                                                         */

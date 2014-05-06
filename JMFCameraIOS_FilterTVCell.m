@@ -81,9 +81,24 @@
 /***************************************************************************/
 - (IBAction)onSwitchChanged:(id)sender
 {
-    if( self.delegate )
+    if( [ self.delegate respondsToSelector:@selector( filterCell:forIndexPath:didChangeState: )] )
     {
         [self.delegate filterCell:self forIndexPath:self.indexPath didChangeState:self.iboActiveSwitch.on];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onInfoClicked:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onInfoClicked:(id)sender
+{
+    if( [ self.delegate respondsToSelector:@selector( filterCell:onInfoClickedforIndexPath: )] )
+    {
+        [self.delegate filterCell:self onInfoClickedforIndexPath:self.indexPath];
     }
 }
 

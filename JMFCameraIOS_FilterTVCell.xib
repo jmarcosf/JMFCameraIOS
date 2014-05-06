@@ -13,12 +13,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ArrowDown.png" translatesAutoresizingMaskIntoConstraints="NO" id="2KT-4G-Mvh">
-                        <rect key="frame" x="9" y="10" width="12" height="12"/>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ArrowDown.png" translatesAutoresizingMaskIntoConstraints="NO" id="2KT-4G-Mvh">
+                        <rect key="frame" x="8" y="11" width="10" height="10"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QXd-5G-LGY">
-                        <rect key="frame" x="31" y="5" width="225" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QXd-5G-LGY">
+                        <rect key="frame" x="58" y="5" width="198" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -31,11 +31,22 @@
                             <action selector="onSwitchChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="TNo-Yj-tmZ"/>
                         </connections>
                     </switch>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i3C-fq-4Nd">
+                        <rect key="frame" x="31" y="5" width="22" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="onInfoClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="nYe-aq-h1N"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="iboActiveSwitch" destination="u0W-3d-mqu" id="Uoj-Hd-mtR"/>
                 <outlet property="iboImageView" destination="2KT-4G-Mvh" id="vwb-gx-eTR"/>
+                <outlet property="iboInfoButton" destination="i3C-fq-4Nd" id="Plt-PR-sUA"/>
                 <outlet property="iboNameLabel" destination="QXd-5G-LGY" id="XsL-HL-MLB"/>
             </connections>
         </tableViewCell>

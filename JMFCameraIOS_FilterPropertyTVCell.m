@@ -1,85 +1,106 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FilterTVCell.h                                            */
+/*  JMFCameraIOS_FilterPropertyTVCell.m                                    */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filter Table View Cell Class definition file              */
+/*               Filter Property TableView Cell Class implementation file  */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  Class forwarding                                                       */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@class JMFCameraIOS_FilterTVCell;
+#import "JMFCameraIOS_FilterPropertyTVCell.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FilterTVCell Protocol definition                          */
+/*                                                                         */
+/*  JMFCameraIOS_FilterPropertyTVCell Class Implementation                 */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@protocol JMFCameraIOS_FilterTVCellDelegate< NSObject >
+@implementation JMFCameraIOS_FilterPropertyTVCell
 
-@optional
-- (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell forIndexPath:(NSIndexPath*)indexPath didChangeState:(BOOL)newState;
-- (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell onInfoClickedforIndexPath:(NSIndexPath*)indexPath;
+#pragma mark - UITableViewCell Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UITableViewCell Override Methods                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithStyle:reuseIdentifier:                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if( self )
+    {
+
+    }
+    
+    return self;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  setSelected:                                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+}
+
+#pragma mark - IBAction Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  IBAction Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onPropertyValueChanged:                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onPropertyValueChanged:(id)sender
+{
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onSpinValueChanged:                                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onSpinValueChanged:(id)sender
+{
+    UISegmentedControl *segmentedControl = (UISegmentedControl*) sender;
+    CGFloat value = [self.iboPropertyValue.text floatValue];
+    if( segmentedControl.selectedSegmentIndex == 0 ) value += 0.10;
+    else value -= 0.10;
+    if( value < 0 ) value = 0.0;
+    if( value > 100.0 ) value = 100.0;
+    self.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", value];
+}
+
 
 @end
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  JMFCameraIOS_FilterTVCell Class Interface                              */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@interface JMFCameraIOS_FilterTVCell : UITableViewCell
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Properties                                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (nonatomic,strong) NSIndexPath*   indexPath;
-@property (nonatomic,assign) id< JMFCameraIOS_FilterTVCellDelegate > delegate;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboImageView;
-@property (weak, nonatomic) IBOutlet UIButton*      iboInfoButton;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboActiveSwitch;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onSwitchChanged:(id)sender;
-- (IBAction)onInfoClicked:(id)sender;
-
-@end
-

@@ -1,46 +1,27 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController.h                                   */
+/*  JMFCameraIOS_FilterPropertyTVCell.h                                    */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Filters View Controller Class definition file             */
+/*               Filter Property TableView Cell Class definition file      */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <UIKit/UIKit.h>
-#import "JMFCameraIOS_FilterTVCell.h"
-#import "JMFCameraIOS_FilterTVPickerCell.h"
-#import "JMFPhoto.h"
-#import "JMFFilter.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_FiltersViewController Class Interface                     */
+/*  JMFCameraIOS_FilterPropertyTVCell Class Interface                      */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate,
-                                                                  UITableViewDataSource, UITableViewDelegate,
-                                                                  UIPickerViewDataSource, UIPickerViewDelegate,
-                                                                  JMFCameraIOS_FilterTVCellDelegate>
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Properties                                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*                  model;
-@property (nonatomic,strong) JMFPhoto*                          photo;
-@property (nonatomic,strong) UIImage*                           image;
-@property (nonatomic,strong) UITableView*                       iboPropertyTable;
+@interface JMFCameraIOS_FilterPropertyTVCell : UITableViewCell
 
 /***************************************************************************/
 /*                                                                         */
@@ -49,29 +30,20 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboSourceImage;
-@property (weak, nonatomic) IBOutlet UIImageView*               iboTargetImage;
-@property (weak, nonatomic) IBOutlet UITableView*               iboFilterTable;
-@property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
-
+@property (weak, nonatomic) IBOutlet UILabel*               iboPropertyName;
+@property (weak, nonatomic) IBOutlet UITextField*           iboPropertyValue;
+@property (weak, nonatomic) IBOutlet UISegmentedControl*    iboSpinView;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Instance Methods                                                        */
+/* IBActions                                                               */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
-- (void)setupFilterList;
-- (void)enableButtons;
-- (void)addFilter:(id)sender;
-- (void)onCancelClicked;
-- (void)onClearClicked;
-- (void)onApplyClicked;
-- (void)onSaveClicked;
-- (void)onDoneClicked:(id)sender;
-- (void)setTargetImage;
+- (IBAction)onPropertyValueChanged:(id)sender;
+- (IBAction)onSpinValueChanged:(id)sender;
+- (IBAction)onSpinButtonClicked:(id)sender;
 
 @end
+

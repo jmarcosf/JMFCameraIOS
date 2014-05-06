@@ -387,9 +387,9 @@
                                             inContext:self.model.context];
         [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
         [self.model saveWithErrorBlock:nil];
-        [self performFetch];
         dispatch_async(dispatch_get_main_queue(), ^
         {
+            [self performFetch];
             [self reloadData];
             [self redrawControls:NO];
             bFromCamera = NO;
