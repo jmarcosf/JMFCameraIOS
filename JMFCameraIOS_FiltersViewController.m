@@ -59,6 +59,7 @@ const void *objectTagKey = "JMFFilterObject";
     BOOL                        bReloadData;
     BOOL                        bNoFilteredImage;
     UIImage*                    targetImage;
+    UIView*                     containerView;
 }
 @end
 
@@ -134,14 +135,13 @@ const void *objectTagKey = "JMFFilterObject";
     self.title = NSLocalizedString( @"IDS_FILTERS", nil );
     bModified = bReloadData = NO;
     iPickerViewSection = -1;
-    
+
+    //Images
     self.iboActivityIndicator.layer.zPosition = 100;
     if( self.image == nil ) self.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
     self.iboSourceImage.image = self.image;
     targetImage = ( self.photo.filteredImageUrl == nil || [self.photo.filteredImageUrl isEqualToString:@""] )
                   ? nil : [UIImage imageWithContentsOfFile:self.photo.filteredImageUrl];
-    
-    [self setupFilterList];
     
     //TabBar
     self.iboTabBar.delegate = self;
@@ -150,17 +150,31 @@ const void *objectTagKey = "JMFFilterObject";
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:NSLocalizedString( @"IDS_SAVE",  nil )];
     
+    //TableView Container View
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
+    int y = self.iboSourceImage.frame.size.height + 15;
+    int height = screenRect.size.height - tabBarHeight - statusBarHeight - navigationBarHeight - y;
+    CGRect rect = CGRectMake( 0, y,  self.view.frame.size.width, height - 1 );
+    containerView = [[UIView alloc]init];
+    [self.view addSubview:containerView];
+    containerView.frame = rect;
+    CGRect childRect = CGRectMake( 0, 0, containerView.frame.size.width, containerView.frame.size.height );
+    
     //Filter Table
+    self.iboFilterTable = [[UITableView alloc]initWithFrame:childRect style:UITableViewStylePlain];
     [self.iboFilterTable registerNib:[UINib nibWithNibName:@"JMFCameraIOS_FilterTVCell" bundle:nil] forCellReuseIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER];
     [self.iboFilterTable registerClass:[JMFCameraIOS_FilterTVPickerCell class] forCellReuseIdentifier:IDS_FILTERTV_PICKER_CELL_IDENTIFIER];
     self.iboFilterTable.sectionHeaderHeight = 2.0;
     self.iboFilterTable.sectionFooterHeight = 20.0;
     self.iboFilterTable.delegate = self;
     self.iboFilterTable.dataSource = self;
+    [containerView addSubview:self.iboFilterTable];
     
     //Property Table
-    CGRect rect = CGRectMake(self.iboFilterTable.frame.origin.x, self.iboFilterTable.frame.origin.y, self.iboFilterTable.frame.size.width, 184 );
-    self.iboPropertyTable = [[UITableView alloc]initWithFrame:rect style:self.iboFilterTable.style];
+    self.iboPropertyTable = [[UITableView alloc]initWithFrame:childRect style:UITableViewStylePlain];
     [self.iboPropertyTable registerNib:[UINib nibWithNibName:IDS_PROPERTYTV_NORMAL_CELL_XIBNAME bundle:nil] forCellReuseIdentifier:IDS_PROPERTYTV_NORMAL_CELL_IDENTIFIER];
     self.iboPropertyTable.sectionHeaderHeight = 2.0;
     self.iboPropertyTable.sectionFooterHeight = 20.0;
@@ -168,7 +182,10 @@ const void *objectTagKey = "JMFFilterObject";
     self.iboPropertyTable.dataSource = self;
     self.iboPropertyTable.hidden = YES;
     self.iboPropertyTable.tag = -1;
-    [[self.iboFilterTable superview]addSubview:self.iboPropertyTable];
+    [containerView addSubview:self.iboPropertyTable];
+    
+    //Setup Filters
+    [self setupFilterList];
     
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFilter entityName]];
@@ -669,17 +686,17 @@ const void *objectTagKey = "JMFFilterObject";
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     JMFFilter* filter = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
-
-//    UIViewAnimationTransition animationTrnasition = UIViewAnimationTransitionFlipFromLeft;
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.75];
-//    [UIView setAnimationDelegate:self];
-//    [UIView setAnimationTransition:animationTrnasition forView:iboContainer cache:YES];
     objc_setAssociatedObject( self.iboPropertyTable, objectTagKey, filter, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
     self.iboPropertyTable.tag = ( indexPath.section + 1 );
+    
+    UIViewAnimationTransition animationTrnasition = UIViewAnimationTransitionFlipFromLeft;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationTransition:animationTrnasition forView:containerView cache:YES];
     self.iboFilterTable.hidden = YES;
     self.iboPropertyTable.hidden = NO;
-//    [UIView commitAnimations];
+    [UIView commitAnimations];
     [self.iboPropertyTable reloadData];
 }
 
@@ -966,8 +983,15 @@ const void *objectTagKey = "JMFFilterObject";
     self.title = NSLocalizedString( @"IDS_FILTERS", nil );
     objc_setAssociatedObject( self.iboPropertyTable, objectTagKey, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
     self.iboPropertyTable.tag = -1;
+    
+    UIViewAnimationTransition animationTrnasition = UIViewAnimationTransitionFlipFromRight;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationTransition:animationTrnasition forView:containerView cache:YES];
     self.iboFilterTable.hidden = NO;
     self.iboPropertyTable.hidden = YES;
+    [UIView commitAnimations];
     [self.iboFilterTable reloadData];
     [self enableButtons];
 }

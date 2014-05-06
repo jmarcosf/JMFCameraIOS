@@ -40,6 +40,7 @@
 @property (nonatomic,strong) JMFCoreDataStack*                  model;
 @property (nonatomic,strong) JMFPhoto*                          photo;
 @property (nonatomic,strong) UIImage*                           image;
+@property (nonatomic,strong) UITableView*                       iboFilterTable;
 @property (nonatomic,strong) UITableView*                       iboPropertyTable;
 
 /***************************************************************************/
@@ -52,9 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
 @property (weak, nonatomic) IBOutlet UIImageView*               iboSourceImage;
 @property (weak, nonatomic) IBOutlet UIImageView*               iboTargetImage;
-@property (weak, nonatomic) IBOutlet UITableView*               iboFilterTable;
 @property (weak, nonatomic) IBOutlet UITabBar*                  iboTabBar;
-
 
 /***************************************************************************/
 /*                                                                         */

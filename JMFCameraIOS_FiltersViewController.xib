@@ -7,7 +7,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_FiltersViewController">
             <connections>
                 <outlet property="iboActivityIndicator" destination="lk4-5A-w0j" id="Rjl-2d-g76"/>
-                <outlet property="iboFilterTable" destination="Ncd-Nm-AD0" id="qQ3-2w-Cnn"/>
                 <outlet property="iboSourceImage" destination="j69-0q-k5I" id="WAD-nL-hWw"/>
                 <outlet property="iboTabBar" destination="8FO-QH-gFN" id="fBf-g6-mqI"/>
                 <outlet property="iboTargetImage" destination="TWG-Mm-657" id="ebQ-tp-lFb"/>
@@ -32,11 +31,6 @@
                     <rect key="frame" x="160" y="64" width="160" height="160"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ncd-Nm-AD0">
-                    <rect key="frame" x="0.0" y="182" width="320" height="334"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </tableView>
                 <tabBar contentMode="scaleToFill" id="8FO-QH-gFN">
                     <rect key="frame" x="0.0" y="519" width="320" height="49"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
