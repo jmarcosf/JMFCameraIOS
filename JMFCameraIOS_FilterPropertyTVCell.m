@@ -100,7 +100,11 @@
     if( value < 0 ) value = 0.0;
     if( value > 100.0 ) value = 100.0;
     self.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", value];
+    
+    if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:didChangeValue:forIndexPath: )] )
+    {
+        [self.delegate filterPropertyCell:self didChangeValue:value forIndexPath:self.indexPath];
+    }
 }
-
 
 @end

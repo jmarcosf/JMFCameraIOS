@@ -9,6 +9,7 @@ const struct JMFFilterAttributes JMFFilterAttributes = {
 
 const struct JMFFilterRelationships JMFFilterRelationships = {
 	.photo = @"photo",
+	.properties = @"properties",
 };
 
 const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
@@ -80,6 +81,19 @@ const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
 
 @dynamic photo;
 
+	
+
+@dynamic properties;
+
+	
+- (NSMutableSet*)propertiesSet {
+	[self willAccessValueForKey:@"properties"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"properties"];
+  
+	[self didAccessValueForKey:@"properties"];
+	return result;
+}
 	
 
 

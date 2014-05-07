@@ -16,13 +16,55 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  FilterProperties Singleton Interface implementation                    */
+/*                                                                         */
+/*  NOTE: For this practice only NSNumber generic Properties are supported */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@implementation FilterProperties
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  filterProperties                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSArray*)filterProperties
+{
+    static NSArray* filterProperties = nil;
+    @synchronized( self )
+    {
+        if( !filterProperties )
+        {
+            filterProperties = [[NSArray alloc] initWithObjects:
+                                kCIInputScaleKey, kCIInputAspectRatioKey, kCIInputRadiusKey, kCIInputAngleKey, kCIInputWidthKey,
+                                kCIInputSharpnessKey, kCIInputIntensityKey, kCIInputEVKey, kCIInputSaturationKey, kCIInputBrightnessKey,
+                                kCIInputContrastKey, nil];
+        }
+    }
+    return filterProperties;
+}
+
+@end
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  JMFFilter Class Interface                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
 @interface JMFFilter ()
 {
+    NSFetchedResultsController* propertiesResultsController;
 }
+
 @end
 
 /***************************************************************************/
@@ -39,6 +81,8 @@
 /*                                                                         */
 /***************************************************************************/
 @implementation JMFFilter
+
+@synthesize context;
 
 #pragma mark - Key Value Observing Methods
 /***************************************************************************/
@@ -77,7 +121,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  faceWithName:feature:inContext:                                        */
+/*  filterWithName:photo:inContext:                                        */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -87,7 +131,7 @@
     
     filter.photo = photo;
     filter.name = name;
-    
+    filter.context = context;
     return filter;
 }
 
@@ -98,12 +142,13 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void) awakeFromInsert
+- (void)awakeFromInsert
 {
     [super awakeFromInsert];
     [self setActive:NO];
     [self setCreationDate:[NSDate date]];
     [self setModificationDate:[NSDate date]];
+    [self createProperties];
 }
 
 #pragma mark - Instance Methods
@@ -117,6 +162,65 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  createProperties                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setNewName:(NSString*)newName
+{
+    [self deleteProperties];
+    self.name = newName;
+    [self createProperties];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  createProperties                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)createProperties
+{
+    CIFilter* ciFilter = [CIFilter filterWithName:self.name];
+    if( ciFilter != nil )
+    {
+        for( NSString* property in [ FilterProperties filterProperties] )
+        {
+            if( [[ciFilter attributes] objectForKey:property] != nil )
+            {
+                JMFFilterProperty* filterProperty = [JMFFilterProperty propertyWithName:property filter:self inContext:self.context];
+                filterProperty.value = [NSNumber numberWithFloat:0.0f];
+            }
+        }
+        
+        NSError *error;
+        [propertiesResultsController performFetch:&error];
+        if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters Properties error: %@", error );
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  deleteProperties                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)deleteProperties
+{
+    for( JMFFilterProperty* property in [propertiesResultsController fetchedObjects] )
+    {
+        [self.context deleteObject:property];
+    }
+    NSError *error;
+    [propertiesResultsController performFetch:&error];
+    if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters Properties error: %@", error );
+}
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -160,6 +264,33 @@
 {
     NSString* localizedString = ( self.activeValue ) ? @"IDS_YES" : @"IDS_NO";
     return NSLocalizedString( localizedString, nil );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  propertiesResultsController:                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSFetchedResultsController*)propertiesResultsController
+{
+    if( propertiesResultsController == nil )
+    {
+        //Query
+        NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFilterProperty entityName]];
+        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES]];
+        request.predicate = [NSPredicate predicateWithFormat:@"filter == %@", self ];
+        propertiesResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                          managedObjectContext:self.context
+                                                                            sectionNameKeyPath:nil
+                                                                                     cacheName:nil];
+//      propertiesResultsController.delegate = self;
+        NSError *error;
+        [propertiesResultsController performFetch:&error];
+        if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters Properties error: %@", error );
+    }
+    return propertiesResultsController;
 }
 
 @end

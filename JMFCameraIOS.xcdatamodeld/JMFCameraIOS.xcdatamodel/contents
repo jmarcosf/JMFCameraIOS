@@ -11,6 +11,11 @@
     <entity name="Filter" representedClassName="JMFFilter" parentEntity="NamedEntity" syncable="YES">
         <attribute name="active" attributeType="Boolean" syncable="YES"/>
         <relationship name="photo" maxCount="1" deletionRule="Nullify" destinationEntity="Photo" inverseName="filters" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="properties" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FilterProperty" inverseName="filter" inverseEntity="FilterProperty" syncable="YES"/>
+    </entity>
+    <entity name="FilterProperty" representedClassName="JMFFilterProperty" parentEntity="NamedEntity" syncable="YES">
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="filter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Filter" inverseName="properties" inverseEntity="Filter" syncable="YES"/>
     </entity>
     <entity name="NamedEntity" representedClassName="JMFNamedEntity" syncable="YES">
         <attribute name="creationDate" attributeType="Date" indexed="YES" syncable="YES"/>
@@ -37,7 +42,8 @@
     </entity>
     <elements>
         <element name="Face" positionX="-803" positionY="-603" width="128" height="135"/>
-        <element name="Filter" positionX="-803" positionY="-423" width="128" height="75"/>
+        <element name="Filter" positionX="-803" positionY="-423" width="128" height="88"/>
+        <element name="FilterProperty" positionX="-909" positionY="-558" width="128" height="73"/>
         <element name="NamedEntity" positionX="-909" positionY="-763" width="128" height="90"/>
         <element name="Photo" positionX="-1008" positionY="-603" width="128" height="285"/>
     </elements>

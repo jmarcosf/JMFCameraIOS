@@ -13,6 +13,7 @@
 #import <UIKit/UIKit.h>
 #import "JMFCameraIOS_FilterTVCell.h"
 #import "JMFCameraIOS_FilterTVPickerCell.h"
+#import "JMFCameraIOS_FilterPropertyTVCell.h"
 #import "JMFPhoto.h"
 #import "JMFFilter.h"
 
@@ -28,7 +29,8 @@
 @interface JMFCameraIOS_FiltersViewController : UIViewController <UITabBarDelegate, NSFetchedResultsControllerDelegate,
                                                                   UITableViewDataSource, UITableViewDelegate,
                                                                   UIPickerViewDataSource, UIPickerViewDelegate,
-                                                                  JMFCameraIOS_FilterTVCellDelegate>
+                                                                  JMFCameraIOS_FilterTVCellDelegate,
+                                                                  JMFCameraIOS_FilterPropertyTVCellDelegate>
 
 /***************************************************************************/
 /*                                                                         */

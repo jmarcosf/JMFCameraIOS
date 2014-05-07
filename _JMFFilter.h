@@ -10,12 +10,14 @@ extern const struct JMFFilterAttributes {
 
 extern const struct JMFFilterRelationships {
 	__unsafe_unretained NSString *photo;
+	__unsafe_unretained NSString *properties;
 } JMFFilterRelationships;
 
 extern const struct JMFFilterFetchedProperties {
 } JMFFilterFetchedProperties;
 
 @class JMFPhoto;
+@class JMFFilterProperty;
 
 
 
@@ -53,10 +55,22 @@ extern const struct JMFFilterFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSSet *properties;
+
+- (NSMutableSet*)propertiesSet;
+
+
+
+
 
 @end
 
 @interface _JMFFilter (CoreDataGeneratedAccessors)
+
+- (void)addProperties:(NSSet*)value_;
+- (void)removeProperties:(NSSet*)value_;
+- (void)addPropertiesObject:(JMFFilterProperty*)value_;
+- (void)removePropertiesObject:(JMFFilterProperty*)value_;
 
 @end
 
@@ -75,6 +89,11 @@ extern const struct JMFFilterFetchedProperties {
 
 - (JMFPhoto*)primitivePhoto;
 - (void)setPrimitivePhoto:(JMFPhoto*)value;
+
+
+
+- (NSMutableSet*)primitiveProperties;
+- (void)setPrimitiveProperties:(NSMutableSet*)value;
 
 
 @end
