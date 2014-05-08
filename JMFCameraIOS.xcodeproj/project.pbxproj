@@ -26,6 +26,8 @@
 		901F419A190D3DF40014EA24 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901F4199190D3DF40014EA24 /* CoreLocation.framework */; };
 		901F419C190D40E90014EA24 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 901F419B190D40E90014EA24 /* MapKit.framework */; };
 		901F41A0190D51E60014EA24 /* JMFUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 901F419F190D51E60014EA24 /* JMFUtility.m */; };
+		901F42BF191BAEE60030C163 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 901F42BD191BAEE60030C163 /* Back.png */; };
+		901F42C0191BAEE60030C163 /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901F42BE191BAEE60030C163 /* Back@2x.png */; };
 		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
 		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
 		9028F60A18FC6DD6000956E7 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60018FC6DD6000956E7 /* Delete.png */; };
@@ -162,6 +164,8 @@
 		901F419B190D40E90014EA24 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		901F419E190D51E60014EA24 /* JMFUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFUtility.h; sourceTree = "<group>"; };
 		901F419F190D51E60014EA24 /* JMFUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFUtility.m; sourceTree = "<group>"; };
+		901F42BD191BAEE60030C163 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Back.png; path = "../Práctica_iOS_Avanzado_Camera/assets/Back.png"; sourceTree = "<group>"; };
+		901F42BE191BAEE60030C163 /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Back@2x.png"; path = "../Práctica_iOS_Avanzado_Camera/assets/Back@2x.png"; sourceTree = "<group>"; };
 		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		9028F5FF18FC6DD6000956E7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
 		9028F60018FC6DD6000956E7 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
@@ -361,6 +365,8 @@
 				905AB5CB1905D54C009B822F /* ArrowDown@2x.png */,
 				905AB5CC1905D54C009B822F /* ArrowUp.png */,
 				905AB5CD1905D54C009B822F /* ArrowUp@2x.png */,
+				901F42BD191BAEE60030C163 /* Back.png */,
+				901F42BE191BAEE60030C163 /* Back@2x.png */,
 				9028F5FE18FC6DD6000956E7 /* Camera.png */,
 				9028F5FF18FC6DD6000956E7 /* Camera@2x.png */,
 				905AB5D41905DA68009B822F /* Cancel.png */,
@@ -720,6 +726,7 @@
 				903E7F73190F9F6F00E1EF5F /* JMFCameraIOS_MapViewController.xib in Resources */,
 				905AB5D01905D54C009B822F /* ArrowUp.png in Resources */,
 				9028F60E18FC6DD6000956E7 /* Flickr.png in Resources */,
+				901F42C0191BAEE60030C163 /* Back@2x.png in Resources */,
 				900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */,
 				9053C33819071E8300A13EEF /* GreenCheck@2x.png in Resources */,
 				9028F60818FC6DD6000956E7 /* Camera.png in Resources */,
@@ -731,6 +738,7 @@
 				90AD563118FDFB6500C649FA /* Data@2x.png in Resources */,
 				905AB5D71905DA68009B822F /* Apply@2x.png in Resources */,
 				905AB5D11905D54C009B822F /* ArrowUp@2x.png in Resources */,
+				901F42BF191BAEE60030C163 /* Back.png in Resources */,
 				90AD563218FDFB6500C649FA /* Filters.png in Resources */,
 				903E7F7E190FD5B900E1EF5F /* Album@2x.png in Resources */,
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,

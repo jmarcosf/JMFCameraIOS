@@ -90,15 +90,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onInfoClicked:                                                         */
+/*  onpropertiesClicked:                                                   */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onInfoClicked:(id)sender
+- (IBAction)onPropertiesClicked:(id)sender
 {
-    if( [ self.delegate respondsToSelector:@selector( filterCell:onInfoClickedforIndexPath: )] )
+    if( [ self.delegate respondsToSelector:@selector( filterCell:onPropertiesClickedforIndexPath: )] )
     {
-        [self.delegate filterCell:self onInfoClickedforIndexPath:self.indexPath];
+        [self.delegate filterCell:self onPropertiesClickedforIndexPath:self.indexPath];
     }
 }
 

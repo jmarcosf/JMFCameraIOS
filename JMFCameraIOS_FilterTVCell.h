@@ -34,7 +34,7 @@
 
 @optional
 - (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell forIndexPath:(NSIndexPath*)indexPath didChangeState:(BOOL)newState;
-- (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell onInfoClickedforIndexPath:(NSIndexPath*)indexPath;
+- (void)filterCell:(JMFCameraIOS_FilterTVCell*)filterCell onPropertiesClickedforIndexPath:(NSIndexPath*)indexPath;
 
 @end
 
@@ -67,7 +67,7 @@
 /*                                                                         */
 /***************************************************************************/
 @property (weak, nonatomic) IBOutlet UIImageView*   iboImageView;
-@property (weak, nonatomic) IBOutlet UIButton*      iboInfoButton;
+@property (weak, nonatomic) IBOutlet UIButton*      iboPropertiesButton;
 @property (weak, nonatomic) IBOutlet UILabel*       iboNameLabel;
 @property (weak, nonatomic) IBOutlet UISwitch*      iboActiveSwitch;
 
@@ -79,7 +79,7 @@
 /*                                                                         */
 /***************************************************************************/
 - (IBAction)onSwitchChanged:(id)sender;
-- (IBAction)onInfoClicked:(id)sender;
+- (IBAction)onPropertiesClicked:(id)sender;
 
 @end
 

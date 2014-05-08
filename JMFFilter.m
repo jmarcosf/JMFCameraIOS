@@ -82,8 +82,6 @@
 /***************************************************************************/
 @implementation JMFFilter
 
-@synthesize context;
-
 #pragma mark - Key Value Observing Methods
 /***************************************************************************/
 /*                                                                         */
@@ -131,7 +129,6 @@
     
     filter.photo = photo;
     filter.name = name;
-    filter.context = context;
     return filter;
 }
 
@@ -148,7 +145,6 @@
     [self setActive:NO];
     [self setCreationDate:[NSDate date]];
     [self setModificationDate:[NSDate date]];
-    [self createProperties];
 }
 
 #pragma mark - Instance Methods
@@ -171,9 +167,12 @@
 /***************************************************************************/
 - (void)setNewName:(NSString*)newName
 {
-    [self deleteProperties];
-    self.name = newName;
-    [self createProperties];
+    if( ![newName isEqualToString:self.name] )
+    {
+        [self deleteProperties];
+        self.name = newName;
+        [self createProperties];
+    }
 }
 
 /***************************************************************************/
@@ -192,7 +191,7 @@
         {
             if( [[ciFilter attributes] objectForKey:property] != nil )
             {
-                JMFFilterProperty* filterProperty = [JMFFilterProperty propertyWithName:property filter:self inContext:self.context];
+                JMFFilterProperty* filterProperty = [JMFFilterProperty propertyWithName:property filter:self inContext:self.managedObjectContext];
                 filterProperty.value = [NSNumber numberWithFloat:0.0f];
             }
         }
@@ -214,7 +213,7 @@
 {
     for( JMFFilterProperty* property in [propertiesResultsController fetchedObjects] )
     {
-        [self.context deleteObject:property];
+        [self.managedObjectContext deleteObject:property];
     }
     NSError *error;
     [propertiesResultsController performFetch:&error];
@@ -282,7 +281,7 @@
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.name ascending:YES]];
         request.predicate = [NSPredicate predicateWithFormat:@"filter == %@", self ];
         propertiesResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                          managedObjectContext:self.context
+                                                                          managedObjectContext:self.managedObjectContext
                                                                             sectionNameKeyPath:nil
                                                                                      cacheName:nil];
 //      propertiesResultsController.delegate = self;

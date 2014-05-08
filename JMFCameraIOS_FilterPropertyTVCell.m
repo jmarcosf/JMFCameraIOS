@@ -98,7 +98,7 @@
     if( segmentedControl.selectedSegmentIndex == 0 ) value += 0.10;
     else value -= 0.10;
     if( value < 0 ) value = 0.0;
-    if( value > 100.0 ) value = 100.0;
+    if( value > 1000.0 ) value = 1000.0;
     self.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", value];
     
     if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:didChangeValue:forIndexPath: )] )

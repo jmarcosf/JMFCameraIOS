@@ -69,10 +69,11 @@
 - (void)enableButtons;
 - (void)addFilter:(id)sender;
 - (void)onCancelClicked;
+- (void)onBackClicked;
 - (void)onClearClicked;
 - (void)onApplyClicked;
 - (void)onSaveClicked;
-- (void)onDoneClicked:(id)sender;
 - (void)setTargetImage;
+- (JMFFilter*)getSelectedFilter;
 
 @end

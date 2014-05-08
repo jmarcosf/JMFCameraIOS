@@ -429,6 +429,7 @@
         else if( indexPath.section == SECTION_FILTERS )
         {
             JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
+            [filter deleteProperties];
             [self.model.context deleteObject:filter];
             [self.model saveWithErrorBlock:nil];
             [filtersResultsController performFetch:nil];
