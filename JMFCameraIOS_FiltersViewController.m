@@ -38,6 +38,19 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  Keyboard re-layout constants                                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+static const CGFloat KEYBOARD_ANIMATION_DURATION    = 0.3;
+static const CGFloat MINIMUM_SCROLL_FRACTION        = 0.2;
+static const CGFloat MAXIMUM_SCROLL_FRACTION        = 0.8;
+static const CGFloat PORTRAIT_KEYBOARD_HEIGHT       = 216;
+static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  JMFCameraIOS_FiltersViewController Class Interface                     */
 /*                                                                         */
 /*                                                                         */
@@ -57,6 +70,8 @@
     UIImage*                    targetImage;
     UIView*                     containerView;
     int                         viewMode;
+    
+    CGFloat                     animatedDistance;
 }
 @end
 
@@ -463,6 +478,7 @@
         cell.iboPropertyName.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
         cell.iboPropertyName.text = filterProperty.name;
         cell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", filterProperty.value.floatValue ];
+        cell.iboPropertyValue.delegate = self;
         cell.indexPath = indexPath;
         cell.delegate = self;
 
@@ -734,7 +750,66 @@
 {
     JMFFilter* selectedFilter = [self getSelectedFilter];
     JMFFilterProperty* filterProperty = [[selectedFilter propertiesResultsController]objectAtIndexPath:indexPath];
+    
     filterProperty.value = [NSNumber numberWithFloat:newValue];
+    if( filterProperty.max != nil && filterProperty.value.floatValue > filterProperty.max.floatValue )
+    {
+        filterProperty.value = filterProperty.max;
+        filterPropertyCell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", filterProperty.value.floatValue];
+    }
+    else if( filterProperty.min != nil && filterProperty.value.floatValue < filterProperty.min.floatValue )
+    {
+        filterProperty.value = filterProperty.min;
+        filterPropertyCell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", filterProperty.value.floatValue];
+    }
+    bModified = YES;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  filterCell:shouldIncrementValue:forIndexPath:                          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)filterPropertyCell:(JMFCameraIOS_FilterPropertyTVCell *)filterPropertyCell shouldIncrementValue:(CGFloat)value forIndexPath:(NSIndexPath *)indexPath
+{
+    JMFFilter* selectedFilter = [self getSelectedFilter];
+    JMFFilterProperty* filterProperty = [[selectedFilter propertiesResultsController]objectAtIndexPath:indexPath];
+    
+    if( filterProperty.step == nil || filterProperty.step.floatValue == 0.0f ) value += 0.1f;
+    else value += filterProperty.step.floatValue;
+    
+    filterProperty.value = [NSNumber numberWithFloat:value];
+    if( filterProperty.max != nil && filterProperty.value.floatValue > filterProperty.max.floatValue )
+    {
+        filterProperty.value = filterProperty.max;
+    }
+    filterPropertyCell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", filterProperty.value.floatValue];
+    bModified = YES;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  filterCell:shouldDecrementValue:forIndexPath:                          */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)filterPropertyCell:(JMFCameraIOS_FilterPropertyTVCell *)filterPropertyCell shouldDecrementValue:(CGFloat)value forIndexPath:(NSIndexPath *)indexPath
+{
+    JMFFilter* selectedFilter = [self getSelectedFilter];
+    JMFFilterProperty* filterProperty = [[selectedFilter propertiesResultsController]objectAtIndexPath:indexPath];
+    
+    if( filterProperty.step == nil || filterProperty.step.floatValue == 0.0f ) value -= 0.1f;
+    else value -= filterProperty.step.floatValue;
+    
+    filterProperty.value = [NSNumber numberWithFloat:value];
+    if( filterProperty.min != nil && filterProperty.value.floatValue < filterProperty.min.floatValue )
+    {
+        filterProperty.value = filterProperty.min;
+    }
+    filterPropertyCell.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", filterProperty.value.floatValue];
     bModified = YES;
 }
 
@@ -1103,5 +1178,115 @@
     }
 }
 
+#pragma mark - UITextFieldDelegate Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  UITextFieldDelegate Methods                                            */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  textFieldDidBeginEditing:                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)textFieldDidBeginEditing:(UITextField*)textField
+{
+    CGRect textFieldRect   = [self.view.window convertRect:textField.bounds fromView:textField];
+    CGRect viewRect        = [self.view.window convertRect:self.view.bounds fromView:self.view];
+    CGFloat midline        = textFieldRect.origin.y + 0.5 * textFieldRect.size.height;
+    CGFloat numerator      = midline - viewRect.origin.y - MINIMUM_SCROLL_FRACTION * viewRect.size.height;
+    CGFloat denominator    = ( MAXIMUM_SCROLL_FRACTION - MINIMUM_SCROLL_FRACTION ) * viewRect.size.height;
+    CGFloat heightFraction = numerator / denominator;
+    
+    if( heightFraction < 0.0 ) heightFraction = 0.0;
+    else if( heightFraction > 1.0 ) heightFraction = 1.0;
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    animatedDistance = ( orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown )
+                       ? floor( PORTRAIT_KEYBOARD_HEIGHT * heightFraction ) : floor( LANDSCAPE_KEYBOARD_HEIGHT * heightFraction );
+    
+    CGRect viewFrame = self.view.frame;
+    viewFrame.origin.y -= animatedDistance;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+    [self.view setFrame:viewFrame];
+    [UIView commitAnimations];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  textField:shouldChangeCharactersInRange:replacementString:             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string
+{
+    for( int i = 0; i < string.length; i++ )
+    {
+        switch( [string characterAtIndex:i] )
+        {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '+':
+            case '-':
+            case '.':
+                break;
+                
+            default:
+                return NO;
+        }
+    }
+    return YES;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  textFieldDidEndEditing:                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)textFieldDidEndEditing:(UITextField*)textField
+{
+    CGRect viewFrame = self.view.frame;
+    viewFrame.origin.y += animatedDistance;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+    [self.view setFrame:viewFrame];
+    [UIView commitAnimations];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  textFieldShouldReturn:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 @end

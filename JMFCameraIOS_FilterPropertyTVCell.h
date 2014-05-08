@@ -35,6 +35,8 @@
 
 @optional
 - (void)filterPropertyCell:(JMFCameraIOS_FilterPropertyTVCell*)filterPropertyCell didChangeValue:(CGFloat)newValue forIndexPath:(NSIndexPath*)indexPath;
+- (void)filterPropertyCell:(JMFCameraIOS_FilterPropertyTVCell*)filterPropertyCell shouldIncrementValue:(CGFloat)value forIndexPath:(NSIndexPath*)indexPath;
+- (void)filterPropertyCell:(JMFCameraIOS_FilterPropertyTVCell*)filterPropertyCell shouldDecrementValue:(CGFloat)value forIndexPath:(NSIndexPath*)indexPath;
 
 @end
 

@@ -82,6 +82,13 @@
 /***************************************************************************/
 - (IBAction)onPropertyValueChanged:(id)sender
 {
+    CGFloat value = [self.iboPropertyValue.text floatValue];
+    self.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", value];
+    
+    if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:didChangeValue:forIndexPath: )] )
+    {
+        [self.delegate filterPropertyCell:self didChangeValue:value forIndexPath:self.indexPath];
+    }
 }
 
 /***************************************************************************/
@@ -95,15 +102,20 @@
 {
     UISegmentedControl *segmentedControl = (UISegmentedControl*) sender;
     CGFloat value = [self.iboPropertyValue.text floatValue];
-    if( segmentedControl.selectedSegmentIndex == 0 ) value += 0.10;
-    else value -= 0.10;
-    if( value < 0 ) value = 0.0;
-    if( value > 1000.0 ) value = 1000.0;
-    self.iboPropertyValue.text = [NSString stringWithFormat: @"%.2f", value];
     
-    if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:didChangeValue:forIndexPath: )] )
+    if( segmentedControl.selectedSegmentIndex == 0 )
     {
-        [self.delegate filterPropertyCell:self didChangeValue:value forIndexPath:self.indexPath];
+        if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:shouldIncrementValue:forIndexPath: )] )
+        {
+            [self.delegate filterPropertyCell:self shouldIncrementValue:value forIndexPath:self.indexPath];
+        }
+    }
+    else
+    {
+        if( [ self.delegate respondsToSelector:@selector( filterPropertyCell:shouldDecrementValue:forIndexPath: )] )
+        {
+            [self.delegate filterPropertyCell:self shouldDecrementValue:value forIndexPath:self.indexPath];
+        }
     }
 }
 

@@ -187,12 +187,27 @@
     CIFilter* ciFilter = [CIFilter filterWithName:self.name];
     if( ciFilter != nil )
     {
+        [ciFilter setDefaults];
         for( NSString* property in [ FilterProperties filterProperties] )
         {
-            if( [[ciFilter attributes] objectForKey:property] != nil )
+            NSDictionary* filterParams = [[ciFilter attributes] objectForKey:property];
+            if( filterParams != nil )
             {
                 JMFFilterProperty* filterProperty = [JMFFilterProperty propertyWithName:property filter:self inContext:self.managedObjectContext];
-                filterProperty.value = [NSNumber numberWithFloat:0.0f];
+                NSNumber* number;
+
+                filterProperty.defaultValue = [NSNumber numberWithFloat:0.0f];
+                if( ( number = [filterParams objectForKey:@"CIAttributeDefault"] ) != nil ) filterProperty.defaultValue = number;
+
+                filterProperty.max = [NSNumber numberWithFloat:1000.0f];
+                if( ( number = [filterParams objectForKey:@"CIAttributeMax"] ) != nil ) filterProperty.max = number;
+
+                filterProperty.min = [NSNumber numberWithFloat:0.0f];
+                if( ( number = [filterParams objectForKey:@"CIAttributeMin"] ) != nil ) filterProperty.min = number;
+                
+                filterProperty.value = filterProperty.defaultValue;
+                filterProperty.step = [NSNumber numberWithFloat:0.0f];
+                if( filterProperty.defaultValue != 0 ) filterProperty.step = [NSNumber numberWithFloat:filterProperty.defaultValue.floatValue / 10];
             }
         }
         

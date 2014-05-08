@@ -5,6 +5,10 @@
 #import "JMFNamedEntity.h"
 
 extern const struct JMFFilterPropertyAttributes {
+	__unsafe_unretained NSString *defaultValue;
+	__unsafe_unretained NSString *max;
+	__unsafe_unretained NSString *min;
+	__unsafe_unretained NSString *step;
 	__unsafe_unretained NSString *value;
 } JMFFilterPropertyAttributes;
 
@@ -19,6 +23,10 @@ extern const struct JMFFilterPropertyFetchedProperties {
 
 
 
+
+
+
+
 @interface JMFFilterPropertyID : NSManagedObjectID {}
 @end
 
@@ -27,6 +35,62 @@ extern const struct JMFFilterPropertyFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (JMFFilterPropertyID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* defaultValue;
+
+
+
+@property float defaultValueValue;
+- (float)defaultValueValue;
+- (void)setDefaultValueValue:(float)value_;
+
+//- (BOOL)validateDefaultValue:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* max;
+
+
+
+@property float maxValue;
+- (float)maxValue;
+- (void)setMaxValue:(float)value_;
+
+//- (BOOL)validateMax:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* min;
+
+
+
+@property float minValue;
+- (float)minValue;
+- (void)setMinValue:(float)value_;
+
+//- (BOOL)validateMin:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* step;
+
+
+
+@property float stepValue;
+- (float)stepValue;
+- (void)setStepValue:(float)value_;
+
+//- (BOOL)validateStep:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -61,6 +125,42 @@ extern const struct JMFFilterPropertyFetchedProperties {
 @end
 
 @interface _JMFFilterProperty (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSNumber*)primitiveDefaultValue;
+- (void)setPrimitiveDefaultValue:(NSNumber*)value;
+
+- (float)primitiveDefaultValueValue;
+- (void)setPrimitiveDefaultValueValue:(float)value_;
+
+
+
+
+- (NSNumber*)primitiveMax;
+- (void)setPrimitiveMax:(NSNumber*)value;
+
+- (float)primitiveMaxValue;
+- (void)setPrimitiveMaxValue:(float)value_;
+
+
+
+
+- (NSNumber*)primitiveMin;
+- (void)setPrimitiveMin:(NSNumber*)value;
+
+- (float)primitiveMinValue;
+- (void)setPrimitiveMinValue:(float)value_;
+
+
+
+
+- (NSNumber*)primitiveStep;
+- (void)setPrimitiveStep:(NSNumber*)value;
+
+- (float)primitiveStepValue;
+- (void)setPrimitiveStepValue:(float)value_;
+
+
 
 
 - (NSNumber*)primitiveValue;

@@ -30,7 +30,8 @@
                                                                   UITableViewDataSource, UITableViewDelegate,
                                                                   UIPickerViewDataSource, UIPickerViewDelegate,
                                                                   JMFCameraIOS_FilterTVCellDelegate,
-                                                                  JMFCameraIOS_FilterPropertyTVCellDelegate>
+                                                                  JMFCameraIOS_FilterPropertyTVCellDelegate,
+                                                                  UITextFieldDelegate>
 
 /***************************************************************************/
 /*                                                                         */
