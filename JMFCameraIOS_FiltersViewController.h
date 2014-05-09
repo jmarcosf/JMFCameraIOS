@@ -69,7 +69,7 @@
 - (void)setupFilterList;
 - (void)enableButtons;
 - (void)onAddFilterClicked:(id)sender;
-- (void)onEditClicked:(id)sender;
+- (void)onMoveClicked:(id)sender;
 - (void)onCancelClicked;
 - (void)onBackClicked;
 - (void)onClearClicked;

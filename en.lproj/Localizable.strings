@@ -60,6 +60,7 @@
 "IDS_CAMEL_MINUTE" = "Minute";
 "IDS_DONE" = "Done";
 "IDS_BACK" = "Back";
+"IDS_MOVE" = "Move";
 
 "IDS_SOURCE" = "Source";
 "IDS_COLOR_MODEL" = "Color Model";

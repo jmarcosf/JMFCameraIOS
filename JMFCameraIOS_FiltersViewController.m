@@ -144,8 +144,13 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 
     self.navigationController.navigationBar.translucent = NO;
     self.navigationItem.hidesBackButton = YES;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector( onAddFilterClicked: )];
-    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:ResString( @"IDS_EDIT" ) style:UIBarButtonItemStylePlain target:self action:@selector( onEditClicked: )];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                           target:self
+                                                                                           action:@selector( onAddFilterClicked: )];
+    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:ResString( @"IDS_MOVE" )
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector( onMoveClicked: )];
 
     self.title = ResString( @"IDS_FILTERS" );
     bModified = bReloadData = NO;
@@ -553,7 +558,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     sourceFilter.position = targetPosition;
     targetFilter.position = sourcePosition;
 
-    [self onEditClicked:self];
+    [self onMoveClicked:self];
 }
 
 #pragma mark - UITableViewDelegate
@@ -1040,11 +1045,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onEditClicked:                                                         */
+/*  onMoveClicked:                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)onEditClicked:(id)sender
+- (void)onMoveClicked:(id)sender
 {
     BOOL bEdit = ![self.iboFilterTable isEditing];
     
@@ -1060,7 +1065,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     else
     {
         [self enableButtons];
-        self.navigationItem.leftBarButtonItem.title = ResString( @"IDS_EDIT" );
+        self.navigationItem.leftBarButtonItem.title = ResString( @"IDS_MOVE" );
     }
 
     [self.iboFilterTable setEditing:bEdit animated:YES];

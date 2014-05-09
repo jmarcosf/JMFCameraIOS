@@ -177,6 +177,7 @@
     self.iboSourceImageView.frame = CGRectMake( 2, 2, 150, 150 );
     [self.iboSourceImageView setClipsToBounds:YES];
     self.iboFullScreenLabel.frame = CGRectMake( 2, 150, 148, 20 );
+    self.iboModifiedValue.text = [JMFUtility formattedStringFromDate:self.photo.modificationDate withFormat:@"IDS_DATETIME_FORMAT"];
     
     //Faces Query
     faceResultsController = nil;    //Reset contents
