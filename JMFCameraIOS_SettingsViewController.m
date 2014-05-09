@@ -105,23 +105,23 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_SETTINGS", nil );
+    self.title = ResString( @"IDS_SETTINGS" );
     
     //Containers
     self.iboFlickrSyncContainer.layer.borderWidth = self.iboFrequencyContainer.layer.borderWidth = self.iboDropContainer.layer.borderWidth = 1;
     self.iboFlickrSyncContainer.layer.borderColor = self.iboFrequencyContainer.layer.borderColor = self.iboDropContainer.layer.borderColor = [Rgb2UIColor( 200, 200, 200 ) CGColor];
 
     //Titles
-    self.iboFlickrSyncTitle.text = NSLocalizedString( @"IDS_FLICKR_SYNC", nil );
-    self.iboDatabaseTitle.text   = NSLocalizedString( @"IDS_DATABASE", nil );
+    self.iboFlickrSyncTitle.text = ResString( @"IDS_FLICKR_SYNC" );
+    self.iboDatabaseTitle.text   = ResString( @"IDS_DATABASE" );
 
     //Labels
-    self.iboFlickrSyncLabel.text = NSLocalizedString( @"IDS_FLICKR_SYNC_PICTURES", nil );
-    self.iboFrequencyLabel.text  = NSLocalizedString( @"IDS_FREQUENCY", nil );
-    self.iboDropLabel.text       = NSLocalizedString( @"IDS_DROP_DATABASE", nil );
+    self.iboFlickrSyncLabel.text = ResString( @"IDS_FLICKR_SYNC_PICTURES" );
+    self.iboFrequencyLabel.text  = ResString( @"IDS_FREQUENCY" );
+    self.iboDropLabel.text       = ResString( @"IDS_DROP_DATABASE" );
 
     //Frecuency
-    NSString* minute = NSLocalizedString( @"IDS_MINUTE", nil );
+    NSString* minute = ResString( @"IDS_MINUTE" );
     frequencyStrings = [NSArray arrayWithObjects:[NSString stringWithFormat:@"15 %@s",  minute],
                                                  [NSString stringWithFormat:@"30 %@s",  minute],
                                                  [NSString stringWithFormat:@"45 %@s",  minute],
@@ -210,10 +210,10 @@
 /***************************************************************************/
 - (IBAction)onDropDatabaseChanged:(id)sender
 {
-    NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_TITLE     = NSLocalizedString( @"IDS_DATABASE", nil );
-    NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_DROP_DATABASE", nil );
+    NSString* IDS_OK        = ResString( @"IDS_OK" );
+    NSString* IDS_CANCEL    = ResString( @"IDS_CANCEL" );
+    NSString* IDS_TITLE     = ResString( @"IDS_DATABASE" );
+    NSString* IDS_MESSAGE   = ResString( @"IDS_CONFIRM_DROP_DATABASE" );
     
     UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
                                                             delegate:nil
@@ -229,8 +229,8 @@
             {
                 error = [self.model dropDatabaseData];
             }
-            NSString* IDS_RESULT_MESSAGE = ( error == nil ) ? NSLocalizedString( @"IDS_DATABASE_DROPPED_SUCCESSFULLY", nil )
-                                                            : NSLocalizedString( @"IDS_DATABASE_DROPPED_WITH_ERROR", nil );
+            NSString* IDS_RESULT_MESSAGE = ( error == nil ) ? ResString( @"IDS_DATABASE_DROPPED_SUCCESSFULLY" )
+                                                            : ResString( @"IDS_DATABASE_DROPPED_WITH_ERROR" );
             [[[UIAlertView alloc]initWithTitle:IDS_TITLE message:IDS_RESULT_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
         }
         self.iboDropSwitch.on = NO;

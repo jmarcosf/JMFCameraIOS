@@ -93,7 +93,7 @@
     [super viewDidLoad];
 
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_SHOW", nil );
+    self.title = ResString( @"IDS_SHOW" );
     
     self.iboScrollView.minimumZoomScale = 1.0;
     self.iboScrollView.maximumZoomScale = 6.0;

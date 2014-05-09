@@ -101,7 +101,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_ALBUM", nil );
+    self.title = ResString( @"IDS_ALBUM" );
     
     self.iboScrollView.delegate = self;
     self.iboPageControl.numberOfPages = albumCount;

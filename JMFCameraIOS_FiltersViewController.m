@@ -141,10 +141,13 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 {
     [super viewDidLoad];
     [[self.model.context undoManager] beginUndoGrouping];
+
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector( addFilter: )];
     self.navigationItem.hidesBackButton = YES;
-    self.title = NSLocalizedString( @"IDS_FILTERS", nil );
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector( onAddFilterClicked: )];
+    self.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:ResString( @"IDS_EDIT" ) style:UIBarButtonItemStylePlain target:self action:@selector( onEditClicked: )];
+
+    self.title = ResString( @"IDS_FILTERS" );
     bModified = bReloadData = NO;
     iPickerViewSection = -1;
 
@@ -157,14 +160,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     
     //TabBar
     self.iboTabBar.delegate = self;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:NSLocalizedString( @"IDS_CLEAR", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:NSLocalizedString( @"IDS_APPLY", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:NSLocalizedString( @"IDS_SAVE",  nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:ResString( @"IDS_CANCEL" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:ResString( @"IDS_CLEAR" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setTitle:ResString( @"IDS_APPLY" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:ResString( @"IDS_SAVE" )];
 
     //TabBarItems
     UIImage* iconBack = [UIImage imageNamed:@"Back.png"];
-    UITabBarItem* tbiBackItem = [[UITabBarItem alloc]initWithTitle:NSLocalizedString( @"IDS_BACK", nil ) image:iconBack selectedImage:iconBack];
+    UITabBarItem* tbiBackItem = [[UITabBarItem alloc]initWithTitle:ResString( @"IDS_BACK" ) image:iconBack selectedImage:iconBack];
     tbiBackItem.tag = IDC_UITOOLBAR_BUTTON_BACK_INDEX;
     tbiaFilterMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
     tbiaPropertyMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
@@ -209,7 +212,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFilter entityName]];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFNamedEntityAttributes.creationDate ascending:YES]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:JMFFilterAttributes.position ascending:YES]];
     request.predicate = [NSPredicate predicateWithFormat:@"photo == %@", self.photo ];
     filtersResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                    managedObjectContext:self.model.context
@@ -380,7 +383,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)controller:(NSFetchedResultsController*)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath
 {
-    if( type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeDelete ) bReloadData = YES;
+    if( type == NSFetchedResultsChangeInsert ||
+        type == NSFetchedResultsChangeDelete ||
+        type == NSFetchedResultsChangeMove    ) bReloadData = YES;
 }
 
 /***************************************************************************/
@@ -436,9 +441,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     if( tableView == self.iboPropertyTable )
     {
         JMFFilter* selectedFilter = [self getSelectedFilter];
-        return [NSString stringWithFormat:@"%@ - %@", NSLocalizedString( @"IDS_FILTER", nil ), selectedFilter ];
+        return [NSString stringWithFormat:@"%@ - %@", ResString( @"IDS_FILTER" ), selectedFilter ];
     }
-    else return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
+    else return [NSString stringWithFormat:@"%@ #%d", ResString( @"IDS_FILTER" ), (int)( section + 1 )];
 }
 
 /***************************************************************************/
@@ -516,6 +521,41 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     }
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:canMoveRowAtIndexPath:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)tableView:(UITableView*)tableView canMoveRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return ( tableView == self.iboFilterTable );
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:moveRowAtIndexPath:toIndexPath:                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)tableView:(UITableView*)tableView moveRowAtIndexPath:(NSIndexPath*)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath
+{
+    if( sourceIndexPath.section == destinationIndexPath.section ) return;
+    
+    JMFFilter* sourceFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:sourceIndexPath.section inSection:0]];
+    JMFFilter* targetFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:destinationIndexPath.section inSection:0]];
+    
+    NSNumber* sourcePosition = sourceFilter.position;
+    NSNumber* targetPosition = targetFilter.position;
+    
+    sourceFilter.position = targetPosition;
+    targetFilter.position = sourcePosition;
+
+    [self onEditClicked:self];
+}
+
 #pragma mark - UITableViewDelegate
 /***************************************************************************/
 /*                                                                         */
@@ -567,7 +607,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         NSIndexPath* indexPath = [[self.iboFilterTable indexPathsForSelectedRows]objectAtIndex:0];
         JMFFilter* selectedFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         
-        self.title = [NSString stringWithFormat:@"%@ %d", NSLocalizedString( @"IDS_FILTER", nil ), indexPath.section + 1];
+        self.title = [NSString stringWithFormat:@"%@ %d", ResString( @"IDS_FILTER" ), indexPath.section + 1];
         headerTitle = [NSString stringWithFormat:@" %@", selectedFilter.name];
         
         UIView* headerContainer = [[UIView alloc]initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 )];
@@ -585,7 +625,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     }
     else
     {
-        headerTitle = [NSString stringWithFormat:@"   %@ %d", NSLocalizedString( @"IDS_FILTER", nil ), (int)(section + 1)];
+        headerTitle = [NSString stringWithFormat:@"   %@ %d", ResString( @"IDS_FILTER" ), (int)(section + 1)];
         UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
         headerView.text = headerTitle;
         headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
@@ -977,22 +1017,54 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:( bModified && iPickerViewSection == -1 )];
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:( bModified && iPickerViewSection == -1 )];
         self.navigationItem.rightBarButtonItem.enabled = ( iPickerViewSection == -1 );
+        self.navigationItem.leftBarButtonItem.enabled = ( count > 1 );
     }
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  addFilter:                                                             */
+/*  onAddFilterClicked:                                                    */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)addFilter:(id)sender
+- (void)onAddFilterClicked:(id)sender
 {
-    [JMFFilter filterWithName:IDS_FILTER_NONE photo:(JMFPhoto*)self.photo inContext:self.model.context];
+    [JMFFilter filterWithName:IDS_FILTER_NONE
+                        photo:(JMFPhoto*)self.photo
+                     position:[[filtersResultsController fetchedObjects]count]
+                    inContext:self.model.context];
     [self.iboFilterTable reloadData];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onEditClicked:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onEditClicked:(id)sender
+{
+    BOOL bEdit = ![self.iboFilterTable isEditing];
+    
+    if( bEdit )
+    {
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setEnabled:NO];
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setEnabled:NO];
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:NO];
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:NO];
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.leftBarButtonItem.title = ResString( @"IDS_CANCEL" );
+    }
+    else
+    {
+        [self enableButtons];
+        self.navigationItem.leftBarButtonItem.title = ResString( @"IDS_EDIT" );
+    }
+
+    [self.iboFilterTable setEditing:bEdit animated:YES];
+}
 
 /***************************************************************************/
 /*                                                                         */
@@ -1026,7 +1098,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     self.iboPropertyTable.hidden = YES;
     [UIView commitAnimations];
     [self.iboFilterTable reloadData];
-    self.title = NSLocalizedString( @"IDS_FILTERS", nil );
+    self.title = ResString( @"IDS_FILTERS" );
     self.iboTabBar.items = tbiaFilterMode;
     [self enableButtons];
 }

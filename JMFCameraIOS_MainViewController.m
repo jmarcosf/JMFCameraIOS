@@ -130,7 +130,7 @@
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString( @"IDS_APP_NAME", nil );
+    self.title = ResString( @"IDS_APP_NAME" );
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     self.navigationController.navigationBar.translucent = NO;
     
@@ -150,7 +150,7 @@
                                                                             target:self
                                                                             action:@selector( onSettingsClicked: )];
     bMultiSelectMode = NO;
-    iboSelectButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString( @"IDS_SELECT", nil )
+    iboSelectButton = [[UIBarButtonItem alloc] initWithTitle:ResString( @"IDS_SELECT" )
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector( onSelectClicked:)];
@@ -167,15 +167,15 @@
     //TabBar
     self.iboTabBar.delegate = self;
     self.iboTabBar.layer.zPosition = 10;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:NSLocalizedString( @"IDS_CAMERA", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:NSLocalizedString( @"IDS_LIST_MODE", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:NSLocalizedString( @"IDS_DELETE", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:NSLocalizedString( @"IDS_FLICKR", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setTitle:NSLocalizedString( @"IDS_ALBUM", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CAMERA_INDEX] setTitle:ResString( @"IDS_CAMERA" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_MODE_INDEX]   setTitle:ResString( @"IDS_LIST_MODE" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:ResString( @"IDS_DELETE" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:ResString( @"IDS_FLICKR" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setTitle:ResString( @"IDS_ALBUM" )];
     
     //TabBarItems
     UIImage* iconMosaicMode = [UIImage imageNamed:@"MosaicMode.png"];
-    UITabBarItem* tbiMosaicMode = [[UITabBarItem alloc]initWithTitle:NSLocalizedString( @"IDS_MOSAIC_MODE", nil ) image:iconMosaicMode selectedImage:iconMosaicMode];
+    UITabBarItem* tbiMosaicMode = [[UITabBarItem alloc]initWithTitle:ResString( @"IDS_MOSAIC_MODE" ) image:iconMosaicMode selectedImage:iconMosaicMode];
     tbiMosaicMode.tag = IDC_UITOOLBAR_BUTTON_MODE_INDEX;
     tbiaMosaicMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
     tbiaListMode = [[[NSMutableArray alloc]initWithArray:self.iboTabBar.items] mutableCopy];
@@ -196,7 +196,7 @@
     iboEmptyAlbumLabel.lineBreakMode = NSLineBreakByWordWrapping;
     iboEmptyAlbumLabel.numberOfLines = 10;
     iboEmptyAlbumLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-    iboEmptyAlbumLabel.text = NSLocalizedString( @"IDS_EMPTY_ALBUM_MESSAGE", nil );
+    iboEmptyAlbumLabel.text = ResString( @"IDS_EMPTY_ALBUM_MESSAGE" );
     iboEmptyAlbumLabel.layer.zPosition = 5;
     [iboContainer addSubview:iboEmptyAlbumLabel];
     
@@ -481,7 +481,7 @@
             CGRect frame = CGRectMake( 5, 0, reusableView.frame.size.width - 10, reusableView.frame.size.height );
             UILabel* header = [[UILabel alloc]initWithFrame:frame];
             long picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:indexPath.section] numberOfObjects];
-            header.text = [NSString stringWithFormat:@"%ld %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
+            header.text = [NSString stringWithFormat:@"%ld %@", picturesCount, ResString( @"IDS_PICTURES" )];
             [reusableView addSubview:header];
         }
     }
@@ -592,7 +592,7 @@
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     long picturesCount = [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
-    return [NSString stringWithFormat:@"%ld %@", picturesCount, NSLocalizedString( @"IDS_PICTURES", nil )];
+    return [NSString stringWithFormat:@"%ld %@", picturesCount, ResString( @"IDS_PICTURES" )];
 }
 
 /***************************************************************************/
@@ -613,11 +613,11 @@
     cell.imageView.image     = ( image != nil ) ? image : [UIImage imageNamed:@"NoImage.jpg"];
     cell.iboNameLabel.text   = photo.name;
     cell.iboSizeLabel.text   = [NSString stringWithFormat:@"%d x %d", photo.pixelWidthValue, photo.pixelHeightValue];
-    cell.iboSourceTitle.text = [NSLocalizedString( @"IDS_SOURCE", nil ) stringByAppendingString:@":"];
+    cell.iboSourceTitle.text = [ResString( @"IDS_SOURCE" ) stringByAppendingString:@":"];
     cell.iboSourceValue.text = [photo sourceToString];
-    cell.iboWhenTitle.text   = [NSLocalizedString( @"IDS_WHEN", nil ) stringByAppendingString:@":"];
+    cell.iboWhenTitle.text   = [ResString( @"IDS_WHEN" ) stringByAppendingString:@":"];
     cell.iboWhenValue.text   = [JMFUtility formattedStringFromDate:photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
-    cell.iboWhereTitle.text  = [NSLocalizedString( @"IDS_WHERE", nil ) stringByAppendingString:@":"];
+    cell.iboWhereTitle.text  = [ResString( @"IDS_WHERE" ) stringByAppendingString:@":"];
     cell.iboWhereValue.text  = photo.geoLocation;
     
     return cell;
@@ -740,7 +740,7 @@
                 [self animateModeChange];
                 iboSelectButton.style = UIBarButtonItemStyleBordered;
                 iboSelectButton.enabled = ( count > 0 );
-                iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
+                iboSelectButton.title = ( bMultiSelectMode ) ? ResString( @"IDS_CANCEL" ) : ResString( @"IDS_SELECT" );
                 break;
                 
             default:
@@ -842,8 +842,8 @@
     }
 
     bMultiSelectMode = !bMultiSelectMode;
-    iboSelectButton.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_CANCEL", nil ) : NSLocalizedString( @"IDS_SELECT", nil );
-    self.title = ( bMultiSelectMode ) ? NSLocalizedString( @"IDS_SELECT_ITEMS", nil ) : NSLocalizedString( @"IDS_APP_NAME", nil );
+    iboSelectButton.title = ( bMultiSelectMode ) ? ResString( @"IDS_CANCEL" ) : ResString( @"IDS_SELECT" );
+    self.title = ( bMultiSelectMode ) ? ResString( @"IDS_SELECT_ITEMS" ) : ResString( @"IDS_APP_NAME" );
     self.collectionView.allowsMultipleSelection = bMultiSelectMode;
     self.tableView.allowsMultipleSelection = bMultiSelectMode;
     [self redrawControls:YES];
@@ -860,10 +860,10 @@
 {
     self.oldViewMode = self.viewMode;
     
-    NSString* IDS_CANCEL        = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_CAMERA        = NSLocalizedString( @"IDS_CAMERA", nil );
-    NSString* IDS_PHOTO_LIBRARY = NSLocalizedString( @"IDS_PHOTO_LIBRARY", nil );
-    NSString* IDS_MESSAGE       = NSLocalizedString( @"IDS_CHOOSE_IMAGE_SOURCE", nil );
+    NSString* IDS_CANCEL        = ResString( @"IDS_CANCEL" );
+    NSString* IDS_CAMERA        = ResString( @"IDS_CAMERA" );
+    NSString* IDS_PHOTO_LIBRARY = ResString( @"IDS_PHOTO_LIBRARY" );
+    NSString* IDS_MESSAGE       = ResString( @"IDS_CHOOSE_IMAGE_SOURCE" );
     
     
     UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
@@ -892,9 +892,9 @@
             }
             else
             {
-                NSString* IDS_ERROR = NSLocalizedString( @"IDS_ERROR", nil );
-                NSString* IDS_OK = NSLocalizedString( @"IDS_OK", nil );
-                NSString* IDS_NO_CAMERA_MESSAGE = NSLocalizedString( @"IDS_NO_CAMERA_MESSAGE", nil );
+                NSString* IDS_ERROR = ResString( @"IDS_ERROR" );
+                NSString* IDS_OK = ResString( @"IDS_OK" );
+                NSString* IDS_NO_CAMERA_MESSAGE = ResString( @"IDS_NO_CAMERA_MESSAGE" );
                 [[[UIAlertView alloc]initWithTitle:IDS_ERROR message:IDS_NO_CAMERA_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil] show];
             }
         }
@@ -931,13 +931,13 @@
     NSArray*        selectedArray = ( self.viewMode == JMFCoreDataViewModeMosaic ) ? [self.collectionView indexPathsForSelectedItems] : [self.tableView indexPathsForSelectedRows];
     NSMutableArray* objectsArray = [[NSMutableArray alloc]init];
     
-    NSString* IDS_OK        = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_CANCEL    = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_MESSAGE   = NSLocalizedString( @"IDS_CONFIRM_SINGLE_DELETION_MESSAGE", nil );
+    NSString* IDS_OK        = ResString( @"IDS_OK" );
+    NSString* IDS_CANCEL    = ResString( @"IDS_CANCEL" );
+    NSString* IDS_MESSAGE   = ResString( @"IDS_CONFIRM_SINGLE_DELETION_MESSAGE" );
     
     if( selectedArray.count )
     {
-        if( selectedArray.count > 1 ) IDS_MESSAGE = [NSString stringWithFormat:NSLocalizedString( @"IDS_CONFIRM_MULTI_DELETION_MESSAGE", nil ), selectedArray.count ];
+        if( selectedArray.count > 1 ) IDS_MESSAGE = [NSString stringWithFormat:ResString( @"IDS_CONFIRM_MULTI_DELETION_MESSAGE" ), selectedArray.count ];
         
         UIActionSheet* actionSheet = [[UIActionSheet alloc]initWithTitle:IDS_MESSAGE
                                                                 delegate:nil
@@ -977,12 +977,12 @@
 /***************************************************************************/
 - (void)onFlickrClicked
 {
-    NSString* IDS_OK                = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_CANCEL            = NSLocalizedString( @"IDS_CANCEL", nil );
-    NSString* IDS_MESSAGE           = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE", nil );
-    NSString* IDS_PLACEHOLDER       = NSLocalizedString( @"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER", nil );
-    NSString* IDS_DOWNLOADING       = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES", nil );
-    NSString* IDS_DOWNLOADING_ERROR = NSLocalizedString( @"IDS_DOWNLOADING_PICTURES_ERROR", nil );
+    NSString* IDS_OK                = ResString( @"IDS_OK" );
+    NSString* IDS_CANCEL            = ResString( @"IDS_CANCEL" );
+    NSString* IDS_MESSAGE           = ResString( @"IDS_DOWNLOAD_FROM_FLICKR_MESSAGE" );
+    NSString* IDS_PLACEHOLDER       = ResString( @"IDS_DOWNLOAD_FROM_FLICKR_PLACEHOLDER" );
+    NSString* IDS_DOWNLOADING       = ResString( @"IDS_DOWNLOADING_PICTURES" );
+    NSString* IDS_DOWNLOADING_ERROR = ResString( @"IDS_DOWNLOADING_PICTURES_ERROR" );
     
     self.oldViewMode = self.viewMode;
     

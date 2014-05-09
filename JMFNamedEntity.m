@@ -41,6 +41,32 @@
 /***************************************************************************/
 @implementation JMFNamedEntity
 
-// Custom logic goes here.
+@synthesize creationDate     = _creationDate;
+@synthesize modificationDate = _modificationDate;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Custom Creation Date setter                                            */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setCreationDate:(NSDate*)date
+{
+    _creationDate = date;
+    _modificationDate = date;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Custom Modification Date setter                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)setModificationDate:(NSDate*)date
+{
+    _modificationDate = date;
+}
 
 @end

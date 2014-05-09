@@ -50,5 +50,6 @@
 /*                                                                         */
 /***************************************************************************/
 - (void)performCoreDataAutoSave;
+- (void)onManageObjectsChanged:(NSNotification*)notification;
 
 @end

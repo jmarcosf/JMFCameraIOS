@@ -101,9 +101,6 @@
 - (void) awakeFromInsert
 {
     [super awakeFromInsert];
-    [self setCreationDate:[NSDate date]];
-    [self setModificationDate:[NSDate date]];
-    self.value = [NSNumber numberWithFloat:0.0f];
 }
 
 @end

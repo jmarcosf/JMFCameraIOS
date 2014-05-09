@@ -112,7 +112,7 @@
     [[self.model.context undoManager]beginUndoGrouping];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationItem.hidesBackButton = YES;
-    self.title = NSLocalizedString( @"IDS_FULL_FACE_DETECTION", nil );
+    self.title = ResString( @"IDS_FULL_FACE_DETECTION" );
     bModified = NO;
 
     CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
@@ -131,10 +131,10 @@
     
     //TabBar
     self.iboTabBar.delegate = self;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:NSLocalizedString( @"IDS_CANCEL", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:NSLocalizedString( @"IDS_CLEAR",  nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setTitle:NSLocalizedString( @"IDS_DETECT", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:NSLocalizedString( @"IDS_SAVE",   nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CANCEL_INDEX] setTitle:ResString( @"IDS_CANCEL" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setTitle:ResString( @"IDS_CLEAR"  )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DETECT_INDEX] setTitle:ResString( @"IDS_DETECT" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setTitle:ResString( @"IDS_SAVE"   )];
 
     //Query
     NSFetchRequest* request = [NSFetchRequest fetchRequestWithEntityName:[JMFFace entityName]];
@@ -392,7 +392,7 @@
         for( CIFaceFeature* faceFeature in features )
         {
             JMFFace* face = [JMFFace faceWithName:@"Face Feature" feature:faceFeature photo:self.photo inContext:self.model.context];
-            face.name = [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FACE", nil ), ++i];
+            face.name = [NSString stringWithFormat:@"%@ #%d", ResString( @"IDS_FACE" ), ++i];
         }
     }
     

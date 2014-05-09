@@ -112,9 +112,6 @@
 - (void) awakeFromInsert
 {
     [super awakeFromInsert];
-
-    [self setCreationDate:[NSDate date]];
-    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Class Methods
@@ -250,9 +247,9 @@
     
     if( self.sourceValue >= JMFPhotoSourceUnknown && self.sourceValue <= JMFPhotoSourceOther )
     {
-        sourceDescription = NSLocalizedString( [sourceStrings objectAtIndex:self.sourceValue], nil );
+        sourceDescription = ResString( [sourceStrings objectAtIndex:self.sourceValue] );
     }
-    else sourceDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
+    else sourceDescription = ResString( @"IDS_UNKNOWN" );
     return sourceDescription;
 }
 
@@ -271,9 +268,9 @@
     
     if( self.orientationValue >= 1 && self.orientationValue <= 8 )
     {
-        orientationDescription = NSLocalizedString( [orientationStrings objectAtIndex:self.orientationValue], nil );
+        orientationDescription = ResString( [orientationStrings objectAtIndex:self.orientationValue] );
     }
-    else orientationDescription = NSLocalizedString( @"IDS_UNKNOWN", nil );
+    else orientationDescription = ResString( @"IDS_UNKNOWN" );
     return orientationDescription;
 }
 

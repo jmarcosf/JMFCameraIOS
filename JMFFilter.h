@@ -58,7 +58,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (instancetype)filterWithName:(NSString*)name photo:(JMFPhoto*)photo inContext:(NSManagedObjectContext*)context;
++ (instancetype)filterWithName:(NSString*)name photo:(JMFPhoto*)photo position:(NSInteger)position inContext:(NSManagedObjectContext*)context;
 
 /***************************************************************************/
 /*                                                                         */

@@ -50,8 +50,8 @@
 
     if( [JMFUtility createApplicationDirectories] )
     {
-        NSString* IDS_OK      = NSLocalizedString( @"IDS_OK", nil );
-        NSString* IDS_MESSAGE = NSLocalizedString( @"IDS_INIT_ERROR_MESSAGE", nil );
+        NSString* IDS_OK      = ResString( @"IDS_OK" );
+        NSString* IDS_MESSAGE = ResString( @"IDS_INIT_ERROR_MESSAGE" );
         UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"error" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil, nil];
         [alertView show];
         return NO;
@@ -62,6 +62,11 @@
     JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]initWithModel:self.model];
     self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
 //  [self performCoreDataAutoSave];
+
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector( onManageObjectsChanged:)
+                                                name:NSManagedObjectContextObjectsDidChangeNotification
+                                              object:self.model.context];
 
     //Shake detection
     application.applicationSupportsShakeToEdit = YES;
@@ -175,6 +180,37 @@
              if( COREDATA_DEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
         }];
         [self performSelector:@selector( performCoreDataAutoSave ) withObject:nil afterDelay: COREDATA_AUTOSAVE_DELAY];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onManageObjectsChanged:                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onManageObjectsChanged:(NSNotification*)notification
+{
+    NSArray* insertedObjects = [[notification userInfo]objectForKey:NSInsertedObjectsKey] ;
+    NSArray* updatedObjects  = [[notification userInfo]objectForKey:NSUpdatedObjectsKey] ;
+    
+    for( NSManagedObject* object in insertedObjects )
+    {
+        if( [object isKindOfClass:[JMFNamedEntity class]] )
+        {
+            JMFNamedEntity* modelObject = (JMFNamedEntity*)object;
+            modelObject.creationDate = [NSDate date];
+        }
+    }
+
+    for( NSManagedObject* object in updatedObjects )
+    {
+        if( [object isKindOfClass:[JMFNamedEntity class]] )
+        {
+            JMFNamedEntity* modelObject = (JMFNamedEntity*)object;
+            modelObject.modificationDate = [NSDate date];
+        }
     }
 }
 

@@ -68,7 +68,8 @@
 - (id)initWithPhoto:(JMFPhoto*)photo andImage:(UIImage*)image inModel:(JMFCoreDataStack*)model;
 - (void)setupFilterList;
 - (void)enableButtons;
-- (void)addFilter:(id)sender;
+- (void)onAddFilterClicked:(id)sender;
+- (void)onEditClicked:(id)sender;
 - (void)onCancelClicked;
 - (void)onBackClicked;
 - (void)onClearClicked;

@@ -127,7 +127,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_EDIT", nil );
+    self.title = ResString( @"IDS_EDIT" );
     
     headerStrings = @[@"IDS_METADATA", @"IDS_LOCATION", @"IDS_FACES", @"IDS_FILTERS" ];
     metadataTitleStrings = @[@"IDS_SOURCE", @"IDS_COLOR_MODEL", @"IDS_COLORS_PER_PIXEL", @"IDS_ORIENTATION", @"IDS_PIXEL_HEIGHT", @"IDS_PIXEL_WIDTH" ];
@@ -138,11 +138,11 @@
     locationValues = @[self.photo.longitude, self.photo.latitude, self.photo.altitude, self.photo.geoLocation];
     
     self.iboSourceImageView.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
-    self.iboFullScreenLabel.text = NSLocalizedString( @"IDS_FULL_SCREEN_MESSAGE", nil );
+    self.iboFullScreenLabel.text = ResString( @"IDS_FULL_SCREEN_MESSAGE" );
 
-    self.iboNameTitle.text     = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_NAME",     nil )];
-    self.iboCreatedTitle.text  = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_CREATED",  nil )];
-    self.iboModifiedTitle.text = [NSString stringWithFormat:@"%@:", NSLocalizedString( @"IDS_MODIFIED", nil )];
+    self.iboNameTitle.text     = [NSString stringWithFormat:@"%@:", ResString( @"IDS_NAME" )];
+    self.iboCreatedTitle.text  = [NSString stringWithFormat:@"%@:", ResString( @"IDS_CREATED" )];
+    self.iboModifiedTitle.text = [NSString stringWithFormat:@"%@:", ResString( @"IDS_MODIFIED" )];
     self.iboNameValue.text     = self.photo.name;
     self.iboCreatedValue.text  = [JMFUtility formattedStringFromDate:self.photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
     self.iboModifiedValue.text = [JMFUtility formattedStringFromDate:self.photo.modificationDate withFormat:@"IDS_DATETIME_FORMAT"];
@@ -158,9 +158,9 @@
     
      //TabBar
     self.iboTabBar.delegate = self;
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHARE_INDEX]      setTitle:NSLocalizedString( @"IDS_SHARE", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FACEDET_INDEX]    setTitle:NSLocalizedString( @"IDS_FACE_DETECTION", nil )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FILTERS_INDEX]    setTitle:NSLocalizedString( @"IDS_FILTERS", nil )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SHARE_INDEX]      setTitle:ResString( @"IDS_SHARE" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FACEDET_INDEX]    setTitle:ResString( @"IDS_FACE_DETECTION" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FILTERS_INDEX]    setTitle:ResString( @"IDS_FILTERS" )];
 }
 
 /***************************************************************************/
@@ -251,7 +251,7 @@
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [NSString stringWithFormat:@"%@ #%d", NSLocalizedString( @"IDS_FILTER", nil ), (int)( section + 1 )];
+    return [NSString stringWithFormat:@"%@ #%d", ResString( @"IDS_FILTER" ), (int)( section + 1 )];
 }
 
 /***************************************************************************/
@@ -298,12 +298,12 @@
     switch( indexPath.section )
     {
         case SECTION_METADATA:
-            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = NSLocalizedString( [metadataTitleStrings objectAtIndex:indexPath.row], nil );
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = ResString( [metadataTitleStrings objectAtIndex:indexPath.row] );
             ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[metadataValues objectAtIndex:indexPath.row] description];
             break;
             
         case SECTION_LOCATION:
-            ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataTitle.text = NSLocalizedString( [locationTitleStrings objectAtIndex:indexPath.row], nil );
+            ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataTitle.text = ResString( [locationTitleStrings objectAtIndex:indexPath.row] );
             ( (JMFCameraIOS_EditTVGeoLocationCell*)cell ).iboDataValue.text = [[locationValues objectAtIndex:indexPath.row] description];
             break;
             
@@ -319,7 +319,7 @@
         {
             JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForItem:indexPath.row inSection:0]];
             ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.text = filter.name;
-            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[NSLocalizedString( @"IDS_ACTIVE", nil ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
+            ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataValue.text = [[ResString( @"IDS_ACTIVE" ) stringByAppendingString:@": "]stringByAppendingString:[filter activeToString]];
             CGRect Rect = ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.frame;
             ( (JMFCameraIOS_EditTVDataCell*)cell ).iboDataTitle.frame = CGRectMake( Rect.origin.x, Rect.origin.y, Rect.size.width + 85, Rect.size.height );
             break;
@@ -377,7 +377,7 @@
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
-    headerView.text = [NSString stringWithFormat:@"  %@", NSLocalizedString( [headerStrings objectAtIndex:section], nil )];
+    headerView.text = [NSString stringWithFormat:@"  %@", ResString( [headerStrings objectAtIndex:section] )];
     headerView.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:18];
     headerView.backgroundColor = Rgb2UIColor( 245, 200, 35 );
     headerView.textColor = [UIColor whiteColor];
@@ -486,10 +486,10 @@
 /***************************************************************************/
 - (void)onShareClicked
 {
-    NSString* IDS_APP_NAME               = NSLocalizedString( @"IDS_APP_NAME", nil );
-    NSString* IDS_OK                     = NSLocalizedString( @"IDS_OK", nil );
-    NSString* IDS_SOCIAL_DEFAULT_MESSAGE = NSLocalizedString( @"IDS_SOCIAL_DEFAULT_MESSAGE", nil );
-    NSString* IDS_SOCIAL_MESSAGE_SENT_OK = NSLocalizedString( @"IDS_SOCIAL_MESSAGE_SENT_OK", nil );
+    NSString* IDS_APP_NAME               = ResString( @"IDS_APP_NAME" );
+    NSString* IDS_OK                     = ResString( @"IDS_OK" );
+    NSString* IDS_SOCIAL_DEFAULT_MESSAGE = ResString( @"IDS_SOCIAL_DEFAULT_MESSAGE" );
+    NSString* IDS_SOCIAL_MESSAGE_SENT_OK = ResString( @"IDS_SOCIAL_MESSAGE_SENT_OK" );
 
     UIActivityViewController* activityVC = [[UIActivityViewController alloc]initWithActivityItems:@[IDS_SOCIAL_DEFAULT_MESSAGE, @"", self.iboSourceImageView.image]applicationActivities:nil];
     activityVC.excludedActivityTypes = @[UIActivityTypePostToWeibo, UIActivityTypeAssignToContact, UIActivityTypeAddToReadingList,

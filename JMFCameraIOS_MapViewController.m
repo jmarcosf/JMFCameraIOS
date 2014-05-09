@@ -78,7 +78,7 @@
 {
     [super viewDidLoad];
     self.navigationController.navigationBar.translucent = NO;
-    self.title = NSLocalizedString( @"IDS_LOCATION", nil );
+    self.title = ResString( @"IDS_LOCATION" );
     
     [self.iboMapView setMapType:MKMapTypeHybrid];
     self.iboMapView.rotateEnabled = YES;
@@ -98,7 +98,7 @@
     {
         MKPointAnnotation* pinMark = [[MKPointAnnotation alloc]init];
         pinMark.coordinate = coordinate;
-        pinMark.title = NSLocalizedString( @"IDS_PICTURE_LOCATION", nil );
+        pinMark.title = ResString( @"IDS_PICTURE_LOCATION" );
         pinMark.subtitle = self.geoPosition;
         [weakMap addAnnotation:pinMark];
     } );

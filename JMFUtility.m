@@ -237,7 +237,7 @@
 + (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format
 {
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc]init];
-    [dateFormatter setDateFormat:NSLocalizedString( format, nil )];
+    [dateFormatter setDateFormat:ResString( format )];
     return [dateFormatter stringFromDate:date];
 }
 

@@ -123,12 +123,13 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (instancetype)filterWithName:(NSString*)name photo:(JMFPhoto*)photo inContext:(NSManagedObjectContext*)context
++ (instancetype)filterWithName:(NSString*)name photo:(JMFPhoto*)photo position:(NSInteger)position inContext:(NSManagedObjectContext*)context
 {
     JMFFilter* filter = [JMFFilter insertInManagedObjectContext:context];
     
-    filter.photo = photo;
     filter.name = name;
+    filter.photo = photo;
+    filter.position = [NSNumber numberWithInteger:position];
     return filter;
 }
 
@@ -143,8 +144,6 @@
 {
     [super awakeFromInsert];
     [self setActive:NO];
-    [self setCreationDate:[NSDate date]];
-    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Instance Methods
@@ -277,7 +276,7 @@
 - (NSString*)activeToString
 {
     NSString* localizedString = ( self.activeValue ) ? @"IDS_YES" : @"IDS_NO";
-    return NSLocalizedString( localizedString, nil );
+    return ResString( localizedString );
 }
 
 /***************************************************************************/

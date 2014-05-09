@@ -115,8 +115,6 @@
 - (void) awakeFromInsert
 {
     [super awakeFromInsert];
-    [self setCreationDate:[NSDate date]];
-    [self setModificationDate:[NSDate date]];
 }
 
 #pragma mark - Instance Methods

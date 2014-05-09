@@ -5,6 +5,7 @@
 
 const struct JMFFilterAttributes JMFFilterAttributes = {
 	.active = @"active",
+	.position = @"position",
 };
 
 const struct JMFFilterRelationships JMFFilterRelationships = {
@@ -46,6 +47,11 @@ const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"positionValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"position"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
@@ -73,6 +79,32 @@ const struct JMFFilterFetchedProperties JMFFilterFetchedProperties = {
 
 - (void)setPrimitiveActiveValue:(BOOL)value_ {
 	[self setPrimitiveActive:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic position;
+
+
+
+- (int32_t)positionValue {
+	NSNumber *result = [self position];
+	return [result intValue];
+}
+
+- (void)setPositionValue:(int32_t)value_ {
+	[self setPosition:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitivePositionValue {
+	NSNumber *result = [self primitivePosition];
+	return [result intValue];
+}
+
+- (void)setPrimitivePositionValue:(int32_t)value_ {
+	[self setPrimitivePosition:[NSNumber numberWithInt:value_]];
 }
 
 
