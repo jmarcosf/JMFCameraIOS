@@ -66,6 +66,14 @@
                         <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SyncChecked.png" id="BnM-b7-Eps">
+                        <rect key="frame" x="5" y="61" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="yVp-aY-mWR">
+                        <rect key="frame" x="0.0" y="82" width="320" height="2"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </progressView>
                 </subviews>
                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             </tableViewCellContentView>
@@ -75,6 +83,8 @@
                 <outlet property="iboSizeLabel" destination="br3-tI-S2l" id="4G4-oo-wDp"/>
                 <outlet property="iboSourceTitle" destination="Nkl-yG-v84" id="RCE-eW-oTl"/>
                 <outlet property="iboSourceValue" destination="Bdv-R1-hgi" id="nqb-hc-trv"/>
+                <outlet property="iboSyncProgress" destination="yVp-aY-mWR" id="QGd-O7-WIP"/>
+                <outlet property="iboSynchronizedIcon" destination="BnM-b7-Eps" id="xWM-zw-IGh"/>
                 <outlet property="iboWhenTitle" destination="jyJ-Xw-1z8" id="BZK-Rp-Ann"/>
                 <outlet property="iboWhenValue" destination="Dl9-wK-Hrz" id="ssi-ue-4kg"/>
                 <outlet property="iboWhereTitle" destination="1bZ-IU-Vsm" id="MHZ-OV-vrj"/>
@@ -82,4 +92,7 @@
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="SyncChecked.png" width="23" height="23"/>
+    </resources>
 </document>

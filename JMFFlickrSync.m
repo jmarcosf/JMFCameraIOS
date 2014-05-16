@@ -24,6 +24,7 @@
 /***************************************************************************/
 @interface JMFFlickrSync ()
 {
+    NSTimeInterval      appInterval;
     JMFFlickrUpload*    uploadTask;
     JMFPhoto*           currentPhoto;
     BOOL                bStopped;
@@ -121,7 +122,7 @@
             [self.delegate didFinishUploadPhoto:currentPhoto atIndexPath:indexPath];
         }
     }
-    [self performSelector:@selector( upload ) withObject:nil afterDelay: 20];
+    [self performSelector:@selector( upload ) withObject:nil afterDelay: appInterval];
 }
 
 #pragma mark - Class Instance Methods
@@ -147,13 +148,14 @@
     bStopped = NO;
 
     NSUserDefaults* appPreferences = [NSUserDefaults standardUserDefaults];
+    appInterval = [[appPreferences valueForKey:PREFERENCE_SYNC_INTERVAL_KEY]doubleValue];
     NSString* flickrToken = [appPreferences valueForKey:PREFERENCE_FLICKR_TOKEN_KEY];
     NSString* flickrTokenSecret = [appPreferences valueForKey:PREFERENCE_FLICKR_TOKEN_SECRET_KEY];
     
     if( flickrToken && flickrTokenSecret )
     {
         uploadTask = [[JMFFlickrUpload alloc]initWithToken:flickrToken tokenSecret:flickrTokenSecret delegate:self];
-        [self performSelector:@selector( upload ) withObject:nil afterDelay: 20];
+        [self performSelector:@selector( upload ) withObject:nil afterDelay: appInterval];
     }
 }
 
@@ -179,12 +181,13 @@
 /***************************************************************************/
 - (void)upload
 {
+    currentPhoto = nil;
     if( !bStopped && uploadTask )
     {
-        currentPhoto = nil;
+
         for( JMFPhoto* photo in [self.fetchedResultsController fetchedObjects] )
         {
-            if( photo.uploaded == NO )
+            if( [photo.uploaded boolValue] == NO )
             {
                 currentPhoto = photo;
                 UIImage* image = [UIImage imageWithContentsOfFile:photo.sourceImageUrl];
@@ -194,6 +197,14 @@
                                fileName:photo.name];
                 break;
             }
+        }
+    }
+    
+    if( !currentPhoto )
+    {
+        if( [self.delegate respondsToSelector:@selector( didFinishUpload )] )
+        {
+            [self.delegate didFinishUpload];
         }
     }
 }

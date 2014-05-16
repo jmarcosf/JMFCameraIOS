@@ -40,19 +40,20 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboFlickrSyncContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFlickrSyncSwitch;
-@property (weak, nonatomic) IBOutlet UIView*        iboFrequencyContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyValue;
-@property (weak, nonatomic) IBOutlet UIStepper*     iboFrequencySetepper;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDatabaseTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboDropContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDropLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboDropSwitch;
-@property (weak, nonatomic) IBOutlet UIWebView*     iboWebView;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboFlickrSyncTitle;
+@property (weak, nonatomic) IBOutlet UIView*                    iboFlickrSyncContainer;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboFlickrSyncLabel;
+@property (weak, nonatomic) IBOutlet UISwitch*                  iboFlickrSyncSwitch;
+@property (weak, nonatomic) IBOutlet UIView*                    iboIntervalContainer;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboIntervalLabel;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboIntervalValue;
+@property (weak, nonatomic) IBOutlet UIStepper*                 iboIntervalSetepper;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboDatabaseTitle;
+@property (weak, nonatomic) IBOutlet UIView*                    iboDropContainer;
+@property (weak, nonatomic) IBOutlet UILabel*                   iboDropLabel;
+@property (weak, nonatomic) IBOutlet UISwitch*                  iboDropSwitch;
+@property (weak, nonatomic) IBOutlet UIWebView*                 iboWebView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView*   iboActivityIndicator;
 
 /***************************************************************************/
 /*                                                                         */
@@ -71,7 +72,7 @@
 /*                                                                         */
 /***************************************************************************/
 - (IBAction)onSyncPicturesChanged:(id)sender;
-- (IBAction)onFrequencyValueChanged:(id)sender;
+- (IBAction)onIntervalValueChanged:(id)sender;
 - (IBAction)onDropDatabaseChanged:(id)sender;
 
 

@@ -46,6 +46,8 @@
     self = [super initWithFrame:frame];
     if( self )
     {
+        self.iboSyncProgress.progress = 0.0;
+        self.iboSyncProgress.hidden = YES;
     }
     return self;
 }

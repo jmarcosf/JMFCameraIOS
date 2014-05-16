@@ -59,6 +59,8 @@
 "IDS_PROCESS" = "Procesar";
 "IDS_MINUTE" = "minuto";
 "IDS_CAMEL_MINUTE" = "Minuto";
+"IDS_SECOND" = "segundo";
+"IDS_CAMEL_SECOND" = "Segundo";
 "IDS_DONE" = "Hecho";
 "IDS_BACK" = "Volver";
 "IDS_MOVE" = "Mover";
@@ -120,6 +122,6 @@
 "IDS_FLICKR_SYNC" = "Sincronizar con Flickr";
 "IDS_DATABASE" = "Base de Datos";
 "IDS_FLICKR_SYNC_PICTURES" = "Sincronizar fotos con Flickr";
-"IDS_FREQUENCY" = "Frequencia";
+"IDS_INTERVAL" = "Intervalo";
 "IDS_DROP_DATABASE" = "Vaciar la Base de Datos";
 

@@ -58,6 +58,7 @@
 /*                                                                         */
 /***************************************************************************/
 @property (nonatomic,strong) UIWebView*                     webView;
+@property (nonatomic,strong) UIActivityIndicatorView*       activityIndicator;
 @property (nonatomic,strong) NSString*                      token;
 @property (nonatomic,strong) NSString*                      tokenSecret;
 @property (nonatomic,strong) id< JMFFlickrOAuthDelegate >   delegate;

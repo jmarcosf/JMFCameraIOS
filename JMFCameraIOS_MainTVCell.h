@@ -30,15 +30,17 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboImageView;
-@property (weak, nonatomic) IBOutlet UILabel*       iboNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboSizeLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboSourceTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboSourceValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboWhenTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboWhenValue;
-@property (weak, nonatomic) IBOutlet UILabel*       iboWhereTitle;
-@property (weak, nonatomic) IBOutlet UILabel*       iboWhereValue;
+@property (weak, nonatomic) IBOutlet UIImageView*       iboImageView;
+@property (weak, nonatomic) IBOutlet UILabel*           iboNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           iboSizeLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           iboSourceTitle;
+@property (weak, nonatomic) IBOutlet UILabel*           iboSourceValue;
+@property (weak, nonatomic) IBOutlet UILabel*           iboWhenTitle;
+@property (weak, nonatomic) IBOutlet UILabel*           iboWhenValue;
+@property (weak, nonatomic) IBOutlet UILabel*           iboWhereTitle;
+@property (weak, nonatomic) IBOutlet UILabel*           iboWhereValue;
+@property (weak, nonatomic) IBOutlet UIImageView*       iboSynchronizedIcon;
+@property (weak, nonatomic) IBOutlet UIProgressView*    iboSyncProgress;
 
 /***************************************************************************/
 /*                                                                         */

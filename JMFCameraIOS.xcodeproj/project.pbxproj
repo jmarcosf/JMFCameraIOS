@@ -34,9 +34,9 @@
 		901F42C0191BAEE60030C163 /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901F42BE191BAEE60030C163 /* Back@2x.png */; };
 		902404A91926119F00BD94CC /* Sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A51926119F00BD94CC /* Sync.png */; };
 		902404AA1926119F00BD94CC /* Sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A61926119F00BD94CC /* Sync@2x.png */; };
-		902404AB1926119F00BD94CC /* SyncChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A71926119F00BD94CC /* SyncChecked.png */; };
-		902404AC1926119F00BD94CC /* SyncChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A81926119F00BD94CC /* SyncChecked@2x.png */; };
 		902404B2192618F800BD94CC /* JMFFlickrSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 902404B1192618F800BD94CC /* JMFFlickrSync.m */; };
+		902404B9192657FF00BD94CC /* SyncChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404B7192657FF00BD94CC /* SyncChecked.png */; };
+		902404BA192657FF00BD94CC /* SyncChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404B8192657FF00BD94CC /* SyncChecked@2x.png */; };
 		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
 		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
 		9028F60A18FC6DD6000956E7 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60018FC6DD6000956E7 /* Delete.png */; };
@@ -185,10 +185,10 @@
 		901F42BE191BAEE60030C163 /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Back@2x.png"; path = "../Práctica_iOS_Avanzado_Camera/assets/Back@2x.png"; sourceTree = "<group>"; };
 		902404A51926119F00BD94CC /* Sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sync.png; sourceTree = "<group>"; };
 		902404A61926119F00BD94CC /* Sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sync@2x.png"; sourceTree = "<group>"; };
-		902404A71926119F00BD94CC /* SyncChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SyncChecked.png; sourceTree = "<group>"; };
-		902404A81926119F00BD94CC /* SyncChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SyncChecked@2x.png"; sourceTree = "<group>"; };
 		902404B0192618F800BD94CC /* JMFFlickrSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrSync.h; sourceTree = "<group>"; };
 		902404B1192618F800BD94CC /* JMFFlickrSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrSync.m; sourceTree = "<group>"; };
+		902404B7192657FF00BD94CC /* SyncChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SyncChecked.png; sourceTree = "<group>"; };
+		902404B8192657FF00BD94CC /* SyncChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SyncChecked@2x.png"; sourceTree = "<group>"; };
 		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		9028F5FF18FC6DD6000956E7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
 		9028F60018FC6DD6000956E7 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
@@ -430,8 +430,8 @@
 				90AD562F18FDFB6500C649FA /* Show@2x.png */,
 				902404A51926119F00BD94CC /* Sync.png */,
 				902404A61926119F00BD94CC /* Sync@2x.png */,
-				902404A71926119F00BD94CC /* SyncChecked.png */,
-				902404A81926119F00BD94CC /* SyncChecked@2x.png */,
+				902404B7192657FF00BD94CC /* SyncChecked.png */,
+				902404B8192657FF00BD94CC /* SyncChecked@2x.png */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -741,7 +741,7 @@
 				905674B21909EFA300C9389D /* JMFCameraIOS_EditViewController.xib in Resources */,
 				902404AA1926119F00BD94CC /* Sync@2x.png in Resources */,
 				9028F60A18FC6DD6000956E7 /* Delete.png in Resources */,
-				902404AC1926119F00BD94CC /* SyncChecked@2x.png in Resources */,
+				902404BA192657FF00BD94CC /* SyncChecked@2x.png in Resources */,
 				901B104E190AB08400AD1F7C /* Search@2x.png in Resources */,
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
 				905AB5D61905DA68009B822F /* Apply.png in Resources */,
@@ -783,7 +783,7 @@
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
 				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
 				901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */,
-				902404AB1926119F00BD94CC /* SyncChecked.png in Resources */,
+				902404B9192657FF00BD94CC /* SyncChecked.png in Resources */,
 				9044649C1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib in Resources */,
 				9028F61018FC6DD6000956E7 /* ListMode.png in Resources */,
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,

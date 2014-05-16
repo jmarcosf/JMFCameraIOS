@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JMFCameraIOS_SettingsViewController">
             <connections>
+                <outlet property="iboActivityIndicator" destination="QZI-iA-Kkb" id="cZU-1B-yG5"/>
                 <outlet property="iboDatabaseTitle" destination="ywz-OL-8XS" id="6sx-Ze-XSn"/>
                 <outlet property="iboDropContainer" destination="TS2-Lx-ytA" id="gUq-v5-lTv"/>
                 <outlet property="iboDropLabel" destination="9bR-Gt-ad5" id="lRn-bm-pjM"/>
@@ -14,10 +15,10 @@
                 <outlet property="iboFlickrSyncLabel" destination="qpZ-v7-Had" id="uJg-cJ-289"/>
                 <outlet property="iboFlickrSyncSwitch" destination="0MI-m0-NF9" id="RXL-EC-bla"/>
                 <outlet property="iboFlickrSyncTitle" destination="8ba-EP-zFm" id="HYv-gs-QxI"/>
-                <outlet property="iboFrequencyContainer" destination="3Bs-Dj-Jf9" id="aT6-OW-Wdz"/>
-                <outlet property="iboFrequencyLabel" destination="sY6-1x-uaZ" id="ZRM-T6-3TS"/>
-                <outlet property="iboFrequencySetepper" destination="QHx-Et-Qzh" id="Pxm-BG-4k3"/>
-                <outlet property="iboFrequencyValue" destination="i67-sb-I2Y" id="eXt-8G-8uN"/>
+                <outlet property="iboIntervalContainer" destination="3Bs-Dj-Jf9" id="al1-Qn-sGS"/>
+                <outlet property="iboIntervalLabel" destination="sY6-1x-uaZ" id="9tj-nL-81Y"/>
+                <outlet property="iboIntervalSetepper" destination="QHx-Et-Qzh" id="SHz-fn-Z7A"/>
+                <outlet property="iboIntervalValue" destination="i67-sb-I2Y" id="mX6-W5-whs"/>
                 <outlet property="iboWebView" destination="1di-5D-FgI" id="SuN-DE-pB9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -58,7 +59,7 @@
                     <rect key="frame" x="-8" y="110" width="337" height="48"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sY6-1x-uaZ">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interval" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sY6-1x-uaZ">
                             <rect key="frame" x="28" y="13" width="124" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -75,7 +76,7 @@
                             <rect key="frame" x="223" y="9" width="94" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <connections>
-                                <action selector="onFrequencyValueChanged:" destination="-1" eventType="valueChanged" id="nVU-HK-Ag5"/>
+                                <action selector="onIntervalValueChanged:" destination="-1" eventType="valueChanged" id="7zg-9Q-m8V"/>
                             </connections>
                         </stepper>
                     </subviews>
@@ -113,6 +114,11 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </webView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="QZI-iA-Kkb">
+                    <rect key="frame" x="142" y="176" width="37" height="37"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

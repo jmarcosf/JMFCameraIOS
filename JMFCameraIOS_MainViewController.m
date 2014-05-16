@@ -67,6 +67,7 @@
     NSNumber*               currentAltitude;
     NSString*               currentGeoLocation;
 
+    BOOL                    bSyncToFlickrEnabled;
     BOOL                    bSynchronizing;
     JMFFlickrSync*          flickrSyncTask;
 }
@@ -250,6 +251,10 @@
     
     if( [CLLocationManager locationServicesEnabled] ) [locationManager startUpdatingLocation];
   
+    //Get Sync Flag
+    NSUserDefaults* appPreferences = [NSUserDefaults standardUserDefaults];
+    bSyncToFlickrEnabled = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
+    
     //Refresh fetchedResultsController when Database has been re-built
     if( self.model.bDroppedData )
     {
@@ -526,7 +531,7 @@
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 10;
     cell.iboSyncProgress.hidden = YES;
-    cell.iboSynchronizedIcon.hidden = !photo.uploaded;
+    cell.iboSynchronizedIcon.hidden = ![photo.uploaded boolValue];
     cell.iboSelectedIcon.layer.zPosition = 10;
     return cell;
 }
@@ -628,6 +633,8 @@
     cell.iboWhenValue.text   = [JMFUtility formattedStringFromDate:photo.creationDate withFormat:@"IDS_DATETIME_FORMAT"];
     cell.iboWhereTitle.text  = [ResString( @"IDS_WHERE" ) stringByAppendingString:@":"];
     cell.iboWhereValue.text  = photo.geoLocation;
+    cell.iboSyncProgress.hidden = YES;
+    cell.iboSynchronizedIcon.hidden = ![photo.uploaded boolValue];
     
     return cell;
 }
@@ -735,7 +742,9 @@
     }
     else if( self.viewMode == JMFCoreDataViewModeList )
     {
-        
+        JMFCameraIOS_MainTVCell* cell = (JMFCameraIOS_MainTVCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.iboSyncProgress.hidden = NO;
+        cell.iboSyncProgress.progress = percentage;
     }
 }
 
@@ -761,7 +770,11 @@
     }
     else if( self.viewMode == JMFCoreDataViewModeList )
     {
-        
+        JMFCameraIOS_MainTVCell* cell = (JMFCameraIOS_MainTVCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.iboSyncProgress.hidden = YES;
+        cell.iboSyncProgress.progress = 0.0;
+        cell.iboSynchronizedIcon.hidden = NO;
+        cell.iboSynchronizedIcon.layer.zPosition = 10;
     }
 }
 
@@ -834,7 +847,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];
-    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setEnabled:( !bSynchronizing && count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setEnabled:( bSyncToFlickrEnabled && !bSynchronizing && count > 0 )];
 }
 
 /***************************************************************************/
@@ -1141,11 +1154,9 @@
 /***************************************************************************/
 - (void)onSyncClicked
 {
-    NSUserDefaults* appPreferences = [NSUserDefaults standardUserDefaults];
-    BOOL bSyncToFlickr = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
-    
-    if( bSyncToFlickr)
+    if( bSyncToFlickrEnabled )
     {
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setEnabled:NO];
         bSynchronizing = YES;
         flickrSyncTask = [[JMFFlickrSync alloc]initWithFetchedResultsController:self.fetchedResultsController delegate:self];
         [flickrSyncTask start];

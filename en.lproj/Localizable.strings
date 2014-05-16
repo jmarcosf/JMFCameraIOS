@@ -59,6 +59,8 @@
 "IDS_PROCESS" = "Process";
 "IDS_MINUTE" = "minute";
 "IDS_CAMEL_MINUTE" = "Minute";
+"IDS_SECOND" = "second";
+"IDS_CAMEL_SECOND" = "Second";
 "IDS_DONE" = "Done";
 "IDS_BACK" = "Back";
 "IDS_MOVE" = "Move";
@@ -118,7 +120,7 @@
 "IDS_FLICKR_SYNC" = "Flickr Sync";
 "IDS_DATABASE" = "Database";
 "IDS_FLICKR_SYNC_PICTURES" = "Sync Pictures to Flickr";
-"IDS_FREQUENCY" = "Frequency";
+"IDS_INTERVAL" = "Interval";
 "IDS_DROP_DATABASE" = "Empty Database";
 
 

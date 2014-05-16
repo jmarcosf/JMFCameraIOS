@@ -21,11 +21,11 @@
 /***************************************************************************/
 @interface JMFCameraIOS_SettingsViewController ()
 {
-    NSArray*            frequencyStrings;
-    NSArray*            frecuencyValues;
+    NSArray*            intervalStrings;
+    NSArray*            intervalValues;
     NSUserDefaults*     appPreferences;
     BOOL                bSyncToFlickr;
-    int                 iSyncFrequency;
+    int                 iSyncInterval;
     JMFFlickrOAuth*     flickrOAuth;
 }
 
@@ -103,8 +103,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector( onDoneClicked: )];
     
     //Containers
-    self.iboFlickrSyncContainer.layer.borderWidth = self.iboFrequencyContainer.layer.borderWidth = self.iboDropContainer.layer.borderWidth = 1;
-    self.iboFlickrSyncContainer.layer.borderColor = self.iboFrequencyContainer.layer.borderColor = self.iboDropContainer.layer.borderColor = [Rgb2UIColor( 200, 200, 200 ) CGColor];
+    self.iboFlickrSyncContainer.layer.borderWidth = self.iboIntervalContainer.layer.borderWidth = self.iboDropContainer.layer.borderWidth = 1;
+    self.iboFlickrSyncContainer.layer.borderColor = self.iboIntervalContainer.layer.borderColor = self.iboDropContainer.layer.borderColor = [Rgb2UIColor( 200, 200, 200 ) CGColor];
 
     //Titles
     self.iboFlickrSyncTitle.text = ResString( @"IDS_FLICKR_SYNC" );
@@ -112,20 +112,25 @@
 
     //Labels
     self.iboFlickrSyncLabel.text = ResString( @"IDS_FLICKR_SYNC_PICTURES" );
-    self.iboFrequencyLabel.text  = ResString( @"IDS_FREQUENCY" );
+    self.iboIntervalLabel.text   = ResString( @"IDS_INTERVAL" );
     self.iboDropLabel.text       = ResString( @"IDS_DROP_DATABASE" );
 
-    //Frecuency
+    //Interval
+    NSString* second = ResString( @"IDS_SECOND" );
     NSString* minute = ResString( @"IDS_MINUTE" );
-    frequencyStrings = [NSArray arrayWithObjects:[NSString stringWithFormat:@"15 %@s",  minute],
-                                                 [NSString stringWithFormat:@"30 %@s",  minute],
-                                                 [NSString stringWithFormat:@"45 %@s",  minute],
-                                                 [NSString stringWithFormat:@"60 %@s",  minute],
-                                                 [NSString stringWithFormat:@"90 %@s",  minute],
-                                                 [NSString stringWithFormat:@"120 %@s", minute],
+    intervalStrings  = [NSArray arrayWithObjects:[NSString stringWithFormat:@"5 %@s",  second],
+                                                 [NSString stringWithFormat:@"10 %@s", second],
+                                                 [NSString stringWithFormat:@"20 %@s", second],
+                                                 [NSString stringWithFormat:@"30 %@s", second],
+                                                 [NSString stringWithFormat:@"45 %@s", second],
+                                                 [NSString stringWithFormat:@"1 %@",   minute],
+                                                 [NSString stringWithFormat:@"2 %@s",  minute],
+                                                 [NSString stringWithFormat:@"3 %@s",  minute],
+                                                 [NSString stringWithFormat:@"5 %@s",  minute],
+                                                 [NSString stringWithFormat:@"10 %@s", minute],
                                                  nil];
-    frecuencyValues = [NSArray arrayWithObjects:@15, @30, @45, @60, @90, @120, nil];
-    self.iboFrequencySetepper.maximumValue = 5;
+    intervalValues = [NSArray arrayWithObjects:@5, @10, @20, @30, @45, @60, @120, @180, @300, @600, nil];
+    self.iboIntervalSetepper.maximumValue = 9;
 
     //Database
     self.iboDropSwitch.on = NO;
@@ -134,18 +139,39 @@
     appPreferences = [NSUserDefaults standardUserDefaults];
     bSyncToFlickr  = NO;
     bSyncToFlickr  = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
-    iSyncFrequency = 0;
-    iSyncFrequency = [[appPreferences objectForKey:PREFERENCE_SYNC_FREQUENCY_KEY] intValue];
-    self.iboFrequencySetepper.value = (double)iSyncFrequency;
+    iSyncInterval = 0;
+    iSyncInterval = [[appPreferences objectForKey:PREFERENCE_SYNC_INTERVAL_KEY] intValue];
+    self.iboIntervalSetepper.value = (double)iSyncInterval;
 
     self.iboFlickrSyncSwitch.on = bSyncToFlickr;
-    self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];
-    self.iboFrequencySetepper.enabled = bSyncToFlickr;
+    self.iboIntervalValue.text = [intervalStrings objectAtIndex:iSyncInterval];
+    self.iboIntervalSetepper.enabled = bSyncToFlickr;
     
-    flickrOAuth = [[JMFFlickrOAuth alloc]initWithWebView:self.iboWebView delegate:self];
-    self.iboWebView.frame = self.view.frame;
+    //JMFFlickrOAuth
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGRect Rect = CGRectMake( 0, 0, screenRect.size.width, screenRect.size.height - statusBarHeight - navigationBarHeight );
+    self.iboWebView.frame = Rect;
     self.iboWebView.hidden = YES;
-    self.iboWebView.layer.zPosition = 1000;
+    self.iboWebView.layer.zPosition = 10;
+    flickrOAuth = [[JMFFlickrOAuth alloc]initWithWebView:self.iboWebView delegate:self];
+    flickrOAuth.activityIndicator = self.iboActivityIndicator;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  viewWillAppear:                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.iboActivityIndicator.hidden = YES;
+    self.iboActivityIndicator.layer.zPosition = 15;
+    [self.iboActivityIndicator stopAnimating];
 }
 
 /***************************************************************************/
@@ -186,11 +212,13 @@
     if( bSyncToFlickr && !flickrToken )
     {
         self.iboWebView.hidden = NO;
+        self.iboActivityIndicator.hidden = NO;
+        [self.iboActivityIndicator startAnimating];
         [flickrOAuth authenticate];
     }
     else
     {
-        self.iboFrequencySetepper.enabled = bSyncToFlickr;
+        self.iboIntervalSetepper.enabled = bSyncToFlickr;
         [appPreferences setObject:[NSNumber numberWithBool:bSyncToFlickr] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
         [appPreferences synchronize];
     }
@@ -221,16 +249,16 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onFrequencyValueChanged:                                               */
+/*  onIntervalValueChanged:                                                */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onFrequencyValueChanged:(id)sender
+- (IBAction)onIntervalValueChanged:(id)sender
 {
-    iSyncFrequency = (double)self.iboFrequencySetepper.value;
-    [appPreferences setObject:[NSNumber numberWithInt:iSyncFrequency] forKey:PREFERENCE_SYNC_FREQUENCY_KEY];
+    iSyncInterval = (double)self.iboIntervalSetepper.value;
+    [appPreferences setObject:[NSNumber numberWithInt:iSyncInterval] forKey:PREFERENCE_SYNC_INTERVAL_KEY];
     [appPreferences synchronize];
-    self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];    
+    self.iboIntervalValue.text = [intervalStrings objectAtIndex:iSyncInterval];
 }
 
 /***************************************************************************/
@@ -295,9 +323,12 @@
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Flickr" message:ResString( @"IDS_FLICKR_AUTHENTICATION_SUCCESS" ) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
     
+    [appPreferences setObject:[NSNumber numberWithBool:YES] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
     [appPreferences setValue:flickr.token forKey:PREFERENCE_FLICKR_TOKEN_KEY];
     [appPreferences setValue:flickr.tokenSecret forKey:PREFERENCE_FLICKR_TOKEN_SECRET_KEY];
     [appPreferences synchronize];
+    self.iboFlickrSyncSwitch.on = YES;
+    self.iboIntervalSetepper.enabled = YES;
 }
 
 /***************************************************************************/
@@ -314,6 +345,11 @@
     
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Flickr" message:ResString( @"IDS_FLICKR_AUTHENTICATION_FAILURE" ) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+    
+    [appPreferences setObject:[NSNumber numberWithBool:NO] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
+    [appPreferences synchronize];
+    self.iboFlickrSyncSwitch.on = NO;
+    self.iboIntervalSetepper.enabled = NO;
 }
 
 @end

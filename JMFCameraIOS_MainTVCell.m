@@ -46,6 +46,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if( self )
     {
+        self.iboSyncProgress.progress = 0.0;
+        self.iboSyncProgress.hidden = YES;
     }
     
     return self;
@@ -63,6 +65,13 @@
     [super setSelected:selected animated:animated];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  layoutSubviews                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
 - (void)layoutSubviews
 {
     [super layoutSubviews];

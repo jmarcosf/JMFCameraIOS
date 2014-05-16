@@ -153,6 +153,22 @@ typedef enum
     return YES;
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  webViewDidFinishLoad:                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+-(void)webViewDidFinishLoad:(UIWebView*)webView
+{
+    if( self.activityIndicator )
+    {
+        self.activityIndicator.hidden = YES;
+        [self.activityIndicator stopAnimating];
+    }
+}
+
 #pragma mark - NSURLConnectionDelegate Methods
 /***************************************************************************/
 /*                                                                         */
