@@ -75,6 +75,8 @@
 "IDS_LATITUDE" = "Latitude";
 "IDS_ALTITUDE" = "Altitude";
 "IDS_GEOLOCATION" = "GeoLocation";
+"IDS_FLICKR_PHOTO_ID" = "FLickr Photo ID";
+"IDS_FLICKR_UPLOAD_DATE" = "Uploaded date";
 
 "IDS_UNKNOWN" = "Unknown";
 "IDS_FACEBOOK" = "Facebook";

@@ -51,7 +51,6 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
 {
     NSMutableData*              responseData;
     NSString*                   tempFileName;
-    NSURLSession*               backgroundSession;
     NSURLSessionUploadTask*     uploadTask;
 }
 
@@ -97,8 +96,29 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
         self.token       = token;
         self.tokenSecret = tokenSecret;
         self.delegate    = delegate;
+        self.session     = [self backgroundSession];
     }
     return self;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  backgroundSession                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSURLSession*)backgroundSession
+{
+    static NSURLSession* session = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once( &onceToken, ^
+    {
+        NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:@"com.utad.jmfcameraios"];
+        sessionConfig.HTTPAdditionalHeaders = @{ @"Accept" : @"text/xml" };
+        session = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
+    } );
+    return session;
 }
 
 /***************************************************************************/
@@ -113,16 +133,12 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
     responseData = [NSMutableData data];
     [self setTempFileName];
 
-    NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:@"com.utad.jmfcameraios"];
-    sessionConfig.HTTPAdditionalHeaders = @{ @"Accept" : @"text/xml" };
-    backgroundSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-    
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:kFlickrUploadUrl]];
     [request setHTTPMethod:@"POST"];
     [self generateBodyFileForUploadImage:image title:title description:description fileName:fileName request:request];
     
     NSURL* fileUrl = [[NSURL alloc]initFileURLWithPath:tempFileName];
-    NSURLSessionUploadTask* task = [backgroundSession uploadTaskWithRequest:request fromFile:fileUrl];
+    NSURLSessionUploadTask* task = [self.session uploadTaskWithRequest:request fromFile:fileUrl];
                                     
     [task resume];
 }
@@ -154,8 +170,6 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
         appDelegate.backgroundSessionCompletionHandler = nil;
         completionHandler();
     }
-    
-//  NSLog( @"All tasks are finished" );
 }
 
 #pragma mark - NSURLSessionTaskDelegate Methods

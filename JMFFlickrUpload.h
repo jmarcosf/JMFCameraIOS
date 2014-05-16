@@ -58,6 +58,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
+@property (nonatomic,strong) NSURLSession*                  session;
 @property (nonatomic,strong) NSString*                      imageFilePath;
 @property (nonatomic,strong) NSString*                      token;
 @property (nonatomic,strong) NSString*                      tokenSecret;

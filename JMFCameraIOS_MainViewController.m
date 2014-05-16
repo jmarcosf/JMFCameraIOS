@@ -531,8 +531,9 @@
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 10;
     cell.iboSyncProgress.hidden = YES;
+    cell.iboSyncProgress.layer.zPosition = 10;
     cell.iboSynchronizedIcon.hidden = ![photo.uploaded boolValue];
-    cell.iboSelectedIcon.layer.zPosition = 10;
+    cell.iboSynchronizedIcon.layer.zPosition = 10;
     return cell;
 }
 
@@ -634,7 +635,9 @@
     cell.iboWhereTitle.text  = [ResString( @"IDS_WHERE" ) stringByAppendingString:@":"];
     cell.iboWhereValue.text  = photo.geoLocation;
     cell.iboSyncProgress.hidden = YES;
+    cell.iboSyncProgress.layer.zPosition = 10;
     cell.iboSynchronizedIcon.hidden = ![photo.uploaded boolValue];
+    cell.iboSynchronizedIcon.layer.zPosition = 10;
     
     return cell;
 }

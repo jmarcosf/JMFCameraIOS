@@ -130,11 +130,15 @@
     self.title = ResString( @"IDS_EDIT" );
     
     headerStrings = @[@"IDS_METADATA", @"IDS_LOCATION", @"IDS_FACES", @"IDS_FILTERS" ];
-    metadataTitleStrings = @[@"IDS_SOURCE", @"IDS_COLOR_MODEL", @"IDS_COLORS_PER_PIXEL", @"IDS_ORIENTATION", @"IDS_PIXEL_HEIGHT", @"IDS_PIXEL_WIDTH" ];
+    metadataTitleStrings = @[@"IDS_SOURCE", @"IDS_COLOR_MODEL", @"IDS_COLORS_PER_PIXEL", @"IDS_ORIENTATION",
+                             @"IDS_PIXEL_HEIGHT", @"IDS_PIXEL_WIDTH", @"IDS_FLICKR_PHOTO_ID", @"IDS_FLICKR_UPLOAD_DATE" ];
     locationTitleStrings = @[@"IDS_LONGITUDE", @"IDS_LATITUDE", @"IDS_ALTITUDE", @"IDS_GEOLOCATION" ];
-
+    
+    NSString* uploadDateString = self.photo.uploaded.boolValue ? [JMFUtility formattedStringFromDate:self.photo.uploadedDate withFormat:@"IDS_DATETIME_FORMAT"] : @"";
     metadataValues = @[[self.photo sourceToString], self.photo.colorModel, self.photo.colorsPerPixel,
-                       [self.photo orientationToString], self.photo.pixelHeight, self.photo.pixelWidth];
+                       [self.photo orientationToString], self.photo.pixelHeight, self.photo.pixelWidth,
+                       self.photo.flickrPhotoId ? self.photo.flickrPhotoId : @"",
+                       uploadDateString];
     locationValues = @[self.photo.longitude, self.photo.latitude, self.photo.altitude, self.photo.geoLocation];
     
     self.iboSourceImageView.image = [UIImage imageWithContentsOfFile:self.photo.sourceImageUrl];
@@ -265,7 +269,7 @@
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     long rows = 0;
-    if( section == SECTION_METADATA ) rows = 6;
+    if( section == SECTION_METADATA ) rows = self.photo.uploaded.boolValue ? 8 : 6;
     else if( section == SECTION_LOCATION ) rows = 4;
     else if( section == SECTION_FACE_DETECTION ) rows = [[faceResultsController fetchedObjects]count];
     else if( section == SECTION_FILTERS ) rows = [[filtersResultsController fetchedObjects]count];

@@ -98,7 +98,10 @@
     NSIndexPath* indexPath = [self.fetchedResultsController indexPathForObject:currentPhoto];
     if( [self.delegate respondsToSelector:@selector( uploadProgressForPhoto:atIndexPath:progress: )] )
     {
-        [self.delegate uploadProgressForPhoto:currentPhoto atIndexPath:indexPath progress:percentage];
+        dispatch_async( dispatch_get_main_queue(), ^
+        {
+            [self.delegate uploadProgressForPhoto:currentPhoto atIndexPath:indexPath progress:percentage];
+        });
     }
 }
 
@@ -119,10 +122,17 @@
         currentPhoto.uploadedDate = [NSDate date];
         if( [self.delegate respondsToSelector:@selector( didFinishUploadPhoto:atIndexPath: )] )
         {
-            [self.delegate didFinishUploadPhoto:currentPhoto atIndexPath:indexPath];
+            dispatch_async( dispatch_get_main_queue(), ^
+            {
+                [self.delegate didFinishUploadPhoto:currentPhoto atIndexPath:indexPath];
+            });
         }
     }
-    [self performSelector:@selector( upload ) withObject:nil afterDelay: appInterval];
+    
+    dispatch_async( dispatch_get_main_queue(), ^
+    {
+        [self performSelector:@selector( upload ) withObject:nil afterDelay: appInterval];
+    });
 }
 
 #pragma mark - Class Instance Methods
@@ -184,7 +194,6 @@
     currentPhoto = nil;
     if( !bStopped && uploadTask )
     {
-
         for( JMFPhoto* photo in [self.fetchedResultsController fetchedObjects] )
         {
             if( [photo.uploaded boolValue] == NO )
@@ -204,7 +213,10 @@
     {
         if( [self.delegate respondsToSelector:@selector( didFinishUpload )] )
         {
-            [self.delegate didFinishUpload];
+            dispatch_async( dispatch_get_main_queue(), ^
+            {
+                [self.delegate didFinishUpload];
+            });
         }
     }
 }

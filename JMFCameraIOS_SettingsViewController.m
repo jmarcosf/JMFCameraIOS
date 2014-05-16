@@ -139,12 +139,12 @@
     appPreferences = [NSUserDefaults standardUserDefaults];
     bSyncToFlickr  = NO;
     bSyncToFlickr  = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
-    iSyncInterval = 0;
+    iSyncInterval = [[intervalValues objectAtIndex:0]intValue];
     iSyncInterval = [[appPreferences objectForKey:PREFERENCE_SYNC_INTERVAL_KEY] intValue];
-    self.iboIntervalSetepper.value = (double)iSyncInterval;
+    self.iboIntervalSetepper.value = [intervalValues indexOfObject:[NSNumber numberWithInt:iSyncInterval]];
 
     self.iboFlickrSyncSwitch.on = bSyncToFlickr;
-    self.iboIntervalValue.text = [intervalStrings objectAtIndex:iSyncInterval];
+    self.iboIntervalValue.text = [intervalStrings objectAtIndex:self.iboIntervalSetepper.value];
     self.iboIntervalSetepper.enabled = bSyncToFlickr;
     
     //JMFFlickrOAuth
@@ -255,10 +255,10 @@
 /***************************************************************************/
 - (IBAction)onIntervalValueChanged:(id)sender
 {
-    iSyncInterval = (double)self.iboIntervalSetepper.value;
+    iSyncInterval = [[intervalValues objectAtIndex:(int)self.iboIntervalSetepper.value]intValue];
     [appPreferences setObject:[NSNumber numberWithInt:iSyncInterval] forKey:PREFERENCE_SYNC_INTERVAL_KEY];
     [appPreferences synchronize];
-    self.iboIntervalValue.text = [intervalStrings objectAtIndex:iSyncInterval];
+    self.iboIntervalValue.text = [intervalStrings objectAtIndex:(int)self.iboIntervalSetepper.value];
 }
 
 /***************************************************************************/
