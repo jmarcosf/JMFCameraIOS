@@ -102,4 +102,41 @@
     }
 }
 
+#pragma mark - Class Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Instance Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  startMove                                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)startMove
+{
+    self.iboImageView.hidden = YES;
+    self.iboPropertiesButton.hidden = YES;
+    self.iboActiveSwitch.hidden = YES;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  endMove                                                                */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)endMove
+{
+    self.iboImageView.hidden = NO;
+    self.iboPropertiesButton.hidden = NO;
+    self.iboActiveSwitch.hidden = NO;
+}
+
 @end

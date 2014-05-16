@@ -48,6 +48,7 @@
     {
         self.iboSyncProgress.progress = 0.0;
         self.iboSyncProgress.hidden = YES;
+        self.bUploading = NO;
     }
     return self;
 }

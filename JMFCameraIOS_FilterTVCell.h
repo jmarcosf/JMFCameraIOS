@@ -81,5 +81,15 @@
 - (IBAction)onSwitchChanged:(id)sender;
 - (IBAction)onPropertiesClicked:(id)sender;
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/* Class Instance Methods                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)startMove;
+- (void)endMove;
+
 @end
 

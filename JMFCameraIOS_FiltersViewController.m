@@ -71,7 +71,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     UIImage*                    targetImage;
     UIView*                     containerView;
     int                         viewMode;
-    
+    BOOL                        bInsideMove;
     CGFloat                     animatedDistance;
 }
 @end
@@ -154,7 +154,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
                                                                              action:@selector( onMoveClicked: )];
 
     self.title = ResString( @"IDS_FILTERS" );
-    bModified = bReloadData = NO;
+    bModified = bReloadData = bInsideMove = NO;
     iPickerViewSection = -1;
 
     //Images
@@ -734,6 +734,18 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     }
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  tableView:editingStyleForRowAtIndexPath:                               */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (UITableViewCellEditingStyle)tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    return bInsideMove ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
+}
+
 #pragma mark - JMFCameraIOS_FilterTVCellDelegate Methods
 /***************************************************************************/
 /*                                                                         */
@@ -1060,7 +1072,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)onMoveClicked:(id)sender
 {
-    BOOL bEdit = ![self.iboFilterTable isEditing];
+    BOOL bEdit = bInsideMove = ![self.iboFilterTable isEditing];
     
     if( bEdit )
     {
@@ -1076,8 +1088,20 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         [self enableButtons];
         self.navigationItem.leftBarButtonItem.title = ResString( @"IDS_MOVE" );
     }
-
+    
     [self.iboFilterTable setEditing:bEdit animated:YES];
+    
+    double delayInSeconds = ( bEdit ) ? 0.01 : 0.1;
+    dispatch_time_t popTime = dispatch_time( DISPATCH_TIME_NOW, (int64_t)( delayInSeconds * NSEC_PER_SEC ) );
+    dispatch_after( popTime, dispatch_get_main_queue(), ^(void)
+    {
+        for( int i = 0; i < [self.iboFilterTable numberOfSections]; i++ )
+        {
+            NSIndexPath* indexPath =  [NSIndexPath indexPathForRow:0 inSection:i];
+            JMFCameraIOS_FilterTVCell* cell = (JMFCameraIOS_FilterTVCell*)[self.iboFilterTable cellForRowAtIndexPath:indexPath];
+            ( bEdit ) ? [cell startMove] : [cell endMove];
+        }
+    } );
 }
 
 /***************************************************************************/

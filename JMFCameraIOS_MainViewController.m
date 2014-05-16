@@ -559,14 +559,18 @@
 /***************************************************************************/
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[collectionView cellForItemAtIndexPath:indexPath];
     if( bMultiSelectMode )
     {
-        iSelectedCount++;
-        [self redrawControls:YES];
+        if( !cell.bUploading )
+        {
+            iSelectedCount++;
+            [self redrawControls:YES];
+        }
+        else [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     }
     else
     {
-        JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[collectionView cellForItemAtIndexPath:indexPath];
         cell.iboSelectedIcon.hidden = YES;
         [self editPhoto];
     }
@@ -676,10 +680,15 @@
 /***************************************************************************/
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    JMFCameraIOS_MainTVCell* cell = (JMFCameraIOS_MainTVCell*)[tableView cellForRowAtIndexPath:indexPath];
     if( bMultiSelectMode )
     {
-        iSelectedCount++;
-        [self redrawControls:YES];
+        if( !cell.bUploading )
+        {
+            iSelectedCount++;
+            [self redrawControls:YES];
+        }
+        else [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else [self editPhoto];
 }
@@ -691,7 +700,7 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView*)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if( bMultiSelectMode )
     {
@@ -744,12 +753,14 @@
         JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
         cell.iboSyncProgress.hidden = NO;
         cell.iboSyncProgress.progress = percentage;
+        cell.bUploading = YES;
     }
     else if( self.viewMode == JMFCoreDataViewModeList )
     {
         JMFCameraIOS_MainTVCell* cell = (JMFCameraIOS_MainTVCell*)[self.tableView cellForRowAtIndexPath:indexPath];
         cell.iboSyncProgress.hidden = NO;
         cell.iboSyncProgress.progress = percentage;
+        cell.bUploading = YES;
     }
 }
 
@@ -772,6 +783,7 @@
         cell.iboSyncProgress.progress = 0.0;
         cell.iboSynchronizedIcon.hidden = NO;
         cell.iboSynchronizedIcon.layer.zPosition = 10;
+        cell.bUploading = NO;
     }
     else if( self.viewMode == JMFCoreDataViewModeList )
     {
@@ -780,6 +792,7 @@
         cell.iboSyncProgress.progress = 0.0;
         cell.iboSynchronizedIcon.hidden = NO;
         cell.iboSynchronizedIcon.layer.zPosition = 10;
+        cell.bUploading = NO;
     }
 }
 
