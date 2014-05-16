@@ -32,6 +32,11 @@
 		901F41A0190D51E60014EA24 /* JMFUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 901F419F190D51E60014EA24 /* JMFUtility.m */; };
 		901F42BF191BAEE60030C163 /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 901F42BD191BAEE60030C163 /* Back.png */; };
 		901F42C0191BAEE60030C163 /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 901F42BE191BAEE60030C163 /* Back@2x.png */; };
+		902404A91926119F00BD94CC /* Sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A51926119F00BD94CC /* Sync.png */; };
+		902404AA1926119F00BD94CC /* Sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A61926119F00BD94CC /* Sync@2x.png */; };
+		902404AB1926119F00BD94CC /* SyncChecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A71926119F00BD94CC /* SyncChecked.png */; };
+		902404AC1926119F00BD94CC /* SyncChecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 902404A81926119F00BD94CC /* SyncChecked@2x.png */; };
+		902404B2192618F800BD94CC /* JMFFlickrSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 902404B1192618F800BD94CC /* JMFFlickrSync.m */; };
 		9028F60818FC6DD6000956E7 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FE18FC6DD6000956E7 /* Camera.png */; };
 		9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F5FF18FC6DD6000956E7 /* Camera@2x.png */; };
 		9028F60A18FC6DD6000956E7 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9028F60018FC6DD6000956E7 /* Delete.png */; };
@@ -178,6 +183,12 @@
 		901F419F190D51E60014EA24 /* JMFUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFUtility.m; sourceTree = "<group>"; };
 		901F42BD191BAEE60030C163 /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Back.png; path = "../Práctica_iOS_Avanzado_Camera/assets/Back.png"; sourceTree = "<group>"; };
 		901F42BE191BAEE60030C163 /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Back@2x.png"; path = "../Práctica_iOS_Avanzado_Camera/assets/Back@2x.png"; sourceTree = "<group>"; };
+		902404A51926119F00BD94CC /* Sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sync.png; sourceTree = "<group>"; };
+		902404A61926119F00BD94CC /* Sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sync@2x.png"; sourceTree = "<group>"; };
+		902404A71926119F00BD94CC /* SyncChecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SyncChecked.png; sourceTree = "<group>"; };
+		902404A81926119F00BD94CC /* SyncChecked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SyncChecked@2x.png"; sourceTree = "<group>"; };
+		902404B0192618F800BD94CC /* JMFFlickrSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrSync.h; sourceTree = "<group>"; };
+		902404B1192618F800BD94CC /* JMFFlickrSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrSync.m; sourceTree = "<group>"; };
 		9028F5FE18FC6DD6000956E7 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		9028F5FF18FC6DD6000956E7 /* Camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Camera@2x.png"; sourceTree = "<group>"; };
 		9028F60018FC6DD6000956E7 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
@@ -417,6 +428,10 @@
 				90AD562D18FDFB6500C649FA /* Share@2x.png */,
 				90AD562E18FDFB6500C649FA /* Show.png */,
 				90AD562F18FDFB6500C649FA /* Show@2x.png */,
+				902404A51926119F00BD94CC /* Sync.png */,
+				902404A61926119F00BD94CC /* Sync@2x.png */,
+				902404A71926119F00BD94CC /* SyncChecked.png */,
+				902404A81926119F00BD94CC /* SyncChecked@2x.png */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -461,6 +476,8 @@
 				90112FD619258A38006E9F44 /* JMFFlickrUploadResponse.m */,
 				9051D3F218FB55D60066AB35 /* JMFFlickrPhoto.h */,
 				9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */,
+				902404B0192618F800BD94CC /* JMFFlickrSync.h */,
+				902404B1192618F800BD94CC /* JMFFlickrSync.m */,
 			);
 			name = Flickr;
 			sourceTree = "<group>";
@@ -722,7 +739,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				905674B21909EFA300C9389D /* JMFCameraIOS_EditViewController.xib in Resources */,
+				902404AA1926119F00BD94CC /* Sync@2x.png in Resources */,
 				9028F60A18FC6DD6000956E7 /* Delete.png in Resources */,
+				902404AC1926119F00BD94CC /* SyncChecked@2x.png in Resources */,
 				901B104E190AB08400AD1F7C /* Search@2x.png in Resources */,
 				906E721218F9D4CF00D1CC63 /* InfoPlist.strings in Resources */,
 				905AB5D61905DA68009B822F /* Apply.png in Resources */,
@@ -764,6 +783,7 @@
 				9028F60918FC6DD6000956E7 /* Camera@2x.png in Resources */,
 				9028F60C18FC6DD6000956E7 /* Edit.png in Resources */,
 				901B1047190A7BE200AD1F7C /* JMFCameraIOS_ShowViewController.xib in Resources */,
+				902404AB1926119F00BD94CC /* SyncChecked.png in Resources */,
 				9044649C1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.xib in Resources */,
 				9028F61018FC6DD6000956E7 /* ListMode.png in Resources */,
 				905AB5C619054215009B822F /* Filter@2x.png in Resources */,
@@ -783,6 +803,7 @@
 				90AD563518FDFB6500C649FA /* Share@2x.png in Resources */,
 				901B1051190B20E200AD1F7C /* Album.png in Resources */,
 				905AB5D91905DA68009B822F /* Cancel@2x.png in Resources */,
+				902404A91926119F00BD94CC /* Sync.png in Resources */,
 				90C40CC1190DBEFE00D6E78E /* NoImage.jpg in Resources */,
 				90DFEF4B18FD80BE00CEA576 /* Checked.png in Resources */,
 			);
@@ -821,6 +842,7 @@
 				90112FDC19258A38006E9F44 /* NSString+URLEncode.m in Sources */,
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,
 				901F41A0190D51E60014EA24 /* JMFUtility.m in Sources */,
+				902404B2192618F800BD94CC /* JMFFlickrSync.m in Sources */,
 				904930DB190944300024FAC1 /* JMFCoreDataViewController.m in Sources */,
 				90E7BC2319132EF700660741 /* JMFCameraIOS_EditTVGeoLocationCell.m in Sources */,
 				90FE677B1913858D00CDF393 /* UIActionSheet+CompletionBlock.m in Sources */,

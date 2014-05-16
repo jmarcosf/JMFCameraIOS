@@ -10,6 +10,7 @@ extern const struct JMFPhotoAttributes {
 	__unsafe_unretained NSString *colorsPerPixel;
 	__unsafe_unretained NSString *filteredImageUrl;
 	__unsafe_unretained NSString *filteredThumbnailUrl;
+	__unsafe_unretained NSString *flickrPhotoId;
 	__unsafe_unretained NSString *geoLocation;
 	__unsafe_unretained NSString *latitude;
 	__unsafe_unretained NSString *longitude;
@@ -19,6 +20,8 @@ extern const struct JMFPhotoAttributes {
 	__unsafe_unretained NSString *source;
 	__unsafe_unretained NSString *sourceImageUrl;
 	__unsafe_unretained NSString *sourceThumbnailUrl;
+	__unsafe_unretained NSString *uploaded;
+	__unsafe_unretained NSString *uploadedDate;
 } JMFPhotoAttributes;
 
 extern const struct JMFPhotoRelationships {
@@ -31,6 +34,9 @@ extern const struct JMFPhotoFetchedProperties {
 
 @class JMFFace;
 @class JMFFilter;
+
+
+
 
 
 
@@ -113,6 +119,16 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 //- (BOOL)validateFilteredThumbnailUrl:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSString* flickrPhotoId;
+
+
+
+//- (BOOL)validateFlickrPhotoId:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -232,6 +248,30 @@ extern const struct JMFPhotoFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* uploaded;
+
+
+
+@property BOOL uploadedValue;
+- (BOOL)uploadedValue;
+- (void)setUploadedValue:(BOOL)value_;
+
+//- (BOOL)validateUploaded:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* uploadedDate;
+
+
+
+//- (BOOL)validateUploadedDate:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSSet *faces;
 
 - (NSMutableSet*)facesSet;
@@ -298,6 +338,12 @@ extern const struct JMFPhotoFetchedProperties {
 
 - (NSString*)primitiveFilteredThumbnailUrl;
 - (void)setPrimitiveFilteredThumbnailUrl:(NSString*)value;
+
+
+
+
+- (NSString*)primitiveFlickrPhotoId;
+- (void)setPrimitiveFlickrPhotoId:(NSString*)value;
 
 
 
@@ -370,6 +416,21 @@ extern const struct JMFPhotoFetchedProperties {
 
 - (NSString*)primitiveSourceThumbnailUrl;
 - (void)setPrimitiveSourceThumbnailUrl:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveUploaded;
+- (void)setPrimitiveUploaded:(NSNumber*)value;
+
+- (BOOL)primitiveUploadedValue;
+- (void)setPrimitiveUploadedValue:(BOOL)value_;
+
+
+
+
+- (NSDate*)primitiveUploadedDate;
+- (void)setPrimitiveUploadedDate:(NSDate*)value;
 
 
 

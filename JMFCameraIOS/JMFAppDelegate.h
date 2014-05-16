@@ -39,8 +39,9 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (strong, nonatomic) UIWindow*             window;
-@property (strong, nonatomic) JMFCoreDataStack*     model;
+@property (strong,nonatomic) UIWindow*             window;
+@property (strong,nonatomic) JMFCoreDataStack*     model;
+@property (strong,nonatomic) void (^backgroundSessionCompletionHandler)();
 
 /***************************************************************************/
 /*                                                                         */

@@ -147,15 +147,15 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
 /***************************************************************************/
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession*)session
 {
-//    JMFAppDelegate* appDelegate = (JMFAppDelegate*)[[UIApplication sharedApplication] delegate];
-//    if( appDelegate.backgroundSessionCompletionHandler )
-//    {
-//        void (^completionHandler)() = appDelegate.backgroundSessionCompletionHandler;
-//        appDelegate.backgroundSessionCompletionHandler = nil;
-//        completionHandler();
-//    }
+    JMFAppDelegate* appDelegate = (JMFAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if( appDelegate.backgroundSessionCompletionHandler )
+    {
+        void (^completionHandler)() = appDelegate.backgroundSessionCompletionHandler;
+        appDelegate.backgroundSessionCompletionHandler = nil;
+        completionHandler();
+    }
     
-    NSLog( @"All tasks are finished" );
+//  NSLog( @"All tasks are finished" );
 }
 
 #pragma mark - NSURLSessionTaskDelegate Methods
@@ -179,7 +179,6 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
 - (void)URLSession:(NSURLSession*)session task:(NSURLSessionTask*)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
     float progress = ( (float)totalBytesSent * 1.0f ) / ( (float)totalBytesExpectedToSend * 1.0f );
-    NSLog( @"Progress: %0.2f", progress );
     
     if( [self.delegate respondsToSelector:@selector( flickrUpload:progress: )] )
     {
@@ -197,7 +196,6 @@ static unsigned char base64EncodeLookup[ 65 ] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
 - (void)URLSession:(NSURLSession*)session task:(NSURLSessionTask*)task didCompleteWithError:(NSError*)error
 {
     [JMFUtility deleteFileAtPath:tempFileName];
-    NSLog( @"Connection completed with error: %@", error );
     
     JMFFlickrUploadResponse* response = nil;
     if( !error )

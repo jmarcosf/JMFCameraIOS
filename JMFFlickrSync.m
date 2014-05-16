@@ -1,157 +1,127 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFAppDelegate.m                                                       */
+/*  JMFFlickrSync.m                                                        */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               App Delegate Class implementation File                    */
+/*               Flickr Sync Class implementation file                     */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import "JMFAppDelegate.h"
-#import "JMFUtility.h"
-#import "JMFCoreDataStack.h"
-#import "JMFCameraIOS_MainViewController.h"
+#import <CommonCrypto/CommonHMAC.h>
+#import "JMFFlickrSync.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  JMFAppDelegate Class Implementation                                    */
-/*                                                                         */
+/*  JMFFlickrSync Interface Definition                                     */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@implementation JMFAppDelegate
-
-#pragma mark - UIApplicationDelegate
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  UIApplicationDelegate Methods                                          */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  application:didFinishLaunchingWithOptions:                             */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+@interface JMFFlickrSync ()
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    JMFFlickrUpload*    uploadTask;
+    JMFPhoto*           currentPhoto;
+    BOOL                bStopped;
+}
 
-    if( [JMFUtility createApplicationDirectories] )
+@end
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFFlickrSync Class Implementation                                     */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@implementation JMFFlickrSync
+
+#pragma mark - Class Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Class Instance Methods                                                 */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  initWithFetchedResultsController:delegate:                             */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController delegate:(id< JMFFlickrSyncDelegate >)delegate
+{
+    if( self = [super init] )
     {
-        NSString* IDS_OK      = ResString( @"IDS_OK" );
-        NSString* IDS_MESSAGE = ResString( @"IDS_INIT_ERROR_MESSAGE" );
-        UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:@"error" message:IDS_MESSAGE delegate:nil cancelButtonTitle:IDS_OK otherButtonTitles:nil, nil];
-        [alertView show];
-        return NO;
+        self.fetchedResultsController = fetchedResultsController;
+        self.delegate = delegate;
     }
-    
-    //Model with CoreData
-    self.model = [JMFCoreDataStack coreDataStackWithModelName:@"JMFCameraIOS"];
-    JMFCameraIOS_MainViewController* mainVC = [[JMFCameraIOS_MainViewController alloc]initWithModel:self.model];
-    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:mainVC];
-//  [self performCoreDataAutoSave];
-
-    [[NSNotificationCenter defaultCenter]addObserver:self
-                                            selector:@selector( onManageObjectsChanged:)
-                                                name:NSManagedObjectContextObjectsDidChangeNotification
-                                              object:self.model.context];
-
-    //Shake detection
-    application.applicationSupportsShakeToEdit = YES;
-    
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    return YES;
+    return self;
 }
 
+#pragma mark - JMFFlickrUploadDelegate
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  applicationWillResignActive:                                           */
+/*                                                                         */
+/*                                                                         */
+/*  JMFFlickrUploadDelegate Methods                                        */
+/*                                                                         */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationWillResignActive:(UIApplication*)application
+/*                                                                         */
+/*                                                                         */
+/*  flickrUpload:progress:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)flickrUpload:(JMFFlickrUpload*)flickrUpload progress:(float)percentage
 {
-    [self.model saveWithErrorBlock:^( NSError* error )
+    NSIndexPath* indexPath = [self.fetchedResultsController indexPathForObject:currentPhoto];
+    if( [self.delegate respondsToSelector:@selector( uploadProgressForPhoto:atIndexPath:progress: )] )
     {
-        if( error && COREDATA_DEBUG ) NSLog( @"Error saving data in applicationWillResignActive: %@", error );
-    }];
+        [self.delegate uploadProgressForPhoto:currentPhoto atIndexPath:indexPath progress:percentage];
+    }
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  applicationDidEnterBackground:                                         */
+/*  flickrDidFinishUpload:response:error:                                  */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)applicationDidEnterBackground:(UIApplication*)application
+- (void)flickrDidFinishUpload:(JMFFlickrUpload*)flickrUpload response:(JMFFlickrUploadResponse*)response error:(NSError*)error
 {
-    [self.model saveWithErrorBlock:^( NSError* error )
+    if( error == nil && response.error == nil )
     {
-         if( error && COREDATA_DEBUG ) NSLog( @"Error saving data in applicationDidEnterBackground: %@", error );
-    }];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillEnterForeground:                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillEnterForeground:(UIApplication*)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationDidBecomeActive:                                            */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationDidBecomeActive:(UIApplication*)application
-{
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  applicationWillTerminate:                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)applicationWillTerminate:(UIApplication*)application
-{
-    if( COREDATA_DEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  application:handleEventsForBackgroundURLSession:completionHandler:     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString*)identifier completionHandler:( void (^)() )completionHandler
-{
-    if( COREDATA_DEBUG ) NSLog( @"on application:handleEventsForBackgroundURLSession:completionHandler: here you could save data but you problably did it before" );
-
-    self.backgroundSessionCompletionHandler = completionHandler;
+        NSIndexPath* indexPath = [self.fetchedResultsController indexPathForObject:currentPhoto];
+        currentPhoto.flickrPhotoId = response.photoId;
+        currentPhoto.uploaded = [NSNumber numberWithBool:YES];
+        currentPhoto.uploadedDate = [NSDate date];
+        if( [self.delegate respondsToSelector:@selector( didFinishUploadPhoto:atIndexPath: )] )
+        {
+            [self.delegate didFinishUploadPhoto:currentPhoto atIndexPath:indexPath];
+        }
+    }
+    [self performSelector:@selector( upload ) withObject:nil afterDelay: 20];
 }
 
 #pragma mark - Class Instance Methods
@@ -168,50 +138,62 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  performCoreDataAutoSave                                                */
+/*  start                                                                  */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)performCoreDataAutoSave
+- (void)start
 {
-    if( COREDATA_AUTOSAVE == YES )
+    bStopped = NO;
+
+    NSUserDefaults* appPreferences = [NSUserDefaults standardUserDefaults];
+    NSString* flickrToken = [appPreferences valueForKey:PREFERENCE_FLICKR_TOKEN_KEY];
+    NSString* flickrTokenSecret = [appPreferences valueForKey:PREFERENCE_FLICKR_TOKEN_SECRET_KEY];
+    
+    if( flickrToken && flickrTokenSecret )
     {
-        if( COREDATA_DEBUG ) NSLog( @"in autosave..." );
-        [self.model saveWithErrorBlock:^( NSError* error )
-        {
-             if( COREDATA_DEBUG ) NSLog( @"Error saving data in performCoredataAutosave %@", error);
-        }];
-        [self performSelector:@selector( performCoreDataAutoSave ) withObject:nil afterDelay: COREDATA_AUTOSAVE_DELAY];
+        uploadTask = [[JMFFlickrUpload alloc]initWithToken:flickrToken tokenSecret:flickrTokenSecret delegate:self];
+        [self performSelector:@selector( upload ) withObject:nil afterDelay: 20];
     }
 }
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  onManageObjectsChanged:                                                */
+/*  stop                                                                   */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (void)onManageObjectsChanged:(NSNotification*)notification
+- (void)stop
 {
-    NSArray* insertedObjects = [[notification userInfo]objectForKey:NSInsertedObjectsKey] ;
-    NSArray* updatedObjects  = [[notification userInfo]objectForKey:NSUpdatedObjectsKey] ;
-    
-    for( NSManagedObject* object in insertedObjects )
-    {
-        if( [object isKindOfClass:[JMFNamedEntity class]] )
-        {
-            JMFNamedEntity* modelObject = (JMFNamedEntity*)object;
-            modelObject.creationDate = [NSDate date];
-        }
-    }
+    bStopped = YES;
+    uploadTask = nil;
+}
 
-    for( NSManagedObject* object in updatedObjects )
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  upload                                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)upload
+{
+    if( !bStopped && uploadTask )
     {
-        if( [object isKindOfClass:[JMFNamedEntity class]] )
+        currentPhoto = nil;
+        for( JMFPhoto* photo in [self.fetchedResultsController fetchedObjects] )
         {
-            JMFNamedEntity* modelObject = (JMFNamedEntity*)object;
-            modelObject.modificationDate = [NSDate date];
+            if( photo.uploaded == NO )
+            {
+                currentPhoto = photo;
+                UIImage* image = [UIImage imageWithContentsOfFile:photo.sourceImageUrl];
+                [uploadTask uploadImage:image
+                                  title:photo.name
+                            description:@"Image Uploaded from JMFCameraIOS"
+                               fileName:photo.name];
+                break;
+            }
         }
     }
 }

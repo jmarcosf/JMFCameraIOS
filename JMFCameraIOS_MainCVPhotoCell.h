@@ -39,8 +39,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UIImageView*   iboPhotoImage;
-@property (weak, nonatomic) IBOutlet UIImageView*   iboSelectedIcon;
+@property (weak, nonatomic) IBOutlet UIImageView*       iboPhotoImage;
+@property (weak, nonatomic) IBOutlet UIImageView*       iboSelectedIcon;
+@property (weak, nonatomic) IBOutlet UIImageView*       iboSynchronizedIcon;
+@property (weak, nonatomic) IBOutlet UIProgressView*    iboSyncProgress;
 
 /***************************************************************************/
 /*                                                                         */

@@ -29,6 +29,7 @@
 "IDS_DELETE" = "Borrar";
 "IDS_FLICKR" = "Flickr";
 "IDS_ALBUM" = "Album";
+"IDS_SYNC" = "Sincronizar";
 "IDS_PICTURES" = "Fotografías";
 "IDS_NAME" = "Nombre";
 "IDS_CREATED" = "Creada";

@@ -9,6 +9,7 @@ const struct JMFPhotoAttributes JMFPhotoAttributes = {
 	.colorsPerPixel = @"colorsPerPixel",
 	.filteredImageUrl = @"filteredImageUrl",
 	.filteredThumbnailUrl = @"filteredThumbnailUrl",
+	.flickrPhotoId = @"flickrPhotoId",
 	.geoLocation = @"geoLocation",
 	.latitude = @"latitude",
 	.longitude = @"longitude",
@@ -18,6 +19,8 @@ const struct JMFPhotoAttributes JMFPhotoAttributes = {
 	.source = @"source",
 	.sourceImageUrl = @"sourceImageUrl",
 	.sourceThumbnailUrl = @"sourceThumbnailUrl",
+	.uploaded = @"uploaded",
+	.uploadedDate = @"uploadedDate",
 };
 
 const struct JMFPhotoRelationships JMFPhotoRelationships = {
@@ -91,6 +94,11 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 	}
 	if ([key isEqualToString:@"sourceValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"source"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"uploadedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"uploaded"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -168,6 +176,13 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 
 
 @dynamic filteredThumbnailUrl;
+
+
+
+
+
+
+@dynamic flickrPhotoId;
 
 
 
@@ -345,6 +360,39 @@ const struct JMFPhotoFetchedProperties JMFPhotoFetchedProperties = {
 
 
 @dynamic sourceThumbnailUrl;
+
+
+
+
+
+
+@dynamic uploaded;
+
+
+
+- (BOOL)uploadedValue {
+	NSNumber *result = [self uploaded];
+	return [result boolValue];
+}
+
+- (void)setUploadedValue:(BOOL)value_ {
+	[self setUploaded:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveUploadedValue {
+	NSNumber *result = [self primitiveUploaded];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveUploadedValue:(BOOL)value_ {
+	[self setPrimitiveUploaded:[NSNumber numberWithBool:value_]];
+}
+
+
+
+
+
+@dynamic uploadedDate;
 
 
 

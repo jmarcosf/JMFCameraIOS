@@ -1,17 +1,18 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFFlickrUpload.h                                                      */
+/*  JMFFlickrSync.h                                                        */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Flickr Upload Photo Class definition file                 */
+/*               Flickr Sync Class definition file                         */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
 #import <Foundation/Foundation.h>
 #import "JMFFlickr.h"
+#import "JMFPhoto.h"
 
 /***************************************************************************/
 /*                                                                         */
@@ -20,23 +21,23 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@class JMFFlickrUpload;
-@class JMFFlickrUploadResponse;
+@class JMFFlickrSync;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFFlickrUploadDelegate protocol definition                            */
+/*  JMFFlickrSyncDelegate protocol definition                              */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@protocol JMFFlickrUploadDelegate < NSObject >
+@protocol JMFFlickrSyncDelegate < NSObject >
 @optional
 
-- (void)flickrUpload:(JMFFlickrUpload*)flickrUpload progress:(float)percentage;
-- (void)flickrDidFinishUpload:(JMFFlickrUpload*)flickrUpload response:(JMFFlickrUploadResponse*)response error:(NSError*)error;
+- (void)uploadProgressForPhoto:(JMFPhoto*)photo atIndexPath:(NSIndexPath*)indexPath progress:(float)percentage;
+- (void)didFinishUploadPhoto:(JMFPhoto*)photo atIndexPath:(NSIndexPath*)indexPath;
+- (void)didFinishUpload;
 
 @end
 
@@ -44,12 +45,14 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFFlickrUpload Class Definition                                       */
+/*                                                                         */
+/*  JMFFlickrSync Class Interface                                          */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFFlickrUpload : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
+@interface JMFFlickrSync : NSObject <JMFFlickrUploadDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -58,10 +61,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) NSString*                      imageFilePath;
-@property (nonatomic,strong) NSString*                      token;
-@property (nonatomic,strong) NSString*                      tokenSecret;
-@property (nonatomic,strong) id< JMFFlickrUploadDelegate >  delegate;
+@property (nonatomic,strong) NSFetchedResultsController*    fetchedResultsController;
+@property (nonatomic,strong) id< JMFFlickrSyncDelegate >    delegate;
 
 /***************************************************************************/
 /*                                                                         */
@@ -70,7 +71,10 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithToken:(NSString*)token tokenSecret:(NSString*)tokenSecret delegate:(id< JMFFlickrUploadDelegate >)delegate;
-- (void)uploadImage:(UIImage*)image title:(NSString*)title description:(NSString*)description fileName:(NSString*)fileName;
+- (id)initWithFetchedResultsController:(NSFetchedResultsController*)fetchedResultsController delegate:(id< JMFFlickrSyncDelegate >)delegate;
+- (void)start;
+- (void)stop;
+- (void)upload;
 
 @end
+

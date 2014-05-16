@@ -14,6 +14,7 @@
 #import "JMFCoreDataViewController.h"
 #import "JMFNamedEntity.h"
 #import "JMFPhoto.h"
+#import "JMFFlickrSync.h"
 @import CoreLocation;
 
 /***************************************************************************/
@@ -27,7 +28,8 @@
 /***************************************************************************/
 @interface JMFCameraIOS_MainViewController : JMFCoreDataViewController <UITabBarDelegate, CLLocationManagerDelegate,
                                                                         UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-                                                                        UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDelegate>
+                                                                        UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDelegate,
+                                                                        JMFFlickrSyncDelegate>
 
 /***************************************************************************/
 /*                                                                         */
@@ -74,4 +76,5 @@
 - (void)onDeleteClicked;
 - (void)onFlickrClicked;
 - (void)onAlbumClicked;
+- (void)onSyncClicked;
 @end

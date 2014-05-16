@@ -15,18 +15,6 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Defines                                                                */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-#define PREFERENCE_SYNC_TO_FLKR_KEY             @"PreferenceSyncToFlickrKey"
-#define PREFERENCE_SYNC_FREQUENCY_KEY           @"PreferenceSyncFrequencyKey"
-#define PREFERENCE_FLICKR_TOKEN_KEY             @"PreferenceFlickrTokenKey"
-#define PREFERENCE_FLICKR_TOKEN_SECRET_KEY      @"PreferenceFlickrTokenSecretKey"
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
 /*  JMFCameraIOS_SettingsViewController Class Interface                    */
 /*                                                                         */
 /*                                                                         */

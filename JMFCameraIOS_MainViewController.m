@@ -37,6 +37,7 @@
 #define IDC_UITOOLBAR_BUTTON_DELETE_INDEX           2
 #define IDC_UITOOLBAR_BUTTON_FLICKR_INDEX           3
 #define IDC_UITOOLBAR_BUTTON_ALBUM_INDEX            4
+#define IDC_UITOOLBAR_BUTTON_SYNC_INDEX             5
 
 /***************************************************************************/
 /*                                                                         */
@@ -65,6 +66,9 @@
     NSNumber*               currentLatitude;
     NSNumber*               currentAltitude;
     NSString*               currentGeoLocation;
+
+    BOOL                    bSynchronizing;
+    JMFFlickrSync*          flickrSyncTask;
 }
 
 @end
@@ -139,7 +143,7 @@
     CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
     
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    bFromCamera = NO;
+    bFromCamera = bSynchronizing = NO;
     self.iboActivityIndicator.hidden = YES;
     self.iboActivityIndicator.layer.zPosition = 100;
     [self.iboActivityIndicator stopAnimating];
@@ -172,6 +176,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setTitle:ResString( @"IDS_DELETE" )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setTitle:ResString( @"IDS_FLICKR" )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setTitle:ResString( @"IDS_ALBUM" )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setTitle:ResString( @"IDS_SYNC" )];
     
     //TabBarItems
     UIImage* iconMosaicMode = [UIImage imageNamed:@"MosaicMode.png"];
@@ -311,6 +316,7 @@
         case IDC_UITOOLBAR_BUTTON_DELETE_INDEX: [self onDeleteClicked];     break;
         case IDC_UITOOLBAR_BUTTON_FLICKR_INDEX: [self onFlickrClicked];     break;
         case IDC_UITOOLBAR_BUTTON_ALBUM_INDEX:  [self onAlbumClicked];      break;
+        case IDC_UITOOLBAR_BUTTON_SYNC_INDEX:   [self onSyncClicked];       break;
     }
 }
 
@@ -519,6 +525,9 @@
     cell.iboSelectedIcon.image = [UIImage imageNamed:@"GreenCheck.png"];
     cell.iboSelectedIcon.hidden = !cell.isSelected;
     cell.iboSelectedIcon.layer.zPosition = 10;
+    cell.iboSyncProgress.hidden = YES;
+    cell.iboSynchronizedIcon.hidden = !photo.uploaded;
+    cell.iboSelectedIcon.layer.zPosition = 10;
     return cell;
 }
 
@@ -698,6 +707,78 @@
     }
 }
 
+#pragma mark - JMFFlickrSyncDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFFlickrSyncDelegate Methods                                          */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  uploadProgressForPhoto:progress:                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)uploadProgressForPhoto:(JMFPhoto*)photo atIndexPath:(NSIndexPath*)indexPath progress:(float)percentage
+{
+    if( self.viewMode == JMFCoreDataViewModeMosaic )
+    {
+        JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
+        cell.iboSyncProgress.hidden = NO;
+        cell.iboSyncProgress.progress = percentage;
+    }
+    else if( self.viewMode == JMFCoreDataViewModeList )
+    {
+        
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  didFinishUploadPhoto:                                                  */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)didFinishUploadPhoto:(JMFPhoto*)photo atIndexPath:(NSIndexPath*)indexPath
+{
+    [self.model saveWithErrorBlock:nil];
+//    [self.fetchedResultsController fetchRequest];
+
+    if( self.viewMode == JMFCoreDataViewModeMosaic )
+    {
+        JMFCameraIOS_MainCVPhotoCell* cell = (JMFCameraIOS_MainCVPhotoCell*)[self.collectionView cellForItemAtIndexPath:indexPath];
+        cell.iboSyncProgress.hidden = YES;
+        cell.iboSyncProgress.progress = 0.0;
+        cell.iboSynchronizedIcon.hidden = NO;
+        cell.iboSynchronizedIcon.layer.zPosition = 10;
+    }
+    else if( self.viewMode == JMFCoreDataViewModeList )
+    {
+        
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  didFinishUpload                                                        */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)didFinishUpload
+{
+    flickrSyncTask = nil;
+    bSynchronizing = NO;
+    [self redrawControls:YES];
+}
+
 #pragma mark - Class Instance Methods
 /***************************************************************************/
 /*                                                                         */
@@ -753,6 +834,7 @@
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_DELETE_INDEX] setEnabled:( bMultiSelectMode && count > 0 && iSelectedCount != 0 )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_FLICKR_INDEX] setEnabled:( !bMultiSelectMode )];
     [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_ALBUM_INDEX]  setEnabled:( !bMultiSelectMode && count > 0 )];
+    [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setEnabled:( !bSynchronizing && count > 0 )];
 }
 
 /***************************************************************************/
@@ -1048,6 +1130,26 @@
     
     JMFCameraIOS_AlbumViewController* albumVC = [[JMFCameraIOS_AlbumViewController alloc] initWithFetchedResultsController:self.fetchedResultsController];
     [self.navigationController pushViewController:albumVC animated:YES];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onSyncClicked:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)onSyncClicked
+{
+    NSUserDefaults* appPreferences = [NSUserDefaults standardUserDefaults];
+    BOOL bSyncToFlickr = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
+    
+    if( bSyncToFlickr)
+    {
+        bSynchronizing = YES;
+        flickrSyncTask = [[JMFFlickrSync alloc]initWithFetchedResultsController:self.fetchedResultsController delegate:self];
+        [flickrSyncTask start];
+    }
 }
 
 @end

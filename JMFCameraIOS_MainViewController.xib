@@ -31,6 +31,7 @@
                         <tabBarItem tag="2" title="Delete" image="Delete.png" id="bY6-el-rJk"/>
                         <tabBarItem tag="3" title="Flickr" image="Flickr.png" id="E8c-yl-6F3"/>
                         <tabBarItem tag="4" title="Album" image="Album.png" id="8Ju-Z7-raG"/>
+                        <tabBarItem tag="5" title="Sync" image="Sync.png" id="UA0-ep-br2"/>
                     </items>
                 </tabBar>
             </subviews>
@@ -46,5 +47,6 @@
         <image name="Delete.png" width="19" height="25"/>
         <image name="Flickr.png" width="20" height="24"/>
         <image name="ListMode.png" width="29" height="18"/>
+        <image name="Sync.png" width="23" height="23"/>
     </resources>
 </document>
