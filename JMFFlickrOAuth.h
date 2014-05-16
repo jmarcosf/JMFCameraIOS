@@ -1,78 +1,75 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_SettingsViewController.h                                  */
+/*  JMFFlickrOAuth.h                                                       */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Settings View Controller Class definition file            */
+/*               Flickr OAuth Authentication Class definition file         */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
+/*         View: http://www.flickr.com/services/api/auth.oauth.html        */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
-#import "JMFFlickr.h"
+#import <Foundation/Foundation.h>
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Class forwarding                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+@class JMFFlickrOAuth;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_SettingsViewController Class Interface                    */
+/*  JMFFlickrOAuthDelegate protocol definition                             */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_SettingsViewController : UIViewController <JMFFlickrOAuthDelegate>
+@protocol JMFFlickrOAuthDelegate < NSObject >
+@required
+
+- (void)flickrDidAuthorize:(JMFFlickrOAuth*)flickr;
+- (void)flickrDidNotAuthorize:(JMFFlickrOAuth*)flickr error:(NSError*)error;
+
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*                                                                         */
+/*  JMFFlickrOAuth Class interface definition                              */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
+@interface JMFFlickrOAuth : NSObject < UIWebViewDelegate, NSURLConnectionDelegate >
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
+/*  Properties                                                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboFlickrSyncContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFlickrSyncSwitch;
-@property (weak, nonatomic) IBOutlet UIView*        iboFrequencyContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyValue;
-@property (weak, nonatomic) IBOutlet UIStepper*     iboFrequencySetepper;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDatabaseTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboDropContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDropLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboDropSwitch;
-@property (weak, nonatomic) IBOutlet UIWebView*     iboWebView;
+@property (nonatomic,strong) UIWebView*                     webView;
+@property (nonatomic,strong) NSString*                      token;
+@property (nonatomic,strong) NSString*                      tokenSecret;
+@property (nonatomic,strong) id< JMFFlickrOAuthDelegate >   delegate;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Instance Methods                                                        */
+/*  Class Instance Methods                                                 */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(JMFCoreDataStack*)model;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onSyncPicturesChanged:(id)sender;
-- (IBAction)onFrequencyValueChanged:(id)sender;
-- (IBAction)onDropDatabaseChanged:(id)sender;
-
+- (id)initWithWebView:(UIWebView*)webView delegate:(id<JMFFlickrOAuthDelegate>)delegate;
+- (void)authenticate;
 
 @end

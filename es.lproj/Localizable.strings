@@ -113,6 +113,8 @@
 "IDS_SOCIAL_MESSAGE_SENT_OK" = "Mensaje enviado correctamente";
 "IDS_DATABASE_DROPPED_SUCCESSFULLY" = "La Base de Datos se ha vaciado correctamente";
 "IDS_DATABASE_DROPPED_WITH_ERROR" = "Ha habido un error al vaciar la Base de Datos. Compruebe el log de la aplicación.";
+"IDS_FLICKR_AUTHENTICATION_SUCCESS" = "Autenticación con Flickr correcta.";
+"IDS_FLICKR_AUTHENTICATION_FAILURE" = "Error al realizar la autenticación con Flickr.";
 
 "IDS_FLICKR_SYNC" = "Sincronizar con Flickr";
 "IDS_DATABASE" = "Base de Datos";

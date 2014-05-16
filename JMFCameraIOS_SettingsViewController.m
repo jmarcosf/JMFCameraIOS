@@ -20,7 +20,9 @@
 /*                                                                         */
 /***************************************************************************/
 #define PREFERENCE_SYNC_TO_FLKR_KEY             @"PreferenceSyncToFlickrKey"
-#define PREFERENCE_SYNC_FREQUENCY               @"PreferenceSyncFrequencyKey"
+#define PREFERENCE_SYNC_FREQUENCY_KEY           @"PreferenceSyncFrequencyKey"
+#define PREFERENCE_FLICKR_TOKEN_KEY             @"PreferenceFlickrTokenKey"
+#define PREFERENCE_FLICKR_TOKEN_SECRET_KEY      @"PreferenceFlickrTokenSecretKey"
 
 /***************************************************************************/
 /*                                                                         */
@@ -36,6 +38,7 @@
     NSUserDefaults*     appPreferences;
     BOOL                bSyncToFlickr;
     int                 iSyncFrequency;
+    JMFFlickrOAuth*     flickrOAuth;
 }
 
 @end
@@ -107,6 +110,10 @@
     self.navigationController.navigationBar.translucent = NO;
     self.title = ResString( @"IDS_SETTINGS" );
     
+    //Navigation Bar Buttons
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector( onDoneClicked: )];
+    
     //Containers
     self.iboFlickrSyncContainer.layer.borderWidth = self.iboFrequencyContainer.layer.borderWidth = self.iboDropContainer.layer.borderWidth = 1;
     self.iboFlickrSyncContainer.layer.borderColor = self.iboFrequencyContainer.layer.borderColor = self.iboDropContainer.layer.borderColor = [Rgb2UIColor( 200, 200, 200 ) CGColor];
@@ -140,12 +147,17 @@
     bSyncToFlickr  = NO;
     bSyncToFlickr  = [[appPreferences objectForKey:PREFERENCE_SYNC_TO_FLKR_KEY] boolValue];
     iSyncFrequency = 0;
-    iSyncFrequency = [[appPreferences objectForKey:PREFERENCE_SYNC_FREQUENCY] intValue];
+    iSyncFrequency = [[appPreferences objectForKey:PREFERENCE_SYNC_FREQUENCY_KEY] intValue];
     self.iboFrequencySetepper.value = (double)iSyncFrequency;
 
-    self.iboFlickrsyncSwitch.on = bSyncToFlickr;
+    self.iboFlickrSyncSwitch.on = bSyncToFlickr;
     self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];
     self.iboFrequencySetepper.enabled = bSyncToFlickr;
+    
+    flickrOAuth = [[JMFFlickrOAuth alloc]initWithWebView:self.iboWebView delegate:self];
+    self.iboWebView.frame = self.view.frame;
+    self.iboWebView.hidden = YES;
+    self.iboWebView.layer.zPosition = 1000;
 }
 
 /***************************************************************************/
@@ -180,10 +192,42 @@
 /***************************************************************************/
 - (IBAction)onSyncPicturesChanged:(id)sender
 {
-    bSyncToFlickr = self.iboFlickrsyncSwitch.on;
-    self.iboFrequencySetepper.enabled = bSyncToFlickr;
-    [appPreferences setObject:[NSNumber numberWithBool:bSyncToFlickr] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
-    [appPreferences synchronize];
+    bSyncToFlickr = self.iboFlickrSyncSwitch.on;
+    NSString* flickrToken = [appPreferences valueForKey:PREFERENCE_FLICKR_TOKEN_KEY];
+    
+    if( bSyncToFlickr && !flickrToken )
+    {
+        self.iboWebView.hidden = NO;
+        [flickrOAuth authenticate];
+    }
+    else
+    {
+        self.iboFrequencySetepper.enabled = bSyncToFlickr;
+        [appPreferences setObject:[NSNumber numberWithBool:bSyncToFlickr] forKey:PREFERENCE_SYNC_TO_FLKR_KEY];
+        [appPreferences synchronize];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  onDoneClicked:                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (IBAction)onDoneClicked:(id)sender
+{
+
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.45;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    transition.type = kCATransitionFromRight;
+    [transition setType:kCATransitionPush];
+    transition.subtype = kCATransitionFromRight;
+    transition.delegate = self;
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 /***************************************************************************/
@@ -196,7 +240,7 @@
 - (IBAction)onFrequencyValueChanged:(id)sender
 {
     iSyncFrequency = (double)self.iboFrequencySetepper.value;
-    [appPreferences setObject:[NSNumber numberWithInt:iSyncFrequency] forKey:PREFERENCE_SYNC_FREQUENCY];
+    [appPreferences setObject:[NSNumber numberWithInt:iSyncFrequency] forKey:PREFERENCE_SYNC_FREQUENCY_KEY];
     [appPreferences synchronize];
     self.iboFrequencyValue.text = [frequencyStrings objectAtIndex:iSyncFrequency];    
 }
@@ -235,6 +279,53 @@
         }
         self.iboDropSwitch.on = NO;
     }];
-
 }
+
+#pragma mark - JMFFlickrOAuthDelegate
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  JMFFlickrOAuthDelegate Methods                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  flickrDidAuthorize:                                                    */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)flickrDidAuthorize:(JMFFlickrOAuth*)flickr
+{
+    self.iboWebView.hidden = YES;
+    [self.iboWebView loadHTMLString:nil baseURL:nil];
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Flickr" message:ResString( @"IDS_FLICKR_AUTHENTICATION_SUCCESS" ) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
+    [appPreferences setValue:flickr.token forKey:PREFERENCE_FLICKR_TOKEN_KEY];
+    [appPreferences setValue:flickr.tokenSecret forKey:PREFERENCE_FLICKR_TOKEN_SECRET_KEY];
+    [appPreferences synchronize];
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  flickrDidNotAuthorize:                                                 */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)flickrDidNotAuthorize:(JMFFlickrOAuth*)flickr error:(NSError *)error
+{
+    self.iboWebView.hidden = YES;
+    [self.iboWebView loadHTMLString:nil baseURL:nil];
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Flickr" message:ResString( @"IDS_FLICKR_AUTHENTICATION_FAILURE" ) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
 @end

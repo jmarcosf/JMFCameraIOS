@@ -1,66 +1,47 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFFlickr.h                                                            */
+/*  JMFFlickrUploadResponse.h                                              */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Flickr Search Class definition file                       */
+/*               Flickr Upload Photo Response Class definition file        */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
-/*         NOTE: Modified from Brandon Trebitowski file                    */
 /*                                                                         */
 /***************************************************************************/
-#import <Foundation/Foundation.h>
-#import "JMFFlickrPhoto.h"
-#import "JMFFlickrOAuth.h"
-#import "JMFFlickrUpload.h"
-#import "JMFFlickrUploadResponse.h"
-#import "JMFUtility.h"
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  Constants                                                              */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-static NSString* kFlickrConsumerKey    = @"594def730d7175eea7deb139366585e1";
-static NSString* kFlickrConsumerSecret = @"e3e3593531b25d4c";
-static NSString* kSignatureMethod      = @"HMAC-SHA1";
-static NSString* kOAuthVersion         = @"1.0";
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  Typedefs                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-typedef void (^FlickrPhotoCompletionBlock)( UIImage* photoImage, NSError* error );
-typedef void (^FlickrSearchCompletionBlock)( NSString* searchTerm, NSArray* results, NSError* error );
+#import "JMFFlickr.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  JMFFlickr Class Interface                                              */
-/*                                                                         */
+/*  JMFFlickrUploadResponse Class Definition                               */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFFlickr : NSObject
+@interface JMFFlickrUploadResponse : NSObject <NSXMLParserDelegate>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Class Methods                                                          */
+/*  Properties                                                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (void)flickrSearchForTerm:(NSString*)term largeImage:(BOOL)bLargeImage completionBlock:(FlickrSearchCompletionBlock)completionBlock;
-+ (void)loadImageForPhoto:(JMFFlickrPhoto*)flickrPhoto thumbnail:(BOOL)thumbnail completionBlock:(FlickrPhotoCompletionBlock)completionBlock;
+@property (nonatomic,strong) NSString*      photoId;
+@property (nonatomic,strong) NSError*       error;
+@property (nonatomic,strong) NSString*      errorDescription;
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (id)initWithData:(NSData*)data;
+- (BOOL)parse;
 
 @end

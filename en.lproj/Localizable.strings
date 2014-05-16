@@ -111,6 +111,8 @@
 "IDS_SOCIAL_MESSAGE_SENT_OK" = "Message sent successfully";
 "IDS_DATABASE_DROPPED_SUCCESSFULLY" = "Database empty successfull";
 "IDS_DATABASE_DROPPED_WITH_ERROR" = "There was an error trying to empty database. Check app log.";
+"IDS_FLICKR_AUTHENTICATION_SUCCESS" = "Flickr authenticated successfully.";
+"IDS_FLICKR_AUTHENTICATION_FAILURE" = "Flickr authentication failed.";
 
 "IDS_FLICKR_SYNC" = "Flickr Sync";
 "IDS_DATABASE" = "Database";

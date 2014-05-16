@@ -1,11 +1,11 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFUtility.h                                                           */
+/*  NSString+URLEncode.h                                                   */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               JMFUtility Class definition file                          */
+/*               NSString URLEncode Category Class definition file         */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
@@ -17,35 +17,22 @@
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFUtility Class Interface                                             */
+/*  NSString+URLEncode Category Class Interface                            */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFUtility : NSObject
+@interface NSString( URLEncode )
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  Class Methods                                                          */
-/*                                                                         */
+/*  Instance Methods                                                       */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSError*)createApplicationDirectories;
-+ (NSError*)removeApplicationDirectories;
-+ (NSError*)emptyApplicationDirectories;
-+ (NSString*)generateNewImageFileName;
-+ (NSString*)pathForImageFileName:(NSString*)imageFileName;
-+ (NSString*)pathForThumbnailFileName:(NSString*)thumbnailFileName;
-+ (NSString*)pathForFilteredImageFileName:(NSString*)imageFileName;
-+ (NSString*)pathForFilteredThumbnailFileName:(NSString*)thumbnailFileName;
-+ (NSString*)formattedStringFromDate:(NSDate*)date withFormat:(NSString*)format;
-+ (NSIndexPath*)indexPathForCellSubview:(UIView*)view inTableView:(UITableView*)tableView;
-+ (NSString*)generateUuidString;
-+ (NSError*)deleteFileAtPath:(NSString*)filePath;
+- (NSString*)stringByAddingURLEncoding;
+- (NSString*)stringWithOAuthEncoding;
+
 @end
-
-

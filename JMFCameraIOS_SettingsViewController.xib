@@ -12,12 +12,13 @@
                 <outlet property="iboDropSwitch" destination="WI9-KK-XsN" id="viJ-xT-86J"/>
                 <outlet property="iboFlickrSyncContainer" destination="NVc-7v-hnz" id="lrh-LW-ueF"/>
                 <outlet property="iboFlickrSyncLabel" destination="qpZ-v7-Had" id="uJg-cJ-289"/>
+                <outlet property="iboFlickrSyncSwitch" destination="0MI-m0-NF9" id="RXL-EC-bla"/>
                 <outlet property="iboFlickrSyncTitle" destination="8ba-EP-zFm" id="HYv-gs-QxI"/>
-                <outlet property="iboFlickrsyncSwitch" destination="0MI-m0-NF9" id="IKa-Os-Ayd"/>
                 <outlet property="iboFrequencyContainer" destination="3Bs-Dj-Jf9" id="aT6-OW-Wdz"/>
                 <outlet property="iboFrequencyLabel" destination="sY6-1x-uaZ" id="ZRM-T6-3TS"/>
                 <outlet property="iboFrequencySetepper" destination="QHx-Et-Qzh" id="Pxm-BG-4k3"/>
                 <outlet property="iboFrequencyValue" destination="i67-sb-I2Y" id="eXt-8G-8uN"/>
+                <outlet property="iboWebView" destination="1di-5D-FgI" id="SuN-DE-pB9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -107,6 +108,11 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
+                <webView contentMode="scaleToFill" id="1di-5D-FgI">
+                    <rect key="frame" x="0.0" y="262" width="320" height="306"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </webView>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

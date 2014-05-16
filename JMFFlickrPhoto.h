@@ -35,7 +35,6 @@
 /***************************************************************************/
 @property (nonatomic,strong) UIImage*       thumbnail;
 @property (nonatomic,strong) UIImage*       largeImage;
-
 @property (nonatomic)        long long      photoID;
 @property (nonatomic)        NSInteger      farm;
 @property (nonatomic)        NSInteger      server;

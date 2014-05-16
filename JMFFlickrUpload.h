@@ -1,78 +1,75 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_SettingsViewController.h                                  */
+/*  JMFFlickrUpload.h                                                      */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Settings View Controller Class definition file            */
+/*               Flickr Upload Photo Class definition file                 */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "JMFFlickr.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*                                                                         */
-/*  JMFCameraIOS_SettingsViewController Class Interface                    */
-/*                                                                         */
+/*  Class forwarding                                                       */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_SettingsViewController : UIViewController <JMFFlickrOAuthDelegate>
+@class JMFFlickrUpload;
+@class JMFFlickrUploadResponse;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*                                                                         */
+/*  JMFFlickrUploadDelegate protocol definition                            */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
+@protocol JMFFlickrUploadDelegate < NSObject >
+@optional
+
+- (void)flickrDidFinishUpload:(JMFFlickrUpload*)flickrUpload response:(JMFFlickrUploadResponse*)response error:(NSError*)error;
+- (void)flickrUpload:(JMFFlickrUpload*)flickrUpload progress:(float)percentage;
+
+@end
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBOutlets                                                               */
+/*                                                                         */
+/*  JMFFlickrUpload Class Definition                                       */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboFlickrSyncContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFlickrSyncSwitch;
-@property (weak, nonatomic) IBOutlet UIView*        iboFrequencyContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyValue;
-@property (weak, nonatomic) IBOutlet UIStepper*     iboFrequencySetepper;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDatabaseTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboDropContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDropLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboDropSwitch;
-@property (weak, nonatomic) IBOutlet UIWebView*     iboWebView;
+@interface JMFFlickrUpload : NSObject <NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Instance Methods                                                        */
+/*  Properties                                                             */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (id)initWithModel:(JMFCoreDataStack*)model;
+@property (nonatomic,strong) NSString*                      imageFilePath;
+@property (nonatomic,strong) NSString*                      token;
+@property (nonatomic,strong) NSString*                      tokenSecret;
+@property (nonatomic,strong) id< JMFFlickrUploadDelegate >  delegate;
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* IBActions                                                               */
+/*  Instance Methods                                                       */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-- (IBAction)onSyncPicturesChanged:(id)sender;
-- (IBAction)onFrequencyValueChanged:(id)sender;
-- (IBAction)onDropDatabaseChanged:(id)sender;
-
-
+- (id)initWithToken:(NSString*)token tokenSecret:(NSString*)tokenSecret delegate:(id< JMFFlickrUploadDelegate >)delegate;
+- (void)uploadImage:(UIImage*)image title:(NSString*)title description:(NSString*)description fileName:(NSString*)fileName;
 @end

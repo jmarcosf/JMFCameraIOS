@@ -12,6 +12,10 @@
 		900660F6190804F700F249AA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 900660F5190804F700F249AA /* ImageIO.framework */; };
 		900F8C4218FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */; };
 		900F8C4418FBFDD600BE729F /* JMFCameraIOS_MainCVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */; };
+		90112FD919258A38006E9F44 /* JMFFlickrOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 90112FD219258A38006E9F44 /* JMFFlickrOAuth.m */; };
+		90112FDA19258A38006E9F44 /* JMFFlickrUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 90112FD419258A38006E9F44 /* JMFFlickrUpload.m */; };
+		90112FDB19258A38006E9F44 /* JMFFlickrUploadResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 90112FD619258A38006E9F44 /* JMFFlickrUploadResponse.m */; };
+		90112FDC19258A38006E9F44 /* NSString+URLEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 90112FD819258A38006E9F44 /* NSString+URLEncode.m */; };
 		9011FC3518FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */; };
 		9011FC3618FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */; };
 		901A0B6E18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */; };
@@ -144,6 +148,14 @@
 		900F8C4018FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_MainCVPhotoCell.h; sourceTree = "<group>"; };
 		900F8C4118FBFCCF00BE729F /* JMFCameraIOS_MainCVPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_MainCVPhotoCell.m; sourceTree = "<group>"; };
 		900F8C4318FBFDD500BE729F /* JMFCameraIOS_MainCVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_MainCVPhotoCell.xib; sourceTree = "<group>"; };
+		90112FD119258A38006E9F44 /* JMFFlickrOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrOAuth.h; sourceTree = "<group>"; };
+		90112FD219258A38006E9F44 /* JMFFlickrOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrOAuth.m; sourceTree = "<group>"; };
+		90112FD319258A38006E9F44 /* JMFFlickrUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrUpload.h; sourceTree = "<group>"; };
+		90112FD419258A38006E9F44 /* JMFFlickrUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrUpload.m; sourceTree = "<group>"; };
+		90112FD519258A38006E9F44 /* JMFFlickrUploadResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFFlickrUploadResponse.h; sourceTree = "<group>"; };
+		90112FD619258A38006E9F44 /* JMFFlickrUploadResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFFlickrUploadResponse.m; sourceTree = "<group>"; };
+		90112FD719258A38006E9F44 /* NSString+URLEncode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncode.h"; sourceTree = "<group>"; };
+		90112FD819258A38006E9F44 /* NSString+URLEncode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncode.m"; sourceTree = "<group>"; };
 		9011FC3218FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMFCameraIOS_FaceRecViewController.h; sourceTree = "<group>"; };
 		9011FC3318FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMFCameraIOS_FaceRecViewController.m; sourceTree = "<group>"; };
 		9011FC3418FE7E3E002FB152 /* JMFCameraIOS_FaceRecViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JMFCameraIOS_FaceRecViewController.xib; sourceTree = "<group>"; };
@@ -341,6 +353,8 @@
 				901A0B6D18FAF72B0059A3B7 /* UIAlertView+CompletionBlock.m */,
 				9090557919064D5800C614DA /* UIImageView+GeometryConversion.h */,
 				9090557A19064D5800C614DA /* UIImageView+GeometryConversion.m */,
+				90112FD719258A38006E9F44 /* NSString+URLEncode.h */,
+				90112FD819258A38006E9F44 /* NSString+URLEncode.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -439,6 +453,12 @@
 			children = (
 				9051D3F018FB55D60066AB35 /* JMFFlickr.h */,
 				9051D3F118FB55D60066AB35 /* JMFFlickr.m */,
+				90112FD119258A38006E9F44 /* JMFFlickrOAuth.h */,
+				90112FD219258A38006E9F44 /* JMFFlickrOAuth.m */,
+				90112FD319258A38006E9F44 /* JMFFlickrUpload.h */,
+				90112FD419258A38006E9F44 /* JMFFlickrUpload.m */,
+				90112FD519258A38006E9F44 /* JMFFlickrUploadResponse.h */,
+				90112FD619258A38006E9F44 /* JMFFlickrUploadResponse.m */,
 				9051D3F218FB55D60066AB35 /* JMFFlickrPhoto.h */,
 				9051D3F318FB55D60066AB35 /* JMFFlickrPhoto.m */,
 			);
@@ -795,8 +815,10 @@
 				901B104A190A873200AD1F7C /* JMFCameraIOS_ZoomableView.m in Sources */,
 				90FE67891914664E00CDF393 /* JMFCameraIOS_SettingsViewController.m in Sources */,
 				9044649B1910F03900CC1BD8 /* JMFCameraIOS_FilterTVCell.m in Sources */,
+				90112FDB19258A38006E9F44 /* JMFFlickrUploadResponse.m in Sources */,
 				90AE9BF518FDCEF100AEF2DB /* JMFCameraIOS_FiltersViewController.m in Sources */,
 				9090557B19064D5800C614DA /* UIImageView+GeometryConversion.m in Sources */,
+				90112FDC19258A38006E9F44 /* NSString+URLEncode.m in Sources */,
 				905AB5C91905CD7D009B822F /* JMFCameraIOS_FilterTVPickerCell.m in Sources */,
 				901F41A0190D51E60014EA24 /* JMFUtility.m in Sources */,
 				904930DB190944300024FAC1 /* JMFCoreDataViewController.m in Sources */,
@@ -816,6 +838,7 @@
 				90E58CBD190E759900AF4BBD /* JMFCameraIOS_EditTVDataCell.m in Sources */,
 				904930C9190905030024FAC1 /* _JMFPhoto.m in Sources */,
 				906E721818F9D4CF00D1CC63 /* JMFAppDelegate.m in Sources */,
+				90112FD919258A38006E9F44 /* JMFFlickrOAuth.m in Sources */,
 				9051D3F518FB55D60066AB35 /* JMFFlickrPhoto.m in Sources */,
 				904930D8190938140024FAC1 /* JMFCoreDataCollectionViewController.m in Sources */,
 				904930D21909053C0024FAC1 /* JMFFace.m in Sources */,
@@ -823,6 +846,7 @@
 				904930C7190905030024FAC1 /* _JMFFilter.m in Sources */,
 				906E721418F9D4CF00D1CC63 /* main.m in Sources */,
 				90C04C5E191A595D0051BB57 /* _JMFFilterProperty.m in Sources */,
+				90112FDA19258A38006E9F44 /* JMFFlickrUpload.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

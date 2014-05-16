@@ -817,7 +817,16 @@
     self.oldViewMode = self.viewMode;
     
     JMFCameraIOS_SettingsViewController* settingsVC = [[JMFCameraIOS_SettingsViewController alloc] initWithModel:self.model];
-    [self.navigationController pushViewController:settingsVC animated:YES];
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.45;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    transition.type = kCATransitionFromLeft;
+    [transition setType:kCATransitionPush];
+    transition.subtype = kCATransitionFromLeft;
+    transition.delegate = self;
+    [self.navigationController.view.layer addAnimation:transition forKey:nil];
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController pushViewController:settingsVC animated:NO];
 }
 
 /***************************************************************************/
@@ -997,8 +1006,7 @@
             UIAlertView* busyAlertView = [[UIAlertView alloc]initWithTitle:@"Flickr" message:IDS_DOWNLOADING delegate:nil cancelButtonTitle:nil otherButtonTitles:nil];
             [busyAlertView showWithActivityIndicatorWithColor:[UIColor darkTextColor]];
             
-            JMFFlickr* flickrEngine = [[JMFFlickr alloc]init];
-            [flickrEngine searchFlickrForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
+            [JMFFlickr flickrSearchForTerm:searchTerm largeImage:YES completionBlock:^( NSString* searchTerm, NSArray* results, NSError* error )
             {
                  dispatch_async(dispatch_get_main_queue(), ^
                  {

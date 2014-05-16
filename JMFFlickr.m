@@ -17,15 +17,12 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  Defines                                                                */
+/*  Constants                                                              */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-//#define kFlickrAPIKey               @"f886542ef1da27324037337a59dee61a"
-#define kFlickrAPIKey               @"594def730d7175eea7deb139366585e1"
-#define kFlickrAPISecret            @"e3e3593531b25d4c"
-#define IDS_FLICKR_SEARCH_URL       @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=10&format=json&nojsoncallback=1"
-#define IDS_FLICKR_PHOTO_URL        @"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg"
+static NSString* kFlickrSearchUrl     = @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=10&format=json&nojsoncallback=1";
+static NSString* kFlickrPhotoUrl      = @"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg";
 
 /***************************************************************************/
 /*                                                                         */
@@ -56,81 +53,15 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  flickrSearchUrlForSearchTerm:                                          */
+/*  flickrSearchForTerm:completionBlock:                                   */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-+ (NSString*)flickrSearchUrlForSearchTerm:(NSString*)searchTerm
++ (void)flickrSearchForTerm:(NSString*)searchTerm largeImage:(BOOL)bLargeImage completionBlock:(FlickrSearchCompletionBlock)completionBlock
 {
     searchTerm = [searchTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    return [NSString stringWithFormat:IDS_FLICKR_SEARCH_URL, kFlickrAPIKey, searchTerm];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  flickrPhotoUrlForFlickrPhoto:size:                                     */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (NSString*)flickrPhotoUrlForFlickrPhoto:(JMFFlickrPhoto*)flickrPhoto size:(NSString*)size
-{
-    if( !size ) size = @"m";
-    return [NSString stringWithFormat:IDS_FLICKR_PHOTO_URL, (int)flickrPhoto.farm, (int)flickrPhoto.server, flickrPhoto.photoID, flickrPhoto.secret, size];
-}
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  loadImageForPhoto:thumbnail:completionBlock:                           */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-+ (void)loadImageForPhoto:(JMFFlickrPhoto*)flickrPhoto thumbnail:(BOOL)thumbnail completionBlock:(FlickrPhotoCompletionBlock) completionBlock
-{
-    NSString*           size = thumbnail ? @"m" : @"b";
-    NSString*           searchUrl = [JMFFlickr flickrPhotoUrlForFlickrPhoto:flickrPhoto size:size];
-    dispatch_queue_t    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    
-    dispatch_async( queue, ^
-    {
-        NSError* error = nil;
-        NSData*  imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:searchUrl] options:0 error:&error];
-        if( !error )
-        {
-            UIImage* image = [UIImage imageWithData:imageData];
-
-            if( [size isEqualToString:@"m"] ) flickrPhoto.thumbnail = image;
-            else flickrPhoto.largeImage = image;
-            
-            if( completionBlock != nil ) completionBlock( image, nil );
-        }
-        else if( completionBlock != nil ) completionBlock( nil, error );
-    } );
-}
-
-#pragma mark - Instance Methods
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*  Instance Methods                                                       */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/*  searchFlickrForTerm:completionBlock:                                   */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (void)searchFlickrForTerm:(NSString*)term largeImage:(BOOL)bLargeImage completionBlock:(FlickrSearchCompletionBlock)completionBlock
-{
-    NSString*           searchUrl = [JMFFlickr flickrSearchUrlForSearchTerm:term];
-    dispatch_queue_t    queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
+    NSString* searchUrl = [NSString stringWithFormat:kFlickrSearchUrl, kFlickrConsumerKey, searchTerm];
+    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
     
     dispatch_async( queue, ^
     {
@@ -161,23 +92,66 @@
                         NSData*   imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:photoUrl] options:0 error:&error];
                         UIImage*  thumbnail = [UIImage imageWithData:imageData];
                         photo.thumbnail = thumbnail;
-
+                        
                         if( bLargeImage ) [[self class] loadImageForPhoto:photo thumbnail:NO completionBlock:nil];
                         [flickrPhotos addObject:photo];
                     }
                     
-                    if( completionBlock != nil ) completionBlock( term, flickrPhotos, nil );
+                    if( completionBlock != nil ) completionBlock( searchTerm, flickrPhotos, nil );
                 }
                 else if( completionBlock != nil )
                 {
                     NSError* error = [[NSError alloc] initWithDomain:@"FlickrSearch" code:0 userInfo:@{NSLocalizedFailureReasonErrorKey:searchResultsDict[@"message"]}];
-                    completionBlock( term, nil, error );
+                    completionBlock( searchTerm, nil, error );
                 }
             }
-            else if( completionBlock != nil ) completionBlock( term, nil, error );
+            else if( completionBlock != nil ) completionBlock( searchTerm, nil, error );
         }
-        else if( completionBlock != nil ) completionBlock( term, nil, error );
+        else if( completionBlock != nil ) completionBlock( searchTerm, nil, error );
     });
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  loadImageForPhoto:thumbnail:completionBlock:                           */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (void)loadImageForPhoto:(JMFFlickrPhoto*)flickrPhoto thumbnail:(BOOL)thumbnail completionBlock:(FlickrPhotoCompletionBlock)completionBlock
+{
+    NSString*        size = thumbnail ? @"m" : @"b";
+    NSString*        searchUrl = [JMFFlickr flickrPhotoUrlForFlickrPhoto:flickrPhoto size:size];
+    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0 );
+    
+    dispatch_async( queue, ^
+    {
+        NSError* error = nil;
+        NSData*  imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:searchUrl] options:0 error:&error];
+        if( !error )
+        {
+            UIImage* image = [UIImage imageWithData:imageData];
+            
+            if( [size isEqualToString:@"m"] ) flickrPhoto.thumbnail = image;
+            else flickrPhoto.largeImage = image;
+            
+            if( completionBlock != nil ) completionBlock( image, nil );
+        }
+        else if( completionBlock != nil ) completionBlock( nil, error );
+    });
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  flickrPhotoUrlForFlickrPhoto:size:                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)flickrPhotoUrlForFlickrPhoto:(JMFFlickrPhoto*)flickrPhoto size:(NSString*)size
+{
+    if( !size ) size = @"m";
+    return [NSString stringWithFormat:kFlickrPhotoUrl, (int)flickrPhoto.farm, (int)flickrPhoto.server, flickrPhoto.photoID, flickrPhoto.secret, size];
 }
 
 @end

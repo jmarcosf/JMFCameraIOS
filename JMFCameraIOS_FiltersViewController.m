@@ -66,6 +66,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     long                        iPickerViewSection;
     BOOL                        bModified;
     BOOL                        bReloadData;
+    BOOL                        bFromInsert;
     BOOL                        bNoFilteredImage;
     UIImage*                    targetImage;
     UIView*                     containerView;
@@ -365,7 +366,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)controllerWillChangeContent:(NSFetchedResultsController*)controller
 {
-    bReloadData = NO;
+    bReloadData = bFromInsert = NO;
 }
 
 /***************************************************************************/
@@ -391,6 +392,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     if( type == NSFetchedResultsChangeInsert ||
         type == NSFetchedResultsChangeDelete ||
         type == NSFetchedResultsChangeMove    ) bReloadData = YES;
+    
+    if( type == NSFetchedResultsChangeInsert ) bFromInsert = YES;
 }
 
 /***************************************************************************/
@@ -612,7 +615,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         NSIndexPath* indexPath = [[self.iboFilterTable indexPathsForSelectedRows]objectAtIndex:0];
         JMFFilter* selectedFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         
-        self.title = [NSString stringWithFormat:@"%@ %d", ResString( @"IDS_FILTER" ), indexPath.section + 1];
+        self.title = [NSString stringWithFormat:@"%@ %d", ResString( @"IDS_FILTER" ), (int)indexPath.section + 1];
         headerTitle = [NSString stringWithFormat:@" %@", selectedFilter.name];
         
         UIView* headerContainer = [[UIView alloc]initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 )];
@@ -1013,6 +1016,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_APPLY_INDEX]  setEnabled:YES];
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SAVE_INDEX]   setEnabled:NO];
         self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.leftBarButtonItem.enabled = NO;
     }
     else
     {
@@ -1145,6 +1149,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     {
         CIContext* context = [CIContext contextWithOptions:nil];
         CIImage* resultImage = [CIImage imageWithCGImage:self.iboSourceImage.image.CGImage];
+        
         for( JMFFilter* filter in [filtersResultsController fetchedObjects] )
         {
             CIFilter* ciFilter = [CIFilter filterWithName:filter.name];
@@ -1158,10 +1163,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
                     [ciFilter setValue:property.value forKey:property.name];
                 }
                 resultImage = [ciFilter valueForKey:kCIOutputImageKey];
-                [ciFilter setValue:nil forKey:kCIInputImageKey];
             }
         }
-        targetImage = [UIImage imageWithCGImage:[context createCGImage:resultImage fromRect:[resultImage extent]]];
+        
+        CGImageRef cgImage = [context createCGImage:resultImage fromRect:[resultImage extent]];
+        targetImage = [UIImage imageWithCGImage:cgImage];
+        CGImageRelease( cgImage );
 
         dispatch_queue_t mainQueue = dispatch_get_main_queue();
         dispatch_async( mainQueue, ^

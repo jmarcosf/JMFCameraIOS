@@ -258,4 +258,34 @@
     return nil;
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  generateUuidString                                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSString*)generateUuidString
+{
+    CFUUIDRef uuid = CFUUIDCreate( kCFAllocatorDefault );
+    NSString* uuidString = (NSString*)CFBridgingRelease(CFUUIDCreateString( kCFAllocatorDefault, uuid ) );
+    CFRelease(uuid);
+    return uuidString;
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  deleteFileAtPath:                                                      */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
++ (NSError*)deleteFileAtPath:(NSString *)filePath
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSError* error = nil;
+    [fileManager removeItemAtPath:filePath error:&error];
+    return error;
+}
+
 @end

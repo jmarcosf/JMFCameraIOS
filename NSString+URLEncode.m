@@ -1,78 +1,84 @@
 /***************************************************************************/
 /*                                                                         */
-/*  JMFCameraIOS_SettingsViewController.h                                  */
+/*  NSString+URLEncode.m                                                   */
 /*  Copyright (c) 2014 Simarks. All rights reserved.                       */
 /*                                                                         */
 /*  Description: JMFCameraIOS                                              */
 /*               U-Tad - Práctica iOS Avanzado                             */
-/*               Settings View Controller Class definition file            */
+/*               NSString URLEncode Category Class implementation file     */
 /*                                                                         */
 /*       Author: Jorge Marcos Fernandez                                    */
 /*                                                                         */
 /***************************************************************************/
-#import <UIKit/UIKit.h>
-#import "JMFFlickr.h"
+#import "NSString+URLEncode.h"
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
-/*  JMFCameraIOS_SettingsViewController Class Interface                    */
+/*                                                                         */
+/*  NSString+URLEncode Category Class implementation                       */
+/*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@interface JMFCameraIOS_SettingsViewController : UIViewController <JMFFlickrOAuthDelegate>
+@implementation NSString (NMMURLEncodeString)
+
+#pragma mark - Instance Methods
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  stringByAddingURLEncoding                                              */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (NSString*)stringByAddingURLEncoding
+{
+    static CFStringRef specialCharacters = CFSTR( "% /'\"?=&+<>;:!" );
+    NSString* result = (NSString*)CFBridgingRelease( CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)self, NULL, specialCharacters, kCFStringEncodingUTF8 ) );
+    return result;
+}
 
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/* Properties                                                              */
+/*  stringWithOAuthEncoding                                                */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-@property (nonatomic,strong) JMFCoreDataStack*      model;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBOutlets                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboFlickrSyncContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFlickrSyncLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboFlickrSyncSwitch;
-@property (weak, nonatomic) IBOutlet UIView*        iboFrequencyContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyLabel;
-@property (weak, nonatomic) IBOutlet UILabel*       iboFrequencyValue;
-@property (weak, nonatomic) IBOutlet UIStepper*     iboFrequencySetepper;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDatabaseTitle;
-@property (weak, nonatomic) IBOutlet UIView*        iboDropContainer;
-@property (weak, nonatomic) IBOutlet UILabel*       iboDropLabel;
-@property (weak, nonatomic) IBOutlet UISwitch*      iboDropSwitch;
-@property (weak, nonatomic) IBOutlet UIWebView*     iboWebView;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* Instance Methods                                                        */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (id)initWithModel:(JMFCoreDataStack*)model;
-
-/***************************************************************************/
-/*                                                                         */
-/*                                                                         */
-/* IBActions                                                               */
-/*                                                                         */
-/*                                                                         */
-/***************************************************************************/
-- (IBAction)onSyncPicturesChanged:(id)sender;
-- (IBAction)onFrequencyValueChanged:(id)sender;
-- (IBAction)onDropDatabaseChanged:(id)sender;
-
+- (NSString*)stringWithOAuthEncoding
+{
+    NSMutableString *result = [NSMutableString string];
+	const char* p = [self UTF8String];
+	unsigned char c;
+	
+	for( ; ( c = *p ); p++ )
+	{
+		switch( c )
+		{
+			case '0' ... '9':
+			case 'A' ... 'Z':
+			case 'a' ... 'z':
+			case '.':
+			case '-':
+			case '~':
+			case '_':
+				[result appendFormat:@"%c", c];
+				break;
+			default:
+				[result appendFormat:@"%%%02X", c];
+		}
+	}
+	return result;
+}
 
 @end
