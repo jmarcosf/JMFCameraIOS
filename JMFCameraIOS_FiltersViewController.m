@@ -409,6 +409,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     if( bReloadData ) [self.iboFilterTable reloadData];
     bReloadData = NO;
     [self enableButtons];
+    if( bFromInsert )
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[self.iboFilterTable numberOfSections] - 1];
+        [self.iboFilterTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 #pragma mark - UITableViewDataSource

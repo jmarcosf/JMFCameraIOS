@@ -402,6 +402,8 @@
         {
             [self performFetch];
             [self reloadData];
+            [self scrollToBottom];
+            
             [self redrawControls:NO];
             bFromCamera = NO;
             self.iboActivityIndicator.hidden = YES;
@@ -856,6 +858,27 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
+/*  scrollToBottom                                                         */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (void)scrollToBottom
+{
+    if( self.viewMode == JMFCoreDataViewModeMosaic )
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[self.collectionView numberOfItemsInSection:0] - 1 inSection:0];
+        [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+    }
+    else if( self.viewMode == JMFCoreDataViewModeList )
+    {
+        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:0] - 1 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
 /*  animateModeChange                                                      */
 /*                                                                         */
 /*                                                                         */
@@ -1121,7 +1144,12 @@
                                  [newPhoto setLocationLongitude:currentLongitude latitude:currentLatitude altitude:currentAltitude geoLocation:currentGeoLocation];
                              }
                          }
-                         if( results.count > 0 ) [self.model saveWithErrorBlock:nil];
+                         if( results.count > 0 )
+                         {
+                             [self.model saveWithErrorBlock:nil];
+                             [self reloadData];
+                             [self scrollToBottom];
+                         }
                      }
                      
                      [busyAlertView dismissWithClickedButtonIndex:0 animated:YES];
