@@ -35,6 +35,9 @@
 
 #define IDC_UITOOLBAR_BUTTON_BACK_INDEX             0
 
+#define VIEW_MODE_FILTERS                           0
+#define VIEW_MODE_PROPERTIES                        1
+
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
@@ -186,7 +189,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     CGFloat tabBarHeight = self.iboTabBar.frame.size.height;
     int y = self.iboSourceImage.frame.size.height + 15;
     int height = screenRect.size.height - tabBarHeight - statusBarHeight - navigationBarHeight - y;
-    CGRect rect = CGRectMake( 0, y,  self.view.frame.size.width, height - 1 );
+    CGRect rect = CGRectMake( 0, y,  self.view.frame.size.width, height - 1 - 5 ); //enough space for avoid tapping errors
     containerView = [[UIView alloc]init];
     [self.view addSubview:containerView];
     containerView.frame = rect;
@@ -248,6 +251,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     [self.iboTargetImage setClipsToBounds:YES];
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
+    
+    viewMode = VIEW_MODE_FILTERS;
+    self.iboPropertyTable.hidden = YES;
     
     [self setTargetImage];
     [self enableButtons];
@@ -389,11 +395,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)controller:(NSFetchedResultsController*)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath*)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath*)newIndexPath
 {
-    if( type == NSFetchedResultsChangeInsert ||
-        type == NSFetchedResultsChangeDelete ||
-        type == NSFetchedResultsChangeMove    ) bReloadData = YES;
-    
-    if( type == NSFetchedResultsChangeInsert ) bFromInsert = YES;
+    if( viewMode == VIEW_MODE_FILTERS )
+    {
+        if( type == NSFetchedResultsChangeInsert ||
+            type == NSFetchedResultsChangeDelete ||
+            type == NSFetchedResultsChangeMove   ) bReloadData = YES;
+        
+        if( type == NSFetchedResultsChangeInsert ) bFromInsert = YES;
+    }
 }
 
 /***************************************************************************/
@@ -405,14 +414,17 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)controllerDidChangeContent:(NSFetchedResultsController*)controller
 {
-    bModified = YES;
-    if( bReloadData ) [self.iboFilterTable reloadData];
-    bReloadData = NO;
-    [self enableButtons];
-    if( bFromInsert )
+    if( viewMode == VIEW_MODE_FILTERS )
     {
-        NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[self.iboFilterTable numberOfSections] - 1];
-        [self.iboFilterTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        bModified = YES;
+        if( bReloadData ) [self.iboFilterTable reloadData];
+        bReloadData = NO;
+        [self enableButtons];
+        if( bFromInsert )
+        {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:[self.iboFilterTable numberOfSections] - 1];
+            [self.iboFilterTable scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
     }
 }
 
@@ -436,8 +448,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
-    if( tableView.hidden == YES ) return 0;
-    else return (tableView == self.iboFilterTable ) ? [[filtersResultsController fetchedObjects]count] : 1;
+    NSInteger sections = 0;
+    if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable ) sections = [[filtersResultsController fetchedObjects]count];
+    else if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable ) sections = 1;
+
+    return sections;
 }
 
 /***************************************************************************/
@@ -449,12 +464,10 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if( tableView.hidden == YES ) return nil;
-    
-    if( tableView == self.iboPropertyTable )
+    if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable )
     {
         JMFFilter* selectedFilter = [self getSelectedFilter];
-        return [NSString stringWithFormat:@"%@ - %@", ResString( @"IDS_FILTER" ), selectedFilter ];
+        return selectedFilter.name;
     }
     else return [NSString stringWithFormat:@"%@ #%d", ResString( @"IDS_FILTER" ), (int)( section + 1 )];
 }
@@ -468,14 +481,15 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if( tableView.hidden == YES ) return 0;
-    
-    if( tableView == self.iboPropertyTable )
+    NSInteger rows = 0;
+    if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable )
     {
         JMFFilter* selectedFilter = [self getSelectedFilter];
         return [[[selectedFilter propertiesResultsController]fetchedObjects]count];
     }
-    else return ( iPickerViewSection != -1 && section == iPickerViewSection ) ? 2 : 1;
+    else if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable ) rows = ( iPickerViewSection != -1 && section == iPickerViewSection ) ? 2 : 1;
+    
+    return rows;
 }
 
 /***************************************************************************/
@@ -487,7 +501,39 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if( tableView == self.iboPropertyTable )
+    if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable )
+    {
+        if( iPickerViewSection != -1 && indexPath.section == iPickerViewSection && indexPath.row == 1 )
+        {
+            JMFCameraIOS_FilterTVPickerCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_PICKER_CELL_IDENTIFIER forIndexPath:indexPath];
+            cell.imageView.image = nil;
+            cell.pickerView.dataSource = self;
+            cell.pickerView.delegate = self;
+            cell.pickerView.showsSelectionIndicator = YES;
+            
+            JMFCameraIOS_FilterTVCell* selectedCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
+            long pickerRow = [filtersArray indexOfObject:selectedCell.iboNameLabel.text];
+            [cell.pickerView selectRow:pickerRow inComponent:0 animated:YES];
+            
+            return cell;
+        }
+        else if( indexPath.row == 0 )
+        {
+            JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
+            JMFCameraIOS_FilterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
+            cell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
+            [cell.iboPropertiesButton setImage:[UIImage imageNamed:@"Data.png"]forState:UIControlStateNormal];
+            cell.iboNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
+            cell.iboNameLabel.text = filter.name;
+            cell.iboActiveSwitch.enabled = cell.iboPropertiesButton.enabled = [filter isValidFilter];
+            cell.iboActiveSwitch.on = [filter isActive] && [filter isValidFilter];
+            cell.indexPath = indexPath;
+            cell.delegate = self;
+            
+            return cell;
+        }
+    }
+    else if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable )
     {
         JMFFilter* selectedFilter = [self getSelectedFilter];
         JMFFilterProperty* filterProperty = [[selectedFilter propertiesResultsController]objectAtIndexPath:indexPath];
@@ -499,39 +545,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         cell.iboPropertyValue.delegate = self;
         cell.indexPath = indexPath;
         cell.delegate = self;
-
-        return cell;
-    }
-
-    if( iPickerViewSection != -1 && indexPath.section == iPickerViewSection && indexPath.row == 1 )
-    {
-        JMFCameraIOS_FilterTVPickerCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_PICKER_CELL_IDENTIFIER forIndexPath:indexPath];
-        cell.imageView.image = nil;
-        cell.pickerView.dataSource = self;
-        cell.pickerView.delegate = self;
-        cell.pickerView.showsSelectionIndicator = YES;
-    
-        JMFCameraIOS_FilterTVCell* selectedCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:indexPath.section]];
-        long pickerRow = [filtersArray indexOfObject:selectedCell.iboNameLabel.text];
-        [cell.pickerView selectRow:pickerRow inComponent:0 animated:YES];
-
-        return cell;
-    }
-    else
-    {
-        JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
-        JMFCameraIOS_FilterTVCell* cell = [tableView dequeueReusableCellWithIdentifier:IDS_FILTERTV_NORMAL_CELL_IDENTIFIER forIndexPath:indexPath];
-        cell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
-        [cell.iboPropertiesButton setImage:[UIImage imageNamed:@"Data.png"]forState:UIControlStateNormal];
-        cell.iboNameLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:14];
-        cell.iboNameLabel.text = filter.name;
-        cell.iboActiveSwitch.enabled = cell.iboPropertiesButton.enabled = [filter isValidFilter];
-        cell.iboActiveSwitch.on = [filter isActive] && [filter isValidFilter];
-        cell.indexPath = indexPath;
-        cell.delegate = self;
         
         return cell;
     }
+    
+    return nil;
 }
 
 /***************************************************************************/
@@ -543,7 +561,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (BOOL)tableView:(UITableView*)tableView canMoveRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return ( tableView == self.iboFilterTable );
+    return ( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && indexPath.row == 0 );
 }
 
 /***************************************************************************/
@@ -555,18 +573,21 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)tableView:(UITableView*)tableView moveRowAtIndexPath:(NSIndexPath*)sourceIndexPath toIndexPath:(NSIndexPath*)destinationIndexPath
 {
-    if( sourceIndexPath.section == destinationIndexPath.section ) return;
-    
-    JMFFilter* sourceFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:sourceIndexPath.section inSection:0]];
-    JMFFilter* targetFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:destinationIndexPath.section inSection:0]];
-    
-    NSNumber* sourcePosition = sourceFilter.position;
-    NSNumber* targetPosition = targetFilter.position;
-    
-    sourceFilter.position = targetPosition;
-    targetFilter.position = sourcePosition;
-
-    [self onMoveClicked:self];
+    if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable )
+    {
+        if( sourceIndexPath.section == destinationIndexPath.section ) return;
+        
+        JMFFilter* sourceFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:sourceIndexPath.section inSection:0]];
+        JMFFilter* targetFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:destinationIndexPath.section inSection:0]];
+        
+        NSNumber* sourcePosition = sourceFilter.position;
+        NSNumber* targetPosition = targetFilter.position;
+        
+        sourceFilter.position = targetPosition;
+        targetFilter.position = sourcePosition;
+        
+        [self onMoveClicked:self];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -589,8 +610,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if( tableView == self.iboPropertyTable ) return 40;
-    else return ( indexPath.section == iPickerViewSection && indexPath.row == 1 ) ? 160 : 33;
+    if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable ) return 40;
+    else return ( iPickerViewSection != -1 && indexPath.section == iPickerViewSection && indexPath.row == 1 ) ? 160 : 33;
 }
 
 /***************************************************************************/
@@ -615,7 +636,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString* headerTitle;
-    if( tableView == self.iboPropertyTable )
+    if( viewMode == VIEW_MODE_PROPERTIES && tableView == self.iboPropertyTable )
     {
         NSIndexPath* indexPath = [[self.iboFilterTable indexPathsForSelectedRows]objectAtIndex:0];
         JMFFilter* selectedFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
@@ -636,7 +657,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         [headerContainer addSubview:headerLabel];
         return headerContainer;
     }
-    else
+    else if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable )
     {
         headerTitle = [NSString stringWithFormat:@"   %@ %d", ResString( @"IDS_FILTER" ), (int)(section + 1)];
         UILabel* headerView = [[UILabel alloc] initWithFrame:CGRectMake( 0, 0, tableView.bounds.size.width, 30 ) ];
@@ -646,6 +667,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
         headerView.textColor = [UIColor whiteColor];
         return headerView;
     }
+    
+    return nil;
 }
 
 /***************************************************************************/
@@ -657,49 +680,44 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if( tableView.hidden == YES ) return;
-    
-    if( tableView == self.iboPropertyTable )
+    if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && indexPath.row == 0 )
     {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
+        JMFFilter* selectedFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
+        BOOL bOtherSectionSelected = ( indexPath.section != iPickerViewSection );
+        
+        [tableView beginUpdates];
+        if( iPickerViewSection != -1 )
+        {
+            NSIndexPath* idx = [NSIndexPath indexPathForRow:1 inSection:iPickerViewSection];
+            [tableView deleteRowsAtIndexPaths:@[idx] withRowAnimation:( bOtherSectionSelected ) ? UITableViewRowAnimationNone : UITableViewRowAnimationTop];
+            idx = [NSIndexPath indexPathForRow:0 inSection:iPickerViewSection];
+            JMFCameraIOS_FilterTVCell* goneCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:idx];
+            goneCell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
+            [selectedFilter setNewName:goneCell.iboNameLabel.text];
+            goneCell.iboPropertiesButton.enabled = goneCell.iboActiveSwitch.enabled = [selectedFilter isValidFilter];
+        }
+        
+        if( bOtherSectionSelected )
+        {
+            iPickerViewSection = indexPath.section;
+            NSIndexPath* idx = [NSIndexPath indexPathForRow:1 inSection:indexPath.section];
+            [tableView insertRowsAtIndexPaths:@[idx] withRowAnimation:UITableViewRowAnimationTop];
+            JMFCameraIOS_FilterTVCell* selectedCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:indexPath];
+            selectedCell.iboImageView.image = [UIImage imageNamed:@"ArrowUp.png"];
+            selectedCell.iboPropertiesButton.enabled = selectedCell.iboActiveSwitch.enabled = NO;
+        }
+        else iPickerViewSection = -1;
+        
+        [tableView endUpdates];
+        
+        if( bOtherSectionSelected )
+        {
+            NSIndexPath* idx = [NSIndexPath indexPathForRow:0 inSection:iPickerViewSection];
+            [tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        [self enableButtons];
     }
-    if( indexPath.row == 1 ) return;
-    
-    JMFFilter* selectedFilter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
-    BOOL bOtherSectionSelected = ( indexPath.section != iPickerViewSection );
-    
-    [tableView beginUpdates];
-    if( iPickerViewSection != -1 )
-    {
-        NSIndexPath* idx = [NSIndexPath indexPathForRow:1 inSection:iPickerViewSection];
-        [tableView deleteRowsAtIndexPaths:@[idx] withRowAnimation:( bOtherSectionSelected ) ? UITableViewRowAnimationNone : UITableViewRowAnimationTop];
-        idx = [NSIndexPath indexPathForRow:0 inSection:iPickerViewSection];
-        JMFCameraIOS_FilterTVCell* goneCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:idx];
-        goneCell.iboImageView.image = [UIImage imageNamed:@"ArrowDown.png"];
-        [selectedFilter setNewName:goneCell.iboNameLabel.text];
-        goneCell.iboPropertiesButton.enabled = goneCell.iboActiveSwitch.enabled = [selectedFilter isValidFilter];
-    }
-    
-    if( bOtherSectionSelected )
-    {
-        iPickerViewSection = indexPath.section;
-        NSIndexPath* idx = [NSIndexPath indexPathForRow:1 inSection:indexPath.section];
-        [tableView insertRowsAtIndexPaths:@[idx] withRowAnimation:UITableViewRowAnimationTop];
-        JMFCameraIOS_FilterTVCell* selectedCell = (JMFCameraIOS_FilterTVCell*)[tableView cellForRowAtIndexPath:indexPath];
-        selectedCell.iboImageView.image = [UIImage imageNamed:@"ArrowUp.png"];
-        selectedCell.iboPropertiesButton.enabled = NO;
-    }
-    else iPickerViewSection = -1;
-    
-    [tableView endUpdates];
-    
-    if( bOtherSectionSelected )
-    {
-        NSIndexPath* idx = [NSIndexPath indexPathForRow:0 inSection:iPickerViewSection];
-        [tableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
-    [self enableButtons];
+    else [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 /***************************************************************************/
@@ -711,7 +729,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return ( tableView != self.iboPropertyTable );
+    return NO;
+    return ( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && indexPath.row == 0 );
 }
 
 /***************************************************************************/
@@ -723,8 +742,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 -(void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if( tableView == self.iboPropertyTable ) return;
-    if( editingStyle == UITableViewCellEditingStyleDelete )
+    if( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && editingStyle == UITableViewCellEditingStyleDelete )
     {
         JMFFilter* filter = [filtersResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
         [filter deleteProperties];
@@ -743,7 +761,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (UITableViewCellEditingStyle)tableView:(UITableView*)tableView editingStyleForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return bInsideMove ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
+    return ( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && bInsideMove ) ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
 }
 
 #pragma mark - JMFCameraIOS_FilterTVCellDelegate Methods
@@ -787,6 +805,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     self.iboFilterTable.hidden = YES;
     self.iboPropertyTable.hidden = NO;
     [UIView commitAnimations];
+
+    viewMode = VIEW_MODE_PROPERTIES;
     [self.iboFilterTable selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     [self enableButtons];
     self.iboTabBar.items = tbiaPropertyMode;
@@ -1127,14 +1147,16 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)onBackClicked
 {
-    UIViewAnimationTransition animationTrnasition = UIViewAnimationTransitionFlipFromRight;
+    UIViewAnimationTransition animationTransition = UIViewAnimationTransitionFlipFromRight;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25];
     [UIView setAnimationDelegate:self];
-    [UIView setAnimationTransition:animationTrnasition forView:containerView cache:YES];
+    [UIView setAnimationTransition:animationTransition forView:containerView cache:YES];
     self.iboFilterTable.hidden = NO;
     self.iboPropertyTable.hidden = YES;
     [UIView commitAnimations];
+    
+    viewMode = VIEW_MODE_FILTERS;
     [self.iboFilterTable reloadData];
     self.title = ResString( @"IDS_FILTERS" );
     self.iboTabBar.items = tbiaFilterMode;
@@ -1189,7 +1211,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
                 
                 for( JMFFilterProperty* property in [filter.propertiesResultsController fetchedObjects] )
                 {
-                    [ciFilter setValue:property.value forKey:property.name];
+                    if( [property belongsToCIFilter:ciFilter] ) [ciFilter setValue:property.value forKey:property.name];
                 }
                 resultImage = [ciFilter valueForKey:kCIOutputImageKey];
             }

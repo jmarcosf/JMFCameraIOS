@@ -103,4 +103,17 @@
     [super awakeFromInsert];
 }
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  belongsToCIFilter:                                                     */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)belongsToCIFilter:(CIFilter*)ciFilter
+{
+    NSDictionary* filterParams = [[ciFilter attributes] objectForKey:self.name];
+    return ( filterParams != nil );
+}
+
 @end

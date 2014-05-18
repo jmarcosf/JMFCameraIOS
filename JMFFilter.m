@@ -160,7 +160,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  createProperties                                                       */
+/*  setNewName:                                                            */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -209,10 +209,6 @@
                 if( filterProperty.defaultValue != 0 ) filterProperty.step = [NSNumber numberWithFloat:filterProperty.defaultValue.floatValue / 10];
             }
         }
-        
-        NSError *error;
-        [propertiesResultsController performFetch:&error];
-        if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters Properties error: %@", error );
     }
 }
 
@@ -229,9 +225,7 @@
     {
         [self.managedObjectContext deleteObject:property];
     }
-    NSError *error;
-    [propertiesResultsController performFetch:&error];
-    if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters Properties error: %@", error );
+    propertiesResultsController = nil;
 }
 
 /***************************************************************************/

@@ -35,4 +35,13 @@
 /***************************************************************************/
 + (instancetype)propertyWithName:(NSString*)name filter:(JMFFilter*)filter inContext:(NSManagedObjectContext*)context;
 
+/***************************************************************************/
+/*                                                                         */
+/*                                                                         */
+/*  Instance Methods                                                       */
+/*                                                                         */
+/*                                                                         */
+/***************************************************************************/
+- (BOOL)belongsToCIFilter:(CIFilter*)ciFilter;
+
 @end
