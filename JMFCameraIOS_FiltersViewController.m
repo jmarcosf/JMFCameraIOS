@@ -729,7 +729,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    return NO;
     return ( viewMode == VIEW_MODE_FILTERS && tableView == self.iboFilterTable && indexPath.row == 0 );
 }
 
