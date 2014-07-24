@@ -24,11 +24,11 @@
 /***************************************************************************/
 @interface UIActionSheet( CompletionBlock )
 
-- (void)showFromToolbar:(UIToolbar*)toolbar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
-- (void)showFromTabBar:(UITabBar*)tabBar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
-- (void)showFromBarButtonItem:(UIBarButtonItem*)button animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
-- (void)showFromRect:(CGRect)rect inView:(UIView*)view animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
-- (void)showInView:(UIView*)view withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ))completion;
+- (void)showFromToolbar:(UIToolbar*)toolbar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ) )completion;
+- (void)showFromTabBar:(UITabBar*)tabBar withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ) )completion;
+- (void)showFromBarButtonItem:(UIBarButtonItem*)button animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ) )completion;
+- (void)showFromRect:(CGRect)rect inView:(UIView*)view animated:(BOOL)animated withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ) )completion;
+- (void)showInView:(UIView*)view withCompletion:(void(^)( UIActionSheet* actionSheet, NSInteger buttonIndex ) )completion;
 
 @end
 

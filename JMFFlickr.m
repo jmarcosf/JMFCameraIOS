@@ -21,8 +21,8 @@
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
-static NSString* kFlickrSearchUrl     = @"http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=10&format=json&nojsoncallback=1";
-static NSString* kFlickrPhotoUrl      = @"http://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg";
+static NSString* kFlickrSearchUrl     = @"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&text=%@&per_page=10&format=json&nojsoncallback=1";
+static NSString* kFlickrPhotoUrl      = @"https://farm%d.staticflickr.com/%d/%lld_%@_%@.jpg";
 
 /***************************************************************************/
 /*                                                                         */

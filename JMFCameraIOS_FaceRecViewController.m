@@ -416,11 +416,7 @@
         for( long i = 0; i < count; i++ )
         {
             JMFFace* face = [fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            //        dispatch_queue_t mainQueue = dispatch_get_main_queue();
-            //        dispatch_async( mainQueue, ^
-            //        {
             [self drawFace:face];
-            //        });
         }
     }
     else if( COREDATA_DEBUG ) NSLog( @"Fetch Faces error: %@", error );

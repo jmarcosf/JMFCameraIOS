@@ -56,7 +56,7 @@
     
     NSMutableArray*         tbiaMosaicMode;
     NSMutableArray*         tbiaListMode;
-    
+
     BOOL                    bMultiSelectMode;
     BOOL                    bFromCamera;
     int                     iSelectedCount;
@@ -103,7 +103,7 @@
 /***************************************************************************/
 /*                                                                         */
 /*                                                                         */
-/*  init                                                                   */
+/*  initWithModel:                                                         */
 /*                                                                         */
 /*                                                                         */
 /***************************************************************************/
@@ -207,7 +207,6 @@
     [iboContainer addSubview:iboEmptyAlbumLabel];
     
     // Collection View
-
     UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc]init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     self.collectionView = [[UICollectionView alloc]initWithFrame:Rect collectionViewLayout:layout];
@@ -1200,7 +1199,7 @@
 {
     if( bSyncToFlickrEnabled )
     {
-        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX]   setEnabled:NO];
+        [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_SYNC_INDEX] setEnabled:NO];
         bSynchronizing = YES;
         flickrSyncTask = [[JMFFlickrSync alloc]initWithFetchedResultsController:self.fetchedResultsController delegate:self];
         [flickrSyncTask start];
