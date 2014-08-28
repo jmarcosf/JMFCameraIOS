@@ -137,7 +137,7 @@
 /***************************************************************************/
 - (void)applicationWillTerminate:(UIApplication*)application
 {
-    if( COREDATA_DEBUG ) NSLog(@"on applicationWillTerminate! here you can not save data." );
+    if( COREDATA_DEBUG ) NSLog( @"on applicationWillTerminate! here you can not save data." );
 }
 
 /***************************************************************************/

@@ -231,6 +231,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     NSError *error;
     [filtersResultsController performFetch:&error];
     if( error && COREDATA_DEBUG ) NSLog( @"Fetch Filters error: %@", error );
+    
+    viewMode = VIEW_MODE_FILTERS;
+    self.iboPropertyTable.hidden = YES;
 }
 
 /***************************************************************************/
@@ -251,9 +254,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
     [self.iboTargetImage setClipsToBounds:YES];
     self.iboActivityIndicator.hidden = YES;
     [self.iboActivityIndicator stopAnimating];
-    
-    viewMode = VIEW_MODE_FILTERS;
-    self.iboPropertyTable.hidden = YES;
     
     [self setTargetImage];
     [self enableButtons];
@@ -1045,7 +1045,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT      = 162;
 /***************************************************************************/
 - (void)enableButtons
 {
-    if( self.iboFilterTable.hidden == YES )
+    if( viewMode == VIEW_MODE_PROPERTIES )
     {
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_BACK_INDEX]   setEnabled:YES];
         [[self.iboTabBar.items objectAtIndex:IDC_UITOOLBAR_BUTTON_CLEAR_INDEX]  setEnabled:NO];
